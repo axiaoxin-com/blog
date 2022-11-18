@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+<title>Celery 4.1.0 版本定时任务执行时间 BUG - 人言兑</title>
+  <meta name="description" content="为什么使用celery代替crontab？ 关于Celery，他是一个分布式的任务队列。http://docs.celeryproject.o">
+  <meta name="author" content="axiaoxin"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "阿小信的博客",
+    
+    "url": "https:\/\/blog.axiaoxin.com\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/blog.axiaoxin.com\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/post\/2017-12-27-celery-4.1.0-%E7%89%88%E6%9C%AC%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4-bug\/",
+          "name": "Celery 4.1.0 版本定时任务执行时间 bug"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "axiaoxin"
+  },
+  "headline": "Celery 4.1.0 版本定时任务执行时间 BUG",
+  "description" : "为什么使用celery代替crontab？ 关于Celery，他是一个分布式的任务队列。http:\/\/docs.celeryproject.o",
+  "inLanguage" : "zh-cn",
+  "wordCount":  2185 ,
+  "datePublished" : "2017-12-27T15:44:10",
+  "dateModified" : "2017-12-27T15:44:10",
+  "image" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+  "keywords" : [ "debug" ],
+  "mainEntityOfPage" : "https:\/\/blog.axiaoxin.com\/post\/2017-12-27-celery-4.1.0-%E7%89%88%E6%9C%AC%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4-bug\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/blog.axiaoxin.com\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Celery 4.1.0 版本定时任务执行时间 BUG" />
+<meta property="og:description" content="为什么使用celery代替crontab？ 关于Celery，他是一个分布式的任务队列。http://docs.celeryproject.o">
+<meta property="og:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+<meta property="og:url" content="https://blog.axiaoxin.com/post/2017-12-27-celery-4.1.0-%E7%89%88%E6%9C%AC%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4-bug/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="阿小信的博客" />
+
+  <meta name="twitter:title" content="Celery 4.1.0 版本定时任务执行时间 BUG" />
+  <meta name="twitter:description" content="为什么使用celery代替crontab？ 关于Celery，他是一个分布式的任务队列。http://docs.celeryproject.o">
+  <meta name="twitter:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://blog.axiaoxin.com/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.106.0">
+  <link rel="alternate" href="https://blog.axiaoxin.com/index.xml" type="application/rss+xml" title="阿小信的博客"><link href="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://blog.axiaoxin.com/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <script>
+      var head = document.getElementsByTagName('HEAD')[0];
+      var link = document.createElement("link");
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css";
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        
+        link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css";
+      }
+      head.appendChild(link);
+  </script><link rel="stylesheet" href="https://blog.axiaoxin.com/css/codeblock.css" /><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3022214826355647" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" ></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5KRFX25W8R"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-5KRFX25W8R', { 'anonymize_ip': false });
+}
+</script>
+<link href="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/css/glightbox.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://blog.axiaoxin.com/">阿小信的博客</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="主页" href="/">主页</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="归档" href="/page/archives/">归档</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/page/about/">关于</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent">网站</a>
+              <div class="navlinks-children">
+                
+                  <a href="http://mbti.axiaoxin.com" target="_blank">MBTI职业性格测试</a>
+                
+                  <a href="http://investool.axiaoxin.com" target="_blank">InvesTool</a>
+                
+                  <a href="http://m.psyctest.cn" target="_blank">赛可测试网:免费心理测试</a>
+                
+                  <a href="http://axiaoxin.com" target="_blank">个人主页</a>
+                
+                  <a href="http://dw.mcool.top" target="_blank">抖文-精选优质抖音视频文章</a>
+                
+              </div>
+            </li>
+          
+        
+
+        
+
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="阿小信的博客" href="https://blog.axiaoxin.com/">
+            <img class="avatar-img" src="https://blog.axiaoxin.com/img/avatar-icon.png" alt="阿小信的博客" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">搜索 阿小信的博客</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        
+                        <h1>Celery 4.1.0 版本定时任务执行时间 BUG</h1>
+                        
+                        
+                        
+                        
+                        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;发表于 2017-12-27
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;5&nbsp;分钟
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2185&nbsp;个字
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;axiaoxin
+    
+  
+  
+</span>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-3022214826355647"
+                 data-ad-slot="6429996269"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <article role="main" class="blog-post">
+                <h2 id="为什么使用celery代替crontab">为什么使用celery代替crontab？</h2>
+<p>关于Celery，他是一个分布式的任务队列。<a href="http://docs.celeryproject.org/en/latest/index.html">http://docs.celeryproject.org/en/latest/index.html</a></p>
+<p>项目中有较多的定时任务，开始是用crontab实现的，考虑到未来的拓展和管理，决定使用celery的beat来实现定时任务。</p>
+<p>虽然对于简单的周期性定时任务使用crontab就能做到，但是一旦需要处理的任务变多需要分布式处理时crontab不便于管理。</p>
+<p>celery通过消息队列来实现分布式可以保证定时任务不被重复执行，消息队列已经为你自动实现了同步机制。例外也可以打破crontab的每分钟才执行一次的速度限制，只要有任务消息到来我就能处理，可以使任务更加高效的被执行。使用消息队列还有一个好处是其监控和管理的工具都很多，可以更加方便的知道任务执行的情况。</p>
+<h2 id="bug-描述">BUG 描述</h2>
+<p>但是在使用celery beat做定时任务的过程中碰到了celery的bug，在此记录一下。</p>
+<p>当前使用pip安装的celery，默认是安装的最新版本4.1.0，但是在这个版本中在获取当前时间的逻辑中存在bug，会导致定时任务配置后并不能在指定的时间被执行。</p>
+<p>有如下定时任务配置：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>timezone <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Asia/Shanghai&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>beat_schedule <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;save_into_influxdb&#39;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;task&#39;</span>: <span style="color:#e6db74">&#39;tasks.calc_busi_capacity.save&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;schedule&#39;</span>: crontab(hour<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, minute<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>会在每天的0点30分执行一个写入数据到influxdb的任务。但是发现到了0点30分任务并没有被执行，经过确认，在使用hour和minute参数时，任务并不会在指定时间被执行，但是如果设置为每N分钟执行一次却是正常的，到了小时级别无法运行排除是我们自己程序代码的问题，剩下能想到的就只有时区问题了，但是机器上的时间和代码里面的时区都没有问题，那可能是celery本身的问题了。</p>
+<p>于是搜了一下celery beat execute time的关键字，看到<a href="https://github.com/celery/celery/issues/4177">https://github.com/celery/celery/issues/4177</a>这个issue里讨论的就是我们遇到的问题，原来是celery打的最新的这个版本代码里面有bug。就是<strong>celery在获取当前时间时使用了错误的方法导致计算下一次任务执行的时间时错误</strong>的bug，所以在我们指定的时间任务才没有被执行，他会被执行，但不是在我们想要的那个时间。</p>
+<p>当前默认<code>pip install celery</code>安装的是 4.1.0 版本，也是celery目前pypi上的最新版，github上看源码tag可以知道上一个版本是4.0.2，在最新的master分支的代码和4.0.2版本的代码里面是没有这个bug的。在内网环境里要避免触发这个bug最简单的办法就是使用celery 4.0.2 代替 4.1.0 ，所以只需在pip安装时指定版本（<code>pip install celery==4.0.2</code>）或者在requirements里面指定版本为4.0.2即可。</p>
+<h2 id="原因分析">原因分析</h2>
+<p>因为是celery beat没有在正确的时间发送任务，所以从4.1.0的setup.py中我们可以看到</p>
+<p>命令行启动是来自<a href="https://github.com/celery/celery/blob/v4.1.0/setup.py#L224">celery.__main__:main</a> 的代码。</p>
+<p>在<a href="https://github.com/celery/celery/blob/v4.1.0/celery/__main__.py#L13">__main__.py</a>中看到所有命令都来自bin目录下<a href="https://github.com/celery/celery/blob/v4.1.0/celery/bin/celery.py#L314">celery.py</a></p>
+<p><a href="https://github.com/celery/celery/blob/v4.1.0/celery/bin/celery.py#L326">celery会根据命令行参数</a>来调用<a href="https://github.com/celery/celery/blob/v4.1.0/celery/bin/beat.py#L95">真正的beat命令</a></p>
+<p>这个beat就是self.app.<a href="https://github.com/celery/celery/blob/v4.1.0/celery/app/base.py#L1099">Beat</a> 通过使用<a href="https://github.com/celery/celery/blob/v4.1.0/celery/bin/base.py#L451">setup_app_from_commandline</a> 读取命令行参数进行配置，我们代码中的Celery就是<a href="https://github.com/celery/celery/blob/v4.1.0/celery/__init__.py#L66">app.base.Celery</a> ，我们将Celery实例化后就是这里的self.app</p>
+<p>self.app.Beat在它的run方法中会调用<a href="https://github.com/celery/celery/blob/v4.1.0/celery/apps/beat.py#L79">start_schedule</a> 方法来启动 <a href="https://github.com/celery/celery/blob/master/celery/beat.py#L567">beat.Service</a></p>
+<p>启动后会进入循环<a href="https://github.com/celery/celery/blob/master/celery/beat.py#L579">通过tick方法计算执行时间</a></p>
+<p>在tick方法中调用了<a href="https://github.com/celery/celery/blob/master/celery/beat.py#L297">reserve</a> 通过<a href="https://github.com/celery/celery/blob/master/celery/beat.py#L327">next</a> 生成到下一次需要执行的任务。</p>
+<p>next调用<a href="https://github.com/celery/celery/blob/master/celery/beat.py#L103">_next_instance</a> 返回实例，参数有last_run_at默认值为<a href="https://github.com/celery/celery/blob/master/celery/beat.py#L100">self.app.now()</a></p>
+<p>终于找到根源了。查看app.base.Celery的<a href="https://github.com/celery/celery/blob/master/celery/app/base.py#L876">now()</a> ，在最新的master代码中使用的是将utc时间使用astimezone方法转换为datetime</p>
+<p>而在4.1.0的代码中只是对datetime的tzinfo进行了replace</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">now</span>(self):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Return the current time and date as a datetime.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> datetime<span style="color:#f92672">.</span>utcnow()<span style="color:#f92672">.</span>replace(tzinfo<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>timezone)
+</span></span></code></pre></div><p>在4.0.2中是调用的loaders中的<a href="https://github.com/celery/celery/blob/master/celery/loaders/base.py#L67">now()</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">now</span>(self, utc<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> utc:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> datetime<span style="color:#f92672">.</span>utcnow()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> datetime<span style="color:#f92672">.</span>now()
+</span></span></code></pre></div><p>在master最新代码中是使用的astimezone对utc时间转成datetime</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">now</span>(self):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Return the current time and date as a datetime.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    now_in_utc <span style="color:#f92672">=</span> to_utc(datetime<span style="color:#f92672">.</span>utcnow())
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> now_in_utc<span style="color:#f92672">.</span>astimezone(self<span style="color:#f92672">.</span>timezone)
+</span></span></code></pre></div><p>看一下astimezone和replace的区别</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>In [<span style="color:#ae81ff">31</span>]: <span style="color:#f92672">from</span> celery.utils.time <span style="color:#f92672">import</span> timezone, to_utc
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>In [<span style="color:#ae81ff">32</span>]: <span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>In [<span style="color:#ae81ff">33</span>]: tz <span style="color:#f92672">=</span> timezone<span style="color:#f92672">.</span>get_timezone(<span style="color:#e6db74">&#39;Asia/Shanghai&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>In [<span style="color:#ae81ff">34</span>]: un <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>utcnow()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>In [<span style="color:#ae81ff">35</span>]: print un
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2017</span><span style="color:#f92672">-</span><span style="color:#ae81ff">12</span><span style="color:#f92672">-</span><span style="color:#ae81ff">27</span> <span style="color:#ae81ff">07</span>:<span style="color:#ae81ff">46</span>:<span style="color:#ae81ff">08.824000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>In [<span style="color:#ae81ff">36</span>]: print datetime<span style="color:#f92672">.</span>now()
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2017</span><span style="color:#f92672">-</span><span style="color:#ae81ff">12</span><span style="color:#f92672">-</span><span style="color:#ae81ff">27</span> <span style="color:#ae81ff">15</span>:<span style="color:#ae81ff">46</span>:<span style="color:#ae81ff">36.228000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>In [<span style="color:#ae81ff">37</span>]: print to_utc(un)<span style="color:#f92672">.</span>astimezone(tz)
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2017</span><span style="color:#f92672">-</span><span style="color:#ae81ff">12</span><span style="color:#f92672">-</span><span style="color:#ae81ff">27</span> <span style="color:#ae81ff">15</span>:<span style="color:#ae81ff">46</span>:<span style="color:#ae81ff">08.824000</span><span style="color:#f92672">+</span><span style="color:#ae81ff">08</span>:<span style="color:#ae81ff">00</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>In [<span style="color:#ae81ff">38</span>]: print un<span style="color:#f92672">.</span>replace(tzinfo<span style="color:#f92672">=</span>tz)
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2017</span><span style="color:#f92672">-</span><span style="color:#ae81ff">12</span><span style="color:#f92672">-</span><span style="color:#ae81ff">27</span> <span style="color:#ae81ff">07</span>:<span style="color:#ae81ff">46</span>:<span style="color:#ae81ff">08.824000</span><span style="color:#f92672">+</span><span style="color:#ae81ff">08</span>:<span style="color:#ae81ff">06</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>In [<span style="color:#ae81ff">39</span>]: un
+</span></span><span style="display:flex;"><span>Out[<span style="color:#ae81ff">39</span>]: datetime<span style="color:#f92672">.</span>datetime(<span style="color:#ae81ff">2017</span>, <span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">27</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">46</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">824000</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>In [<span style="color:#ae81ff">40</span>]: un<span style="color:#f92672">.</span>replace(tzinfo<span style="color:#f92672">=</span>tz)
+</span></span><span style="display:flex;"><span>Out[<span style="color:#ae81ff">40</span>]: datetime<span style="color:#f92672">.</span>datetime(<span style="color:#ae81ff">2017</span>, <span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">27</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">46</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">824000</span>, tzinfo<span style="color:#f92672">=&lt;</span>DstTzInfo <span style="color:#e6db74">&#39;Asia/Shanghai&#39;</span> LMT<span style="color:#f92672">+</span><span style="color:#ae81ff">8</span>:<span style="color:#ae81ff">06</span>:<span style="color:#ae81ff">00</span> STD<span style="color:#f92672">&gt;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>In [<span style="color:#ae81ff">41</span>]: to_utc(un)<span style="color:#f92672">.</span>astimezone(tz)
+</span></span><span style="display:flex;"><span>Out[<span style="color:#ae81ff">41</span>]: datetime<span style="color:#f92672">.</span>datetime(<span style="color:#ae81ff">2017</span>, <span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">27</span>, <span style="color:#ae81ff">15</span>, <span style="color:#ae81ff">46</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">824000</span>, tzinfo<span style="color:#f92672">=&lt;</span>DstTzInfo <span style="color:#e6db74">&#39;Asia/Shanghai&#39;</span> CST<span style="color:#f92672">+</span><span style="color:#ae81ff">8</span>:<span style="color:#ae81ff">00</span>:<span style="color:#ae81ff">00</span> STD<span style="color:#f92672">&gt;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>In [<span style="color:#ae81ff">42</span>]: tz
+</span></span><span style="display:flex;"><span>Out[<span style="color:#ae81ff">42</span>]: <span style="color:#f92672">&lt;</span>DstTzInfo <span style="color:#e6db74">&#39;Asia/Shanghai&#39;</span> LMT<span style="color:#f92672">+</span><span style="color:#ae81ff">8</span>:<span style="color:#ae81ff">06</span>:<span style="color:#ae81ff">00</span> STD<span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>为什么使用replace会得到错误的时间呢，因为celery在这里它做了对时区的处理，
+但是 <strong>使用replace只会修改时区，但对时刻并没有修改为对应时区的时刻，所以他把utc的当前时间变成了我们当前所在时区的当前时间</strong> ，
+所以慢了8小时，任务会等到第二天才会开始执行，所以我们在我们设置的时间看不到任务被执行。</p>
+<p>而正确的将带有时区信息的对象转成datetime的方式应该使用<a href="https://docs.python.org/2/library/datetime.html#datetime.datetime.astimezone">astimezone</a>，他会对utc的偏移时间进行处理。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">astimezone</span>(self, tz):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>tzinfo <span style="color:#f92672">is</span> tz:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Convert self to UTC, and attach the new time zone object.</span>
+</span></span><span style="display:flex;"><span>    utc <span style="color:#f92672">=</span> (self <span style="color:#f92672">-</span> self<span style="color:#f92672">.</span>utcoffset())<span style="color:#f92672">.</span>replace(tzinfo<span style="color:#f92672">=</span>tz)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Convert from UTC to tz&#39;s local time.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> tz<span style="color:#f92672">.</span>fromutc(utc)
+</span></span></code></pre></div><p>Python官方文档也说了：</p>
+<blockquote>
+<p>If you merely want to attach a time zone object tz to a datetime dt without adjustment of date and time data, use dt.replace(tzinfo=tz).</p>
+</blockquote>
+
+
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-3022214826355647"
+                    data-ad-slot="3373260497"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+                
+                <div class="blog-tags">
+                    
+                    &nbsp;<a href="https://blog.axiaoxin.com//tags/debug/">debug</a>
+                    
+                </div>
+                
+
+                <ins id="content-ad"
+                     class="adsbygoogle"
+                     style="display:block; text-align:center;"
+                     data-ad-layout="in-article"
+                     data-ad-format="fluid"
+                     data-ad-client="ca-pub-3022214826355647"
+                     data-ad-slot="4546241981"></ins>
+
+                <script>
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        
+                        var id = "content-ad";
+                        var ins = document.getElementById(id);
+                        ins.setAttribute("data-ad-slot", "9889874488");
+                    }
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+
+                
+                <hr/>
+                <section id="social-share">
+                    <div class="list-inline footer-links">
+                        
+
+<div class="share-box" aria-hidden="true">
+    <div class="addthis_inline_share_toolbox"></div>
+</div>
+<script async src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-637606c33f0ab9be"></script>
+
+
+                    </div>
+                </section>
+                
+
+                
+                
+                
+                
+
+                
+                <h4 class="see-also">也可以看看</h4>
+                <ul>
+                    
+                    
+                    <li><a href="/post/2021-08-05-elasticsearch-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5%E7%BA%AA%E8%A6%81/">Elasticsearch 性能优化实践纪要</a></li>
+                    
+                    <li><a href="/post/2021-05-13-php-fpm-%E8%B6%85%E6%97%B6%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90/">php-fpm 超时原因分析</a></li>
+                    
+                    <li><a href="/post/2017-11-23-%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">记一次系统性能问题排查</a></li>
+                    
+                </ul>
+
+                
+                
+
+                <div class="_ha8w4pb61zc"></div>
+                <script type="text/javascript">
+                    (window.slotbydup = window.slotbydup || []).push({
+                        id: "u6682238",
+                        container: "_ha8w4pb61zc",
+                        async: true
+                    });
+                </script>
+            </article>
+
+
+            
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://blog.axiaoxin.com/post/2017-12-13-%E4%BD%BF%E7%94%A8-nginx-lua-%E4%BF%AE%E6%94%B9-influxdb-api-%E7%9A%84%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%84/" data-toggle="tooltip" data-placement="top" title="使用 Nginx Lua 修改 Influxdb API 的返回结构">&larr; 前一篇</a>
+                </li>
+                
+                
+                <li class="next">
+                    <a href="https://blog.axiaoxin.com/post/2018-03-02-%E5%88%9B%E5%BB%BA%E6%94%AF%E6%8C%81-ssh-%E7%99%BB%E5%BD%95%E5%92%8C%E6%A8%A1%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E7%9A%84-docker-%E9%95%9C%E5%83%8F/" data-toggle="tooltip" data-placement="top" title="创建支持 SSH 登录和模拟网络设备的 Docker 镜像">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            
+
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-3022214826355647"
+                data-ad-slot="5644200610"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+            <div class="giscus"></div>
+            <script src="https://giscus.app/client.js"
+                    data-repo="axiaoxin-com/blog"
+                    data-repo-id="R_kgDOIdZQhA"
+                    data-category="Comments"
+                    data-category-id="DIC_kwDOIdZQhM4CSvR2"
+                    data-mapping="title"
+                    data-strict="0"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-input-position="bottom"
+                    data-theme="preferred_color_scheme"
+                    data-lang="zh-CN"
+                    data-loading="lazy"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center footer-links">
+                    
+                    <li>
+                        
+                            <a href="mailto:admin@axiaoxin.com" title="Email me">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    <li>
+                        
+                            <a href="https://github.com/axiaoxin" title="GitHub">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    
+                    <li>
+                        <a href="" title="RSS">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="credits copyright text-muted">
+                
+                
+                <a href="http://axiaoxin.com">axiaoxin</a>
+                
+                
+
+                &nbsp;&bull;&nbsp;&copy;
+                
+                2011 - 2022
+                
+
+                
+                &nbsp;&bull;&nbsp;
+                <a href="https://blog.axiaoxin.com/">人言兑</a>
+                
+                </p>
+                <p class="copyright"><a class="text-muted text-decoration-none" href="https://beian.miit.gov.cn" target="_blank">蜀ICP备20023217号</a></p>
+            </div>
+        </div>
+    </div>
+</footer><script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://blog.axiaoxin.com/js/main.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script> hljs.highlightAll(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script async src="https://blog.axiaoxin.com/js/load-photoswipe.js"></script>
+
+
+
+<script>
+    (function() {
+            var cx = '61c0d8f33c4084733';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+        })();
+</script>
+
+
+
+
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["trackPageView"]);
+    _paq.push(["enableLinkTracking"]);
+
+    (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://matomo.axiaoxin.com/";
+            _paq.push(["setTrackerUrl", u+"piwik.php"]);
+            _paq.push(["setSiteId", "5"]);
+            var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+            g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+        })();
+</script>
+<noscript>
+    
+    <img src="http://matomo.axiaoxin.com/piwik.php?idsite=5&amp;rec=1" style="border:0" alt="" />
+    
+</noscript>
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?fdfe48e67d25b3802d6139d4e629c718";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+</script><script src="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/js/glightbox.min.js"></script>
+<script type="text/javascript">
+    $('.blog-post img').each(function(idx){
+        var src = $(this).attr("src");
+        var wrap = `<a href="${src}" class="glightbox"></a>`;
+        if (!src.match(/\.(jpg|jpeg|png|gif)$/i)) {
+            wrap = `<a href="${src}" target="_blank" data-glightbox="type: image"></a>`;
+        }
+        $(this).wrap(wrap);
+    });
+  const lightbox = GLightbox({});
+</script>
+
+
+    
+  </body>
+</html>
+

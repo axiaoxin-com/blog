@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+<title>Vimscript 学习笔记 - 人言兑</title>
+  <meta name="description" content="在 VIM 中输入:help &lt;CMD&gt; 可以查看该命令详细的帮助信息，比如:help echo、:help python。 VIM 脚本中的注释是以&quot;进行注释的">
+  <meta name="author" content="axiaoxin"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "阿小信的博客",
+    
+    "url": "https:\/\/blog.axiaoxin.com\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/blog.axiaoxin.com\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/post\/2014-11-06-vimscript-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\/",
+          "name": "Vimscript 学习笔记"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "axiaoxin"
+  },
+  "headline": "Vimscript 学习笔记",
+  "description" : "在 VIM 中输入:help \u0026lt;CMD\u0026gt; 可以查看该命令详细的帮助信息，比如:help echo、:help python。 VIM 脚本中的注释是以\u0026quot;进行注释的",
+  "inLanguage" : "zh-cn",
+  "wordCount":  4777 ,
+  "datePublished" : "2014-11-06T00:00:00",
+  "dateModified" : "2014-11-06T00:00:00",
+  "image" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+  "keywords" : [ "vim" ],
+  "mainEntityOfPage" : "https:\/\/blog.axiaoxin.com\/post\/2014-11-06-vimscript-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/blog.axiaoxin.com\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Vimscript 学习笔记" />
+<meta property="og:description" content="在 VIM 中输入:help &lt;CMD&gt; 可以查看该命令详细的帮助信息，比如:help echo、:help python。 VIM 脚本中的注释是以&quot;进行注释的">
+<meta property="og:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+<meta property="og:url" content="https://blog.axiaoxin.com/post/2014-11-06-vimscript-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="阿小信的博客" />
+
+  <meta name="twitter:title" content="Vimscript 学习笔记" />
+  <meta name="twitter:description" content="在 VIM 中输入:help &lt;CMD&gt; 可以查看该命令详细的帮助信息，比如:help echo、:help python。 VIM 脚本中的注释是以&quot;进行注释的">
+  <meta name="twitter:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://blog.axiaoxin.com/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.106.0">
+  <link rel="alternate" href="https://blog.axiaoxin.com/index.xml" type="application/rss+xml" title="阿小信的博客"><link href="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://blog.axiaoxin.com/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <script>
+      var head = document.getElementsByTagName('HEAD')[0];
+      var link = document.createElement("link");
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css";
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        
+        link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css";
+      }
+      head.appendChild(link);
+  </script><link rel="stylesheet" href="https://blog.axiaoxin.com/css/codeblock.css" /><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3022214826355647" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" ></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5KRFX25W8R"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-5KRFX25W8R', { 'anonymize_ip': false });
+}
+</script>
+<link href="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/css/glightbox.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://blog.axiaoxin.com/">阿小信的博客</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="主页" href="/">主页</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="归档" href="/page/archives/">归档</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/page/about/">关于</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent">网站</a>
+              <div class="navlinks-children">
+                
+                  <a href="http://mbti.axiaoxin.com" target="_blank">MBTI职业性格测试</a>
+                
+                  <a href="http://investool.axiaoxin.com" target="_blank">InvesTool</a>
+                
+                  <a href="http://m.psyctest.cn" target="_blank">赛可测试网:免费心理测试</a>
+                
+                  <a href="http://axiaoxin.com" target="_blank">个人主页</a>
+                
+                  <a href="http://dw.mcool.top" target="_blank">抖文-精选优质抖音视频文章</a>
+                
+              </div>
+            </li>
+          
+        
+
+        
+
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="阿小信的博客" href="https://blog.axiaoxin.com/">
+            <img class="avatar-img" src="https://blog.axiaoxin.com/img/avatar-icon.png" alt="阿小信的博客" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">搜索 阿小信的博客</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        
+                        <h1>Vimscript 学习笔记</h1>
+                        
+                        
+                        
+                        
+                        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;发表于 2014-11-06
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;10&nbsp;分钟
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;4777&nbsp;个字
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;axiaoxin
+    
+  
+  
+</span>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-3022214826355647"
+                 data-ad-slot="6429996269"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <article role="main" class="blog-post">
+                <p>在 VIM 中输入<code>:help &lt;CMD&gt;</code> 可以查看该命令详细的帮助信息，比如<code>:help echo</code>、<code>:help python</code>。</p>
+<p>VIM 脚本中的注释是以<code>&quot;</code>进行注释的。</p>
+<h2 id="vim-打印信息">VIM 打印信息</h2>
+<p>打印信息即可以使用<code>:echo &quot;hi, axiaoxin.&quot;</code>，也可以使用<code>:echom &quot;hi, Mr.axiaoxin&quot;</code>，运行时都会输出后面的字符串，
+他们的区别在于<code>:echom</code>会在运行后将其打印的信息保存在<code>messages</code>的列表中，而<code>:echo</code>则不会保存在内，
+运行<code>:messages</code>可以查看 Vim 所有历史输出的信息，用<code>echom</code>可以更方便的进行调试信息的输出。</p>
+<h2 id="基本数据类型及强制类型转换">基本数据类型及强制类型转换</h2>
+<p><strong>数字</strong>包括整型，浮点型，基本的数字运算和 python 都差不多</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">echom</span> <span style="color:#ae81ff">100</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echom</span> <span style="color:#ae81ff">0</span>xff <span style="color:#75715e">&#34;16进制</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echom</span> <span style="color:#ae81ff">010</span>  <span style="color:#75715e">&#34;8进制</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echom</span> <span style="color:#ae81ff">019</span>  <span style="color:#75715e">&#34;不合法8进制，自动被视为十进制</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p><strong>字符串</strong>不能使用<code>+</code>连接，<code>+</code>只用于数字，当用<code>+</code>连接字符串时，会强制将字符串转为开头的数字再相加。正确的连接符号为<code>.</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#34;Hello, &#34;</span> + <span style="color:#e6db74">&#34;world&#34;</span>  <span style="color:#75715e">&#34; return 0</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#34;3 mice&#34;</span> + <span style="color:#e6db74">&#34;2 cats&#34;</span>  <span style="color:#75715e">&#34; return 5</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#34;3 mice&#34;</span> + <span style="color:#e6db74">&#34;cats 2&#34;</span>  <span style="color:#75715e">&#34; return 3</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echom</span> <span style="color:#ae81ff">10</span> + <span style="color:#e6db74">&#34;10.1&#34;</span>          <span style="color:#75715e">&#34; return 10</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echom</span> <span style="color:#ae81ff">10</span> + <span style="color:#ae81ff">10</span>.<span style="color:#ae81ff">1</span>            <span style="color:#75715e">&#34; return 20.1</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#34;Hello, &#34;</span> . <span style="color:#e6db74">&#34;world&#34;</span>  <span style="color:#75715e">&#34; return hello, world</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>当整数和字符串用<code>.</code>连接时，会将整数转换成字符串，但是不能将浮点数和字符串连接，会报错。</p>
+<p>当字符串用单引号包住时，里面的特殊字符只会显示为原来的样子</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">echo</span> <span style="color:#e6db74">&#34;foo\nbar&#34;</span>    <span style="color:#75715e">&#34;显示为两行</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#34;foo\nbar&#34;</span>   <span style="color:#75715e">&#34;显示为foo^@bar，^@表示换行字符</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#39;\n\\&#39;</span>       <span style="color:#75715e">&#34;显示为\n\\，失去本身的意义</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#39;That&#39;&#39;s enough.&#39;</span>    <span style="color:#75715e">&#34;显示为That&#39;s enough. 单引号需要用&#39;来转义，用\是错误语法</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>字符串也可以像 python 一样切片<code>:echo &quot;abcd&quot;[0:2]</code></p>
+<p>用下标取字符串中的字符不能使用负数下标，
+<code>:echo &quot;abcd&quot;[-1]</code>返回为空，但是可以使用负数进行切片<code>:echo &quot;abcd&quot;[-2:]</code></p>
+<p><strong>String 函数</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span><span style="color:#a6e22e">strlen</span>(<span style="color:#a6e22e">str</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">len</span>(<span style="color:#a6e22e">str</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">split</span>(<span style="color:#a6e22e">str</span>[, <span style="color:#a6e22e">spliter</span>])<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">join</span>(<span style="color:#a6e22e">list</span>[, <span style="color:#a6e22e">joiner</span>])<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">tolower</span>(<span style="color:#a6e22e">str</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">toupper</span>(<span style="color:#a6e22e">str</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p><strong>列表</strong>下标从 0 开始，比如<code>:echo [0, [1, 2]][1]</code>输出<code>[1, 2]</code>，<code>:echo [0, [1, 2]][-2]</code>输出倒数第二个元素<code>0</code>，同样支持 python 风格的切片操作</p>
+<p>列表可以相加<code>:echo ['a', 'b'] + ['c']</code>返回<code>['a', 'b', 'c']</code></p>
+<p><strong>列表函数</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span><span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">list</span>, <span style="color:#a6e22e">item</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">len</span>(<span style="color:#a6e22e">list</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">get</span>(<span style="color:#a6e22e">list</span>, <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">default</span>)   <span style="color:#a6e22e">获取给定index的item</span>，<span style="color:#a6e22e">index超过range返回default</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">Index</span>(<span style="color:#a6e22e">list</span>, <span style="color:#a6e22e">item</span>)   <span style="color:#a6e22e">返回</span><span style="color:#ae81ff">-1</span>表示不存在该item<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">join</span>(<span style="color:#a6e22e">list</span>[, <span style="color:#a6e22e">joiner</span>])<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">reverse</span>(<span style="color:#a6e22e">list</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">sort</span>(<span style="color:#a6e22e">list</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">function</span>! <span style="color:#a6e22e">Sorted</span>(<span style="color:#a6e22e">l</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">new_list</span> = <span style="color:#a6e22e">deepcopy</span>(<span style="color:#a6e22e">a</span>:<span style="color:#a6e22e">l</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#a6e22e">call</span> <span style="color:#a6e22e">sort</span>(<span style="color:#a6e22e">new_list</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#a6e22e">return</span> <span style="color:#a6e22e">new_list</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">endfunction</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p><strong>字典</strong></p>
+<p>取值：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">echo</span> {<span style="color:#e6db74">&#39;a&#39;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">100</span>: <span style="color:#e6db74">&#39;foo&#39;</span>,}[<span style="color:#e6db74">&#39;a&#39;</span>]<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echo</span> {<span style="color:#e6db74">&#39;a&#39;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">100</span>: <span style="color:#e6db74">&#39;foo&#39;</span>,}[<span style="color:#ae81ff">100</span>]<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echo</span> {<span style="color:#e6db74">&#39;a&#39;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">100</span>: <span style="color:#e6db74">&#39;foo&#39;</span>,}.<span style="color:#a6e22e">a</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echo</span> {<span style="color:#e6db74">&#39;a&#39;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">100</span>: <span style="color:#e6db74">&#39;foo&#39;</span>,}.<span style="color:#ae81ff">100</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>删除：</p>
+<p>删除有两种方式，一种是<code>:let a = remove(dict, key)</code>，另一种是<code>unlet dict.key</code>，区别在于第一种方式有返回值（即被删除 key 的 value），第二种没有，如果删除一个不存在的 key 会报错。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">foo</span> = {<span style="color:#e6db74">&#39;a&#39;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;b&#39;</span>:<span style="color:#ae81ff">2</span>}<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">test</span> = <span style="color:#a6e22e">remove</span>(<span style="color:#a6e22e">foo</span>, <span style="color:#e6db74">&#39;a&#39;</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">unlet</span> <span style="color:#a6e22e">foo</span>.<span style="color:#a6e22e">b</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echo</span> <span style="color:#a6e22e">foo</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echo</span> <span style="color:#a6e22e">test</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>赋值：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">foo</span>.<span style="color:#a6e22e">x</span> = <span style="color:#ae81ff">11</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>字典方法：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span><span style="color:#a6e22e">get</span>(<span style="color:#a6e22e">dict</span>, <span style="color:#a6e22e">key</span>, <span style="color:#a6e22e">default</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">has_key</span>(<span style="color:#a6e22e">dict</span>, <span style="color:#a6e22e">key</span>)  <span style="color:#a6e22e">返回0</span>/<span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">items</span>(<span style="color:#a6e22e">dict</span>) <span style="color:#a6e22e">返回list</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p><code>:echo items({'a': 100, 'b': 200})</code>返回<code>[['a', 100], ['b', 200]]</code></p>
+<h2 id="变量">变量</h2>
+<p>变量赋值</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">foo</span> = <span style="color:#e6db74">&#34;bar&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echo</span> <span style="color:#a6e22e">foo</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>使用<code>let</code>关键字，等号左右可以有空格也可以没有，直接使用变量名。</p>
+<p>使用变量 scope 指定为当前 buff 的 local 变量</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">b</span>:<span style="color:#a6e22e">foo</span> = <span style="color:#e6db74">&#34;bar&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echo</span> <span style="color:#a6e22e">b</span>:<span style="color:#a6e22e">foo</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p><code>g:</code>代表 global</p>
+<p>选项变量</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">set</span> <span style="color:#a6e22e">textwidth</span>=<span style="color:#ae81ff">80</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echo</span> &amp;<span style="color:#a6e22e">textwidth</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>使用<code>set</code>关键字，当变量为设置选项时，等号左右不能有空格，而且 echo 时必须加<code>&amp;</code></p>
+<p>也可以使用<code>let</code>赋值，但是前面要加<code>&amp;</code>： <code>:let &amp;textwidth = 100</code></p>
+<p>local 选项变量</p>
+<p>在同一窗口 split 多个窗口，在不同的窗口设置自己的 local 变量：
+<code>:let &amp;l:number = 1</code></p>
+<p>注册变量:<code>:let @h = 'hi axiaoxin'</code>，
+现在按<code>&quot;hp</code>就会把 h 中保存的值粘贴到当前位置</p>
+<p>选中文字按 y 复制后，执行<code>:echo @&quot;</code>便可以打印出按 y 复制的值</p>
+<p><code>:echo @/</code>可以查看查找过的文字，如果没有查找过则返回 noh，noh 就是在你查找高亮后取消高亮的命令<code>:noh</code></p>
+<h2 id="if-语句">if 语句</h2>
+<p>1 代表 True，0 代表 False，非空字符串如果不是数字开头被强制转换为 0（False），数字字符串或数字开头的字符串为 True</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#66d9ef">if</span> <span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:    <span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#34;ONE&#34;</span>    <span style="color:#75715e">&#34;display</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">endif</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">if</span> <span style="color:#ae81ff">10</span> &gt; <span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:   <span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#34;foo&#34;</span>     <span style="color:#75715e">&#34;display</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">elseif</span> <span style="color:#ae81ff">100</span> == <span style="color:#ae81ff">10</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:   <span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#34;bar&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">else</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:   <span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#34;ooxx&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">endif</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;9024&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:    <span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#34;WHAT?!&#34;</span> <span style="color:#75715e">&#34;display</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">endif</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;something&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:    <span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#34;INDEED&#34;</span> <span style="color:#75715e">&#34;no display</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">endif</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>当比较字符串的时候不要使用<code>==</code>来判断相等，因为有<code>:set ignorecase</code>和<code>:set noignorecase</code>来修改是否区分大小写，如果<code>:if &quot;foo&quot; == &quot;FOO&quot;</code>前被添加了<code>:set ignorecase</code>，该判断依旧为 True。</p>
+<p>正确的方式应该总是使用<code>==?</code>和<code>==#</code>来判断，无论是否使用 set ignorecase or noignorecase，<code>?</code>总是不区分大小写，而<code>#</code>总是区分大小写，<code>&lt;</code> <code>&gt;</code>同样适用。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;foo&#34;</span> ==# <span style="color:#e6db74">&#34;FOO&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:   <span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#34;no, it couldn&#39;t be&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">elseif</span> <span style="color:#e6db74">&#34;foo&#34;</span> ==# <span style="color:#e6db74">&#34;foo&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:   <span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#34;this must be the one&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">endif</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><h2 id="布尔设置开关">布尔设置开关</h2>
+<p>所有布尔设置都是通过<code>:set &lt;name&gt;</code>来开启，通过<code>:set no&lt;name&gt;</code>来关闭</p>
+<p>也可以用<code>toggle</code>来设置自动开或关，<code>:set &lt;name&gt;!</code></p>
+<p>检查某个布尔设置的开关情况可以使用 <code>:set &lt;name&gt;?</code>，比如查看是否显示行号用<code>:set number?</code>，如果是显示行号则显示<code>number</code>，不显示行号显示为<code>nonumber</code></p>
+<p>特别笔记下<code>:set shiftround</code>命令，其作用是在你按<code>&gt;</code>或<code>&lt;</code>或者是在插入模式下按<code>C-T</code>或<code>C-D</code>时的缩进取整对齐，
+比如我设置了<code>:set shiftwidth=4</code>，然后有如下缩进不规则的文本：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>  asdasd
+</span></span><span style="display:flex;"><span>   asd
+</span></span></code></pre></div><p>先<code>:set noshiftround</code>，然后光标移动到第一行按<code>&gt;&gt;</code>或<code>&lt;&lt;</code>，会将该行移动固定的 4 个宽度，变成没有对齐的形式，如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>    asdasd
+</span></span><span style="display:flex;"><span>   asd
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>asdasd
+</span></span><span style="display:flex;"><span>   asd
+</span></span></code></pre></div><p>如果是<code>:set shiftround</code>，同样移到第一行按<code>&gt;&gt;</code>或<code>&lt;&lt;</code>，则往后移动到于其他行对齐的形式，如下</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>    asdasd
+</span></span><span style="display:flex;"><span>    asd
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>asdasd
+</span></span><span style="display:flex;"><span>    asd
+</span></span></code></pre></div><p>除了<code>&lt;&lt;</code>可以将当前行左移外，也可以使用<code>==</code>，=只能移到与上一行对齐，<code>gg=G</code>可以全文左对齐。visual 模式按=直接将选中部分对齐上一行。</p>
+<h2 id="赋值设置">赋值设置</h2>
+<p>修改行号宽度：<code>:set numberwidth=4</code>会将行号宽度变为 4（行号显示的情况下，没有行号无效）</p>
+<p>可以一次设置多个选项：<code>:set number numberwidth=10</code></p>
+<h2 id="循环语句">循环语句</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">c</span> = <span style="color:#ae81ff">0</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">for</span> <span style="color:#a6e22e">i</span> <span style="color:#a6e22e">in</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>]<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">c</span> += <span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">endfor</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echom</span> <span style="color:#a6e22e">c</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">c</span> = <span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">total</span> = <span style="color:#ae81ff">0</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">while</span> <span style="color:#a6e22e">c</span> &lt;= <span style="color:#ae81ff">4</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">total</span> += <span style="color:#a6e22e">c</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">c</span> += <span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">endwhile</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echom</span> <span style="color:#a6e22e">total</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><h2 id="按键映射">按键映射</h2>
+<p>normal 模式：<code>map</code> <code>nmap</code></p>
+<p>visual 模式：<code>vmap</code></p>
+<p>insert 模式：<code>imap</code></p>
+<p>各个模式的按键映射只能在该模式下才有效，比如<code>:vmap \ U</code>只有在 visual 模式下按<code>\</code>将选中的字符执行<code>U</code>将其变成大写。
+而其他模式下该按键无效，如果在其他模式配置了其他映射，则执行不同的效果。</p>
+<p>普通键映射：<code>:map &lt;KEY&gt; &lt;CMD&gt;</code></p>
+<p>特殊映射：<code>:map &lt;keyname&gt; &lt;CMD&gt;</code>, 比如<code>:map &lt;space&gt; viw &quot;按空格选中单词</code></p>
+<p>删除映射：<code>:unmap &lt;KEY&gt;</code> <code>:nunmap &lt;KEY&gt;</code></p>
+<p>在配置 insert 模式的映射时需要注意添加<code>&lt;esc&gt;</code>按键，
+比如在 insert 模式下我想<code>ctrl+d</code>删除当前行，如果你配置为<code>:imap &lt;c-d&gt; dd</code>则会无效，
+其效果是在光标处插入 dd 字符，而不是执行 normal 下的 dd 命令，
+有效的配置命令为<code>:imap &lt;c-d&gt; &lt;esc&gt;dd</code></p>
+<p><code>&lt;esc&gt;</code>是告诉 vim 按下 ESC 键退出 insert 模式，
+这样删除当前行后就不再是 insert 模式了，所以正确的命令应该是<code>:imap &lt;c-d&gt; &lt;esc&gt;ddi</code>,
+加上 i 表示在 normal 下按 i，再次进入 insert 模式。</p>
+<p><strong>递归</strong></p>
+<p>默认的映射是递归映射，即键 a 被映射成了 b，c 又被映射成了 a，那么 c 就被映射成了 b。每一个<code>*map</code>映射都有他的非递归映射<code>*noremap</code></p>
+<p>比如想修改 dd 命令，默认 dd 会删除当前行，后面的行会移上来，现在我们需要 dd 删除这个行后，这个行保持为空行，后面的行位置不动，你也许会配置映射为<code>:nmap dd O&lt;esc&gt;jddk</code>，
+但是这样就进入一个死循环卡死你 vim，你本想的是先在当前行的上一行新开一行，然后移动光标到下一行即你想删除的行然后删除掉再将光标移回新开的行，但是这里的 dd 和按键 dd 导致了递归，当执行完 j 时，遇到 dd，又回到了 O，变成了无休止的新开上一行。</p>
+<p>所以正确的配置应该使用<code>:noremap dd O&lt;esc&gt;jddk</code></p>
+<p><strong>leader 键</strong></p>
+<p>leader 键是个前缀，比如<code>nnoremap -d dd</code>表示按<code>-d</code>映射 dd，-就可以看作是一个前缀，如果很多地方用到可以将他指定为 mapleader 的值，然后他会替换<leader>为该值</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">mapleader</span> = <span style="color:#e6db74">&#39;-&#39;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">nnoremap</span> &lt;<span style="color:#a6e22e">leader</span>&gt;<span style="color:#a6e22e">d</span> <span style="color:#a6e22e">dd</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>默认的 mapleader 是<code>\\</code>，即<code>\</code>，第一个为转义符</p>
+<p>这些映射都可以写在<code>.vimrc</code>中，Vim 可以通过<code>:sp $MYVIMRC</code>打开该文件，<code>:source $MYVIMRC</code>使其生效。</p>
+<p><strong>缩写替换</strong></p>
+<p><code>abbrev</code>是一个类似<code>imap</code>的命令。比如<code>:iabbrev @@ axiaoxin.com</code>，这样当你在输入<code>@@</code>后按空格会将其替换为后面的网址。</p>
+<h2 id="autocmd">autocmd</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Vim在匹配到B模式的文件执行A事件时运行C命令
+</span></span><span style="display:flex;"><span>:autocmd BufNewFile *.txt :write
+</span></span><span style="display:flex;"><span>                ^     ^     ^
+</span></span><span style="display:flex;"><span>                |     |     |
+</span></span><span style="display:flex;"><span>                |     |     |
+</span></span><span style="display:flex;"><span>                |     |     需要运行的命令       C
+</span></span><span style="display:flex;"><span>                |     过滤事件的pattern          B
+</span></span><span style="display:flex;"><span>                watch的事件(可以是多个，用,分割) A
+</span></span></code></pre></div><p>该命令是当格式为<code>txt</code>的文件在新建时就先自动写入一次，即保存空白新文件。</p>
+<p>删除所有 autocmd：<code>:autocmd!</code></p>
+<p><strong>Reading</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>|BufNewFile|		starting to edit a file that doesn&#39;t exist
+</span></span><span style="display:flex;"><span>|BufReadPre|		starting to edit a new buffer, before reading the file
+</span></span><span style="display:flex;"><span>|BufRead|		    starting to edit a new buffer, after reading the file
+</span></span><span style="display:flex;"><span>|BufReadPost|		starting to edit a new buffer, after reading the file
+</span></span><span style="display:flex;"><span>|BufReadCmd|		before starting to edit a new buffer |Cmd-event|
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|FileReadPre|		before reading a file with a &#34;:read&#34; command
+</span></span><span style="display:flex;"><span>|FileReadPost|		after reading a file with a &#34;:read&#34; command
+</span></span><span style="display:flex;"><span>|FileReadCmd|		before reading a file with a &#34;:read&#34; command |Cmd-event|
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|FilterReadPre|		before reading a file from a filter command
+</span></span><span style="display:flex;"><span>|FilterReadPost|	after reading a file from a filter command
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|StdinReadPre|		before reading from stdin into the buffer
+</span></span><span style="display:flex;"><span>|StdinReadPost|		After reading from the stdin into the buffer
+</span></span></code></pre></div><p><strong>Writing</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>|BufWrite|		    starting to write the whole buffer to a file
+</span></span><span style="display:flex;"><span>|BufWritePre|		starting to write the whole buffer to a file
+</span></span><span style="display:flex;"><span>|BufWritePost|		after writing the whole buffer to a file
+</span></span><span style="display:flex;"><span>|BufWriteCmd|		before writing the whole buffer to a file |Cmd-event|
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|FileWritePre|		starting to write part of a buffer to a file
+</span></span><span style="display:flex;"><span>|FileWritePost|		after writing part of a buffer to a file
+</span></span><span style="display:flex;"><span>|FileWriteCmd|		before writing part of a buffer to a file |Cmd-event|
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|FileAppendPre|		starting to append to a file
+</span></span><span style="display:flex;"><span>|FileAppendPost|	after appending to a file
+</span></span><span style="display:flex;"><span>|FileAppendCmd|		before appending to a file |Cmd-event|
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|FilterWritePre|	starting to write a file for a filter command or diff
+</span></span><span style="display:flex;"><span>|FilterWritePost|	after writing a file for a filter command or diff
+</span></span></code></pre></div><p><strong>Buffers</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>|BufAdd|		    just after adding a buffer to the buffer list
+</span></span><span style="display:flex;"><span>|BufCreate|		    just after adding a buffer to the buffer list
+</span></span><span style="display:flex;"><span>|BufDelete|		    before deleting a buffer from the buffer list
+</span></span><span style="display:flex;"><span>|BufWipeout|		before completely deleting a buffer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|BufFilePre|		before changing the name of the current buffer
+</span></span><span style="display:flex;"><span>|BufFilePost|		after changing the name of the current buffer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|BufEnter|		    after entering a buffer
+</span></span><span style="display:flex;"><span>|BufLeave|		    before leaving to another buffer
+</span></span><span style="display:flex;"><span>|BufWinEnter|		after a buffer is displayed in a window
+</span></span><span style="display:flex;"><span>|BufWinLeave|		before a buffer is removed from a window
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|BufUnload|		    before unloading a buffer
+</span></span><span style="display:flex;"><span>|BufHidden|		    just after a buffer has become hidden
+</span></span><span style="display:flex;"><span>|BufNew|		    just after creating a new buffer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|SwapExists|		detected an existing swap file
+</span></span></code></pre></div><p><strong>Options</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>|FileType|		    when the &#39;filetype&#39; option has been set
+</span></span><span style="display:flex;"><span>|Syntax|		    when the &#39;syntax&#39; option has been set
+</span></span><span style="display:flex;"><span>|EncodingChanged|	after the &#39;encoding&#39; option has been changed
+</span></span><span style="display:flex;"><span>|TermChanged|		after the value of &#39;term&#39; has changed
+</span></span></code></pre></div><p><strong>Startup and exit</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>|VimEnter|		    after doing all the startup stuff
+</span></span><span style="display:flex;"><span>|GUIEnter|		    after starting the GUI successfully
+</span></span><span style="display:flex;"><span>|GUIFailed|		    after starting the GUI failed
+</span></span><span style="display:flex;"><span>|TermResponse|		after the terminal response to |t_RV| is received
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|QuitPre|		    when using `:quit`, before deciding whether to quit
+</span></span><span style="display:flex;"><span>|VimLeavePre|		before exiting Vim, before writing the viminfo file
+</span></span><span style="display:flex;"><span>|VimLeave|		    before exiting Vim, after writing the viminfo file
+</span></span></code></pre></div><p><strong>Various</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>|FileChangedShell|	    Vim notices that a file changed since editing started
+</span></span><span style="display:flex;"><span>|FileChangedShellPost|	After handling a file changed since editing started
+</span></span><span style="display:flex;"><span>|FileChangedRO|		    before making the first change to a read-only file
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|ShellCmdPost|		    after executing a shell command
+</span></span><span style="display:flex;"><span>|ShellFilterPost|	    after filtering with a shell command
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|FuncUndefined|		    a user function is used but it isn&#39;t defined
+</span></span><span style="display:flex;"><span>|SpellFileMissing|	    a spell file is used but it can&#39;t be found
+</span></span><span style="display:flex;"><span>|SourcePre|		        before sourcing a Vim script
+</span></span><span style="display:flex;"><span>|SourceCmd|		        before sourcing a Vim script |Cmd-event|
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|VimResized|		    after the Vim window size changed
+</span></span><span style="display:flex;"><span>|FocusGained|		    Vim got input focus
+</span></span><span style="display:flex;"><span>|FocusLost|		        Vim lost input focus
+</span></span><span style="display:flex;"><span>|CursorHold|		    the user doesn&#39;t press a key for a while
+</span></span><span style="display:flex;"><span>|CursorHoldI|		    the user doesn&#39;t press a key for a while in Insert mode
+</span></span><span style="display:flex;"><span>|CursorMoved|		    the cursor was moved in Normal mode
+</span></span><span style="display:flex;"><span>|CursorMovedI|		    the cursor was moved in Insert mode
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|WinEnter|		        after entering another window
+</span></span><span style="display:flex;"><span>|WinLeave|		        before leaving a window
+</span></span><span style="display:flex;"><span>|TabEnter|		        after entering another tab page
+</span></span><span style="display:flex;"><span>|TabLeave|		        before leaving a tab page
+</span></span><span style="display:flex;"><span>|CmdwinEnter|		    after entering the command-line window
+</span></span><span style="display:flex;"><span>|CmdwinLeave|		    before leaving the command-line window
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|InsertEnter|		    starting Insert mode
+</span></span><span style="display:flex;"><span>|InsertChange|		    when typing &lt;Insert&gt; while in Insert or Replace mode
+</span></span><span style="display:flex;"><span>|InsertLeave|		    when leaving Insert mode
+</span></span><span style="display:flex;"><span>|InsertCharPre|		    when a character was typed in Insert mode, before inserting it
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|ColorScheme|		    after loading a color scheme
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|RemoteReply|		    a reply from a server Vim was received
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|QuickFixCmdPre|	    before a quickfix command is run
+</span></span><span style="display:flex;"><span>|QuickFixCmdPost|	    after a quickfix command is run
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|SessionLoadPost|	    after loading a session file
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|MenuPopup|		        just before showing the popup menu
+</span></span><span style="display:flex;"><span>|CompleteDone|		    after Insert mode completion is done
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>|User|			        to be used in combination with &#34;:doautocmd&#34;
+</span></span></code></pre></div><h2 id="函数">函数</h2>
+<p>函数名必须使用大写字母开头，默认返回值为 0。</p>
+<p>无返回值函数：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">Meow</span>()<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:  <span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#34;Meow!&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">endfunction</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>有返回值函数：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">GetMeow</span>()<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:  <span style="color:#a6e22e">return</span> <span style="color:#e6db74">&#34;Meow String!&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">endfunction</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>使用<code>:call &lt;FUNC_NAME&gt;()</code>进行调用。直接<code>:echo &lt;FUNC_NAME&gt;()</code>，如果没有返回值的函数会在正确执行后打印默认返回值 0，有返回值则打印返回值。</p>
+<p><strong>函数参数</strong></p>
+<p>函数内使用参数必须使用<code>a:</code>前缀</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">DisplayName</span>(<span style="color:#a6e22e">name</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:  <span style="color:#a6e22e">echom</span> <span style="color:#e6db74">&#34;Hello!  My name is:&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:  <span style="color:#a6e22e">echom</span> <span style="color:#a6e22e">a</span>:<span style="color:#a6e22e">name</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">endfunction</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">call</span> <span style="color:#a6e22e">DisplayName</span>(<span style="color:#e6db74">&#34;axiaoxin&#34;</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>不定参数</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">Varg</span>(...)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:  <span style="color:#a6e22e">echom</span> <span style="color:#a6e22e">a</span>:<span style="color:#ae81ff">0</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:  <span style="color:#a6e22e">echom</span> <span style="color:#a6e22e">a</span>:<span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:  <span style="color:#a6e22e">echo</span> <span style="color:#a6e22e">a</span>:<span style="color:#ae81ff">000</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">endfunction</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">call</span> <span style="color:#a6e22e">Varg</span>(<span style="color:#e6db74">&#34;a&#34;</span>, <span style="color:#e6db74">&#34;b&#34;</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">Varg2</span>(<span style="color:#a6e22e">foo</span>, ...)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:  <span style="color:#a6e22e">echom</span> <span style="color:#a6e22e">a</span>:<span style="color:#a6e22e">foo</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:  <span style="color:#a6e22e">echom</span> <span style="color:#a6e22e">a</span>:<span style="color:#ae81ff">0</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:  <span style="color:#a6e22e">echom</span> <span style="color:#a6e22e">a</span>:<span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:  <span style="color:#a6e22e">echo</span> <span style="color:#a6e22e">a</span>:<span style="color:#ae81ff">000</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">endfunction</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">call</span> <span style="color:#a6e22e">Varg2</span>(<span style="color:#e6db74">&#34;a&#34;</span>, <span style="color:#e6db74">&#34;b&#34;</span>, <span style="color:#e6db74">&#34;c&#34;</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p><code>a:0</code>表示参数个数</p>
+<p><code>a:1</code>表示传入的第一个参数</p>
+<p><code>a:000</code>表示所有传入参数的列表，<code>echom</code>不能打印列表，只能使用<code>echo</code></p>
+<p>参数不能在函数内进行赋值操作，即在函数内执行<code>let a:foo = &quot;Nope&quot;</code>是会报错的</p>
+<p>函数可以赋值给变量</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span><span style="color:#66d9ef">function</span>! <span style="color:#a6e22e">Append</span>(<span style="color:#a6e22e">l</span>, <span style="color:#a6e22e">val</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">new_list</span> = <span style="color:#a6e22e">deepcopy</span>(<span style="color:#a6e22e">a</span>:<span style="color:#a6e22e">l</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#a6e22e">call</span> <span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">new_list</span>, <span style="color:#a6e22e">a</span>:<span style="color:#a6e22e">val</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#a6e22e">return</span> <span style="color:#a6e22e">new_list</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">endfunction</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">function</span>! <span style="color:#a6e22e">Pop</span>(<span style="color:#a6e22e">l</span>, <span style="color:#a6e22e">i</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">new_list</span> = <span style="color:#a6e22e">deepcopy</span>(<span style="color:#a6e22e">a</span>:<span style="color:#a6e22e">l</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#a6e22e">call</span> <span style="color:#a6e22e">remove</span>(<span style="color:#a6e22e">new_list</span>, <span style="color:#a6e22e">a</span>:<span style="color:#a6e22e">i</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#a6e22e">return</span> <span style="color:#a6e22e">new_list</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">endfunction</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">Myfunc</span> = <span style="color:#66d9ef">function</span>(<span style="color:#e6db74">&#34;Append&#34;</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echo</span> <span style="color:#a6e22e">Myfunc</span>([<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>], <span style="color:#ae81ff">3</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">funcs</span> = [<span style="color:#66d9ef">function</span>(<span style="color:#e6db74">&#34;Append&#34;</span>), <span style="color:#66d9ef">function</span>(<span style="color:#e6db74">&#34;Pop&#34;</span>)]<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echo</span> <span style="color:#a6e22e">funcs</span>[<span style="color:#ae81ff">1</span>]([<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;b&#39;</span>, <span style="color:#e6db74">&#39;c&#39;</span>], <span style="color:#ae81ff">1</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><h2 id="execute-命令">execute 命令</h2>
+<p><code>execute</code>用来执行字符串形式的 Vimscript 命令，
+比如<code>:execute &quot;echom 'Hello, world!'&quot;</code></p>
+<p>在 execute 中执行 normal 命令时<code>:execute &quot;normal! gg/print\&lt;cr&gt;&quot;</code>在 normal 后加<code>!</code>表示 nore 非递归，特殊按键用<code>\</code>转义。</p>
+<p>被查找的字符中可能包含有正则的特殊字符，需要进行转义：<code>:execute &quot;normal! gg/for .\\+ in .\\+:\&lt;cr&gt;&quot;</code> 或者<code>:execute 'normal! gg/for .\+ in .\+:\&lt;cr&gt;'</code></p>
+<h2 id="filter--map">filter &amp; map</h2>
+<p>filter:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span><span style="color:#66d9ef">function</span>! <span style="color:#a6e22e">Filtered</span>(<span style="color:#a6e22e">fn</span>, <span style="color:#a6e22e">l</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">new_list</span> = <span style="color:#a6e22e">deepcopy</span>(<span style="color:#a6e22e">a</span>:<span style="color:#a6e22e">l</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#a6e22e">call</span> <span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">new_list</span>, <span style="color:#a6e22e">string</span>(<span style="color:#a6e22e">a</span>:<span style="color:#a6e22e">fn</span>) . <span style="color:#e6db74">&#39;(v:val)&#39;</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#a6e22e">return</span> <span style="color:#a6e22e">new_list</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">endfunction</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">mylist</span> = [[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>], [], [<span style="color:#e6db74">&#39;foo&#39;</span>], []]<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echo</span> <span style="color:#a6e22e">Filtered</span>(<span style="color:#66d9ef">function</span>(<span style="color:#e6db74">&#39;len&#39;</span>), <span style="color:#a6e22e">mylist</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">&#34;Vim displays [[1, 2], [&#39;foo&#39;]].</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">function</span>! <span style="color:#a6e22e">Removed</span>(<span style="color:#a6e22e">fn</span>, <span style="color:#a6e22e">l</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">new_list</span> = <span style="color:#a6e22e">deepcopy</span>(<span style="color:#a6e22e">a</span>:<span style="color:#a6e22e">l</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#a6e22e">call</span> <span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">new_list</span>, <span style="color:#e6db74">&#39;!&#39;</span> . <span style="color:#a6e22e">string</span>(<span style="color:#a6e22e">a</span>:<span style="color:#a6e22e">fn</span>) . <span style="color:#e6db74">&#39;(v:val)&#39;</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#a6e22e">return</span> <span style="color:#a6e22e">new_list</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">endfunction</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">mylist</span> = [[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>], [], [<span style="color:#e6db74">&#39;foo&#39;</span>], []]<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echo</span> <span style="color:#a6e22e">Removed</span>(<span style="color:#66d9ef">function</span>(<span style="color:#e6db74">&#39;len&#39;</span>), <span style="color:#a6e22e">mylist</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">&#34;Vim displays [[], []]</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>map：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span><span style="color:#66d9ef">function</span>! <span style="color:#a6e22e">Mapped</span>(<span style="color:#a6e22e">fn</span>, <span style="color:#a6e22e">l</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">new_list</span> = <span style="color:#a6e22e">deepcopy</span>(<span style="color:#a6e22e">a</span>:<span style="color:#a6e22e">l</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#a6e22e">call</span> <span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">new_list</span>, <span style="color:#a6e22e">string</span>(<span style="color:#a6e22e">a</span>:<span style="color:#a6e22e">fn</span>) . <span style="color:#e6db74">&#39;(v:val)&#39;</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#a6e22e">return</span> <span style="color:#a6e22e">new_list</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">endfunction</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">mylist</span> = [[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>], [<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>]]<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span>:<span style="color:#a6e22e">echo</span> <span style="color:#a6e22e">Mapped</span>(<span style="color:#66d9ef">function</span>(<span style="color:#e6db74">&#34;Reversed&#34;</span>), <span style="color:#a6e22e">mylist</span>)<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">&#34;Vim displays [[2, 1], [4, 3]]</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><h2 id="路径">路径</h2>
+<p>显示当前文件的相对路径 <code>:echom expand('%')</code></p>
+<p>显示当前文件的绝对路径 <code>:echom expand('%:p')</code></p>
+<p>显示给定文件在当前目录的绝对路径（不论文件是否存在）<code>:echom fnamemodify('foo.txt', ':p')</code></p>
+<p>列出给定目录文件：<code>:echo globpath('.', '*')</code>， 使用<code>**</code>可以递归列出所有子文件下的文件</p>
+
+
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-3022214826355647"
+                    data-ad-slot="3373260497"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+                
+                <div class="blog-tags">
+                    
+                    &nbsp;<a href="https://blog.axiaoxin.com//tags/vim/">vim</a>
+                    
+                </div>
+                
+
+                <ins id="content-ad"
+                     class="adsbygoogle"
+                     style="display:block; text-align:center;"
+                     data-ad-layout="in-article"
+                     data-ad-format="fluid"
+                     data-ad-client="ca-pub-3022214826355647"
+                     data-ad-slot="4546241981"></ins>
+
+                <script>
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        
+                        var id = "content-ad";
+                        var ins = document.getElementById(id);
+                        ins.setAttribute("data-ad-slot", "9889874488");
+                    }
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+
+                
+                <hr/>
+                <section id="social-share">
+                    <div class="list-inline footer-links">
+                        
+
+<div class="share-box" aria-hidden="true">
+    <div class="addthis_inline_share_toolbox"></div>
+</div>
+<script async src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-637606c33f0ab9be"></script>
+
+
+                    </div>
+                </section>
+                
+
+                
+                
+                
+                
+
+                
+                <h4 class="see-also">也可以看看</h4>
+                <ul>
+                    
+                    
+                    <li><a href="/post/2014-03-27-%E8%AE%B0%E5%BD%95%E5%87%A0%E4%B8%AA%E6%96%B0%E5%AD%A6%E4%BC%9A%E7%9A%84-vim-%E5%91%BD%E4%BB%A4/">记录几个新学会的 VIM 命令</a></li>
+                    
+                </ul>
+
+                
+                
+
+                <div class="_ha8w4pb61zc"></div>
+                <script type="text/javascript">
+                    (window.slotbydup = window.slotbydup || []).push({
+                        id: "u6682238",
+                        container: "_ha8w4pb61zc",
+                        async: true
+                    });
+                </script>
+            </article>
+
+
+            
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://blog.axiaoxin.com/post/2014-03-27-%E8%AE%B0%E5%BD%95%E5%87%A0%E4%B8%AA%E6%96%B0%E5%AD%A6%E4%BC%9A%E7%9A%84-vim-%E5%91%BD%E4%BB%A4/" data-toggle="tooltip" data-placement="top" title="记录几个新学会的 VIM 命令">&larr; 前一篇</a>
+                </li>
+                
+                
+                <li class="next">
+                    <a href="https://blog.axiaoxin.com/post/2015-04-11-%E8%AE%B0%E5%BD%95%E5%9C%A8%E4%B8%8A%E6%B5%B7%E7%9A%84%E4%B8%80%E4%B8%AA%E5%91%A8%E5%85%AD/" data-toggle="tooltip" data-placement="top" title="记录在上海的一个周六">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            
+
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-3022214826355647"
+                data-ad-slot="5644200610"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+            <div class="giscus"></div>
+            <script src="https://giscus.app/client.js"
+                    data-repo="axiaoxin-com/blog"
+                    data-repo-id="R_kgDOIdZQhA"
+                    data-category="Comments"
+                    data-category-id="DIC_kwDOIdZQhM4CSvR2"
+                    data-mapping="title"
+                    data-strict="0"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-input-position="bottom"
+                    data-theme="preferred_color_scheme"
+                    data-lang="zh-CN"
+                    data-loading="lazy"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center footer-links">
+                    
+                    <li>
+                        
+                            <a href="mailto:admin@axiaoxin.com" title="Email me">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    <li>
+                        
+                            <a href="https://github.com/axiaoxin" title="GitHub">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    
+                    <li>
+                        <a href="" title="RSS">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="credits copyright text-muted">
+                
+                
+                <a href="http://axiaoxin.com">axiaoxin</a>
+                
+                
+
+                &nbsp;&bull;&nbsp;&copy;
+                
+                2011 - 2022
+                
+
+                
+                &nbsp;&bull;&nbsp;
+                <a href="https://blog.axiaoxin.com/">人言兑</a>
+                
+                </p>
+                <p class="copyright"><a class="text-muted text-decoration-none" href="https://beian.miit.gov.cn" target="_blank">蜀ICP备20023217号</a></p>
+            </div>
+        </div>
+    </div>
+</footer><script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://blog.axiaoxin.com/js/main.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script> hljs.highlightAll(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script async src="https://blog.axiaoxin.com/js/load-photoswipe.js"></script>
+
+
+
+<script>
+    (function() {
+            var cx = '61c0d8f33c4084733';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+        })();
+</script>
+
+
+
+
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["trackPageView"]);
+    _paq.push(["enableLinkTracking"]);
+
+    (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://matomo.axiaoxin.com/";
+            _paq.push(["setTrackerUrl", u+"piwik.php"]);
+            _paq.push(["setSiteId", "5"]);
+            var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+            g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+        })();
+</script>
+<noscript>
+    
+    <img src="http://matomo.axiaoxin.com/piwik.php?idsite=5&amp;rec=1" style="border:0" alt="" />
+    
+</noscript>
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?fdfe48e67d25b3802d6139d4e629c718";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+</script><script src="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/js/glightbox.min.js"></script>
+<script type="text/javascript">
+    $('.blog-post img').each(function(idx){
+        var src = $(this).attr("src");
+        var wrap = `<a href="${src}" class="glightbox"></a>`;
+        if (!src.match(/\.(jpg|jpeg|png|gif)$/i)) {
+            wrap = `<a href="${src}" target="_blank" data-glightbox="type: image"></a>`;
+        }
+        $(this).wrap(wrap);
+    });
+  const lightbox = GLightbox({});
+</script>
+
+
+    
+  </body>
+</html>
+

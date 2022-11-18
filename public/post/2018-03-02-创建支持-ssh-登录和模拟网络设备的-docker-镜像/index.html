@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+<title>创建支持 SSH 登录和模拟网络设备的 Docker 镜像 - 人言兑</title>
+  <meta name="description" content="CentOS 主机安装 Docker 安装docker yum install docker docker version # 1.12.6 移动docker的数据目录到较大磁盘下 mv /var/lib/docker/ /data/docker ln -sb /data/docker /var/lib/docker 设置docker OPTIONS：/etc/sy">
+  <meta name="author" content="axiaoxin"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "阿小信的博客",
+    
+    "url": "https:\/\/blog.axiaoxin.com\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/blog.axiaoxin.com\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/post\/2018-03-02-%E5%88%9B%E5%BB%BA%E6%94%AF%E6%8C%81-ssh-%E7%99%BB%E5%BD%95%E5%92%8C%E6%A8%A1%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E7%9A%84-docker-%E9%95%9C%E5%83%8F\/",
+          "name": "创建支持 SSH 登录和模拟网络设备的 docker 镜像"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "axiaoxin"
+  },
+  "headline": "创建支持 SSH 登录和模拟网络设备的 Docker 镜像",
+  "description" : "CentOS 主机安装 Docker 安装docker yum install docker docker version # 1.12.6 移动docker的数据目录到较大磁盘下 mv \/var\/lib\/docker\/ \/data\/docker ln -sb \/data\/docker \/var\/lib\/docker 设置docker OPTIONS：\/etc\/sy",
+  "inLanguage" : "zh-cn",
+  "wordCount":  1056 ,
+  "datePublished" : "2018-03-02T16:24:39",
+  "dateModified" : "2018-03-02T16:24:39",
+  "image" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+  "keywords" : [ "docker" ],
+  "mainEntityOfPage" : "https:\/\/blog.axiaoxin.com\/post\/2018-03-02-%E5%88%9B%E5%BB%BA%E6%94%AF%E6%8C%81-ssh-%E7%99%BB%E5%BD%95%E5%92%8C%E6%A8%A1%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E7%9A%84-docker-%E9%95%9C%E5%83%8F\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/blog.axiaoxin.com\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="创建支持 SSH 登录和模拟网络设备的 Docker 镜像" />
+<meta property="og:description" content="CentOS 主机安装 Docker 安装docker yum install docker docker version # 1.12.6 移动docker的数据目录到较大磁盘下 mv /var/lib/docker/ /data/docker ln -sb /data/docker /var/lib/docker 设置docker OPTIONS：/etc/sy">
+<meta property="og:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+<meta property="og:url" content="https://blog.axiaoxin.com/post/2018-03-02-%E5%88%9B%E5%BB%BA%E6%94%AF%E6%8C%81-ssh-%E7%99%BB%E5%BD%95%E5%92%8C%E6%A8%A1%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E7%9A%84-docker-%E9%95%9C%E5%83%8F/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="阿小信的博客" />
+
+  <meta name="twitter:title" content="创建支持 SSH 登录和模拟网络设备的 Docker 镜像" />
+  <meta name="twitter:description" content="CentOS 主机安装 Docker 安装docker yum install docker docker version # 1.12.6 移动docker的数据目录到较大磁盘下 mv /var/lib/docker/ /data/docker ln -sb /data/docker /var/lib/docker 设置docker OPTIONS：/etc/sy">
+  <meta name="twitter:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://blog.axiaoxin.com/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.106.0">
+  <link rel="alternate" href="https://blog.axiaoxin.com/index.xml" type="application/rss+xml" title="阿小信的博客"><link href="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://blog.axiaoxin.com/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <script>
+      var head = document.getElementsByTagName('HEAD')[0];
+      var link = document.createElement("link");
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css";
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        
+        link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css";
+      }
+      head.appendChild(link);
+  </script><link rel="stylesheet" href="https://blog.axiaoxin.com/css/codeblock.css" /><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3022214826355647" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" ></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5KRFX25W8R"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-5KRFX25W8R', { 'anonymize_ip': false });
+}
+</script>
+<link href="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/css/glightbox.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://blog.axiaoxin.com/">阿小信的博客</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="主页" href="/">主页</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="归档" href="/page/archives/">归档</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/page/about/">关于</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent">网站</a>
+              <div class="navlinks-children">
+                
+                  <a href="http://mbti.axiaoxin.com" target="_blank">MBTI职业性格测试</a>
+                
+                  <a href="http://investool.axiaoxin.com" target="_blank">InvesTool</a>
+                
+                  <a href="http://m.psyctest.cn" target="_blank">赛可测试网:免费心理测试</a>
+                
+                  <a href="http://axiaoxin.com" target="_blank">个人主页</a>
+                
+                  <a href="http://dw.mcool.top" target="_blank">抖文-精选优质抖音视频文章</a>
+                
+              </div>
+            </li>
+          
+        
+
+        
+
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="阿小信的博客" href="https://blog.axiaoxin.com/">
+            <img class="avatar-img" src="https://blog.axiaoxin.com/img/avatar-icon.png" alt="阿小信的博客" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">搜索 阿小信的博客</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        
+                        <h1>创建支持 SSH 登录和模拟网络设备的 Docker 镜像</h1>
+                        
+                        
+                        
+                        
+                        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;发表于 2018-03-02
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;3&nbsp;分钟
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1056&nbsp;个字
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;axiaoxin
+    
+  
+  
+</span>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-3022214826355647"
+                 data-ad-slot="6429996269"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <article role="main" class="blog-post">
+                <h2 id="centos-主机安装-docker">CentOS 主机安装 Docker</h2>
+<p>安装docker</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>yum install docker
+</span></span><span style="display:flex;"><span>docker version  <span style="color:#75715e"># 1.12.6</span>
+</span></span></code></pre></div><p>移动docker的数据目录到较大磁盘下</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>mv /var/lib/docker/ /data/docker
+</span></span><span style="display:flex;"><span>ln -sb /data/docker  /var/lib/docker
+</span></span></code></pre></div><p>设置docker OPTIONS：<code>/etc/sysconfig/docker</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 添加如下配置 （存在就更新），docker.oa.com 是内网docker镜像地址</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 机器不支持NAT，把iptables设为false才能启动docker服务</span>
+</span></span><span style="display:flex;"><span>OPTIONS<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;--log-driver=journald -b=none --iptables=true -H unix:///var/run/docker.sock --insecure-registry docker.oa.com&#39;</span>
+</span></span></code></pre></div><p>启动docker</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>systemctl start docker
+</span></span></code></pre></div><h2 id="使用docker-commit的方式制作镜像">使用docker commit的方式制作镜像</h2>
+<p>拉取带有systemd的centos基础镜像（默认的centos7镜像不支持systemd不能使用systemctl，必须要支持systemd的镜像）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>docker pull docker.oa.com/gaia/centos:systemd
+</span></span></code></pre></div><p>创建容器 (使用host模式直接使用主机的网络)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>docker run -d --privileged<span style="color:#f92672">=</span>true --net host --name building docker.oa.com/gaia/centos:systemd
+</span></span></code></pre></div><p>复制要用到的程序包和配置等文件到容器中</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>docker cp CentOS-Base.repo building:/
+</span></span><span style="display:flex;"><span>docker cp setuptools-38.5.1.tar.gz building:/
+</span></span><span style="display:flex;"><span>docker cp pip-9.0.1.tar.gz building:/
+</span></span><span style="display:flex;"><span>docker cp snmpsimd.supervisor.conf building:/
+</span></span><span style="display:flex;"><span>docker cp sshd.supervisor.conf building:/
+</span></span><span style="display:flex;"><span>docker cp pip.conf building:/
+</span></span><span style="display:flex;"><span>docker cp supervisord.conf building:/
+</span></span><span style="display:flex;"><span>docker cp flowgen building:/
+</span></span><span style="display:flex;"><span>docker cp nginx-1.12.2.tar.gz building:/
+</span></span><span style="display:flex;"><span>docker cp nginx.conf building:/
+</span></span><span style="display:flex;"><span>docker cp nginx_status.conf building:/
+</span></span><span style="display:flex;"><span>docker cp nginx.supervisor.conf building:/
+</span></span></code></pre></div><p>进入容器</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>docker exec -it building bash
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 更新yum源方便从内网安装包</span>
+</span></span><span style="display:flex;"><span>cd /
+</span></span><span style="display:flex;"><span>mv -f CentOS-Base.repo /etc/yum.repos.d/
+</span></span><span style="display:flex;"><span>yum clean all <span style="color:#f92672">&amp;&amp;</span> yum makecache
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 设置默认的root密码</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;password&#34;</span> |passwd --stdin root
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 安装包</span>
+</span></span><span style="display:flex;"><span>yum -y install gcc make pcre-devel zlib-devel openssh-server openssh-clients  net-snmp-utils net-tools lrzsz iproute
+</span></span><span style="display:flex;"><span>systemctl restart sshd  <span style="color:#75715e"># 必须重启，第一次重启会自动生成密钥，否则需要手动生成</span>
+</span></span><span style="display:flex;"><span>systemctl disable sshd  <span style="color:#75715e"># 关闭开机启动，统一使用在创建容器时的CMD中使用supervisor启动各类开机进程</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 这样做的原因是在创建大量的容器时，比如创建1000个该容器，如果systemd的方式来进行开机启动进程的话总是会有很多容器的开机进程无法被正确启动，重启容器也不行，只能进入容器手动启动</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 安装pip</span>
+</span></span><span style="display:flex;"><span>cd /
+</span></span><span style="display:flex;"><span>tar xzf setuptools-38.5.1.tar.gz ; cd setuptools-38.5.1; python setup.py install; cd -; rm -rf setuptools-38.5.1 setuptools-38.5.1.tar.gz
+</span></span><span style="display:flex;"><span>tar xzf pip-9.0.1.tar.gz ; cd pip-9.0.1; python setup.py install ; cd -; rm -rf pip-9.0.1.tar.gz pip-9.0.1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 设置内网pip源</span>
+</span></span><span style="display:flex;"><span>mkdir ~/.pip
+</span></span><span style="display:flex;"><span>mv -f /pip.conf ~/.pip
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 安装snmpsim用于模拟snmp网络设备，并设置一个自定义的jq-netmanager的community</span>
+</span></span><span style="display:flex;"><span>pip install snmpsim
+</span></span><span style="display:flex;"><span>cd /usr/snmpsim/data/
+</span></span><span style="display:flex;"><span>cp public jq-netmanager -r
+</span></span><span style="display:flex;"><span>cp public.snmprec jq-netmanager.snmprec
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 安装supervisor用于管理容器启动进程</span>
+</span></span><span style="display:flex;"><span>pip install supervisor
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 生成默认配置并制定配置include目录</span>
+</span></span><span style="display:flex;"><span>mv -f /supervisord.conf /etc/supervisord.conf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建配置目录并将snmpsimd的配置放到目录中</span>
+</span></span><span style="display:flex;"><span>mkdir /etc/supervisor.conf.d
+</span></span><span style="display:flex;"><span>mv /snmpsimd.supervisor.conf /etc/supervisor.conf.d/
+</span></span><span style="display:flex;"><span>mv /sshd.supervisor.conf /etc/supervisor.conf.d/
+</span></span><span style="display:flex;"><span>mv /nginx.supervisor.conf /etc/supervisor.conf.d/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># netflow模拟器 https://github.com/mshindo/NetFlow-Generator</span>
+</span></span><span style="display:flex;"><span>mv /flowgen /bin/flowgen
+</span></span><span style="display:flex;"><span>chmod +x /bin/flowgen
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># nginx</span>
+</span></span><span style="display:flex;"><span>cd /
+</span></span><span style="display:flex;"><span>tar xzf nginx-1.12.2.tar.gz <span style="color:#f92672">&amp;&amp;</span> cd nginx-1.12.2 <span style="color:#f92672">&amp;&amp;</span> ./configure --with-http_stub_status_module <span style="color:#f92672">&amp;&amp;</span> make <span style="color:#f92672">&amp;&amp;</span> make install <span style="color:#f92672">&amp;&amp;</span> cd - <span style="color:#f92672">&amp;&amp;</span> rm -rf nginx-1.12.2*
+</span></span><span style="display:flex;"><span>mv -f /nginx.conf /usr/local/nginx/conf
+</span></span><span style="display:flex;"><span>mkdir /usr/local/nginx/conf/conf.d
+</span></span><span style="display:flex;"><span>mv /nginx_status.conf /usr/local/nginx/conf/conf.d/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 清理并退出</span>
+</span></span><span style="display:flex;"><span>rm -rf /tmp/*
+</span></span><span style="display:flex;"><span>&gt; ~/.bash_history
+</span></span><span style="display:flex;"><span>history -c
+</span></span><span style="display:flex;"><span>exit
+</span></span></code></pre></div><p>创建镜像</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>docker commit building docker.oa.com/ashinchen/centos
+</span></span></code></pre></div><p>push镜像</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>docker images  <span style="color:#75715e"># 找到镜像id</span>
+</span></span><span style="display:flex;"><span>docker tag IMGID docker.oa.com/ashinchen/centos
+</span></span><span style="display:flex;"><span>docker push docker.oa.com/ashinchen/centos
+</span></span></code></pre></div><h2 id="运行新的容器">运行新的容器</h2>
+<p>创建模拟器容器</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 拉取镜像</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># docker pull docker.oa.com/ashinchen/centos</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建自定义网络</span>
+</span></span><span style="display:flex;"><span>docker network create --subnet<span style="color:#f92672">=</span>181.0.0.0/8 network181
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建指定ip的容器，必须加privileged才能ssh进去</span>
+</span></span><span style="display:flex;"><span>docker run -d --privileged<span style="color:#f92672">=</span>true --name test --net network181 --ip<span style="color:#f92672">=</span>181.0.0.2 docker.oa.com/ashinchen/centos /usr/bin/supervisord -n
+</span></span></code></pre></div><p>测试</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>snmpwalk -v 2c -c jq-netmanager 181.0.0.2
+</span></span><span style="display:flex;"><span>ssh root@181.0.0.2 -p <span style="color:#ae81ff">22</span>  <span style="color:#75715e"># 密码：password</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## 镜像、容器持久化</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 导出当前构建完成的容器</span>
+</span></span><span style="display:flex;"><span>docker export building &gt; building_export.tar
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 压缩</span>
+</span></span><span style="display:flex;"><span>gzip -r building_export.tar
+</span></span></code></pre></div>
+
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-3022214826355647"
+                    data-ad-slot="3373260497"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+                
+                <div class="blog-tags">
+                    
+                    &nbsp;<a href="https://blog.axiaoxin.com//tags/docker/">docker</a>
+                    
+                </div>
+                
+
+                <ins id="content-ad"
+                     class="adsbygoogle"
+                     style="display:block; text-align:center;"
+                     data-ad-layout="in-article"
+                     data-ad-format="fluid"
+                     data-ad-client="ca-pub-3022214826355647"
+                     data-ad-slot="4546241981"></ins>
+
+                <script>
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        
+                        var id = "content-ad";
+                        var ins = document.getElementById(id);
+                        ins.setAttribute("data-ad-slot", "9889874488");
+                    }
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+
+                
+                <hr/>
+                <section id="social-share">
+                    <div class="list-inline footer-links">
+                        
+
+<div class="share-box" aria-hidden="true">
+    <div class="addthis_inline_share_toolbox"></div>
+</div>
+<script async src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-637606c33f0ab9be"></script>
+
+
+                    </div>
+                </section>
+                
+
+                
+                
+
+                
+                
+
+                <div class="_ha8w4pb61zc"></div>
+                <script type="text/javascript">
+                    (window.slotbydup = window.slotbydup || []).push({
+                        id: "u6682238",
+                        container: "_ha8w4pb61zc",
+                        async: true
+                    });
+                </script>
+            </article>
+
+
+            
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://blog.axiaoxin.com/post/2017-12-27-celery-4.1.0-%E7%89%88%E6%9C%AC%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4-bug/" data-toggle="tooltip" data-placement="top" title="Celery 4.1.0 版本定时任务执行时间 BUG">&larr; 前一篇</a>
+                </li>
+                
+                
+                <li class="next">
+                    <a href="https://blog.axiaoxin.com/post/2018-03-18-%E6%A8%A1%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E5%92%8C-netflow/" data-toggle="tooltip" data-placement="top" title="模拟网络设备和 netflow">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            
+
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-3022214826355647"
+                data-ad-slot="5644200610"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+            <div class="giscus"></div>
+            <script src="https://giscus.app/client.js"
+                    data-repo="axiaoxin-com/blog"
+                    data-repo-id="R_kgDOIdZQhA"
+                    data-category="Comments"
+                    data-category-id="DIC_kwDOIdZQhM4CSvR2"
+                    data-mapping="title"
+                    data-strict="0"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-input-position="bottom"
+                    data-theme="preferred_color_scheme"
+                    data-lang="zh-CN"
+                    data-loading="lazy"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center footer-links">
+                    
+                    <li>
+                        
+                            <a href="mailto:admin@axiaoxin.com" title="Email me">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    <li>
+                        
+                            <a href="https://github.com/axiaoxin" title="GitHub">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    
+                    <li>
+                        <a href="" title="RSS">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="credits copyright text-muted">
+                
+                
+                <a href="http://axiaoxin.com">axiaoxin</a>
+                
+                
+
+                &nbsp;&bull;&nbsp;&copy;
+                
+                2011 - 2022
+                
+
+                
+                &nbsp;&bull;&nbsp;
+                <a href="https://blog.axiaoxin.com/">人言兑</a>
+                
+                </p>
+                <p class="copyright"><a class="text-muted text-decoration-none" href="https://beian.miit.gov.cn" target="_blank">蜀ICP备20023217号</a></p>
+            </div>
+        </div>
+    </div>
+</footer><script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://blog.axiaoxin.com/js/main.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script> hljs.highlightAll(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script async src="https://blog.axiaoxin.com/js/load-photoswipe.js"></script>
+
+
+
+<script>
+    (function() {
+            var cx = '61c0d8f33c4084733';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+        })();
+</script>
+
+
+
+
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["trackPageView"]);
+    _paq.push(["enableLinkTracking"]);
+
+    (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://matomo.axiaoxin.com/";
+            _paq.push(["setTrackerUrl", u+"piwik.php"]);
+            _paq.push(["setSiteId", "5"]);
+            var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+            g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+        })();
+</script>
+<noscript>
+    
+    <img src="http://matomo.axiaoxin.com/piwik.php?idsite=5&amp;rec=1" style="border:0" alt="" />
+    
+</noscript>
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?fdfe48e67d25b3802d6139d4e629c718";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+</script><script src="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/js/glightbox.min.js"></script>
+<script type="text/javascript">
+    $('.blog-post img').each(function(idx){
+        var src = $(this).attr("src");
+        var wrap = `<a href="${src}" class="glightbox"></a>`;
+        if (!src.match(/\.(jpg|jpeg|png|gif)$/i)) {
+            wrap = `<a href="${src}" target="_blank" data-glightbox="type: image"></a>`;
+        }
+        $(this).wrap(wrap);
+    });
+  const lightbox = GLightbox({});
+</script>
+
+
+    
+  </body>
+</html>
+

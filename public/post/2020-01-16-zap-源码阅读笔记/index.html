@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+<title>Zap 源码阅读笔记 - 人言兑</title>
+  <meta name="description" content="zap.Logger 日志Logger结构体，以此调用打印日志内容，定义如下： type Logger struct { core zapcore.Core development bool name string errorOutput zapcore.WriteSyncer addCaller bool addStack zapcore.LevelEnabler callerSkip int } zapcore.Entry 日志主体内容结构体，表示一条具体日志，定义">
+  <meta name="author" content="axiaoxin"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "阿小信的博客",
+    
+    "url": "https:\/\/blog.axiaoxin.com\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/blog.axiaoxin.com\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/post\/2020-01-16-zap-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0\/",
+          "name": "Zap 源码阅读笔记"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "axiaoxin"
+  },
+  "headline": "Zap 源码阅读笔记",
+  "description" : "zap.Logger 日志Logger结构体，以此调用打印日志内容，定义如下： type Logger struct { core zapcore.Core development bool name string errorOutput zapcore.WriteSyncer addCaller bool addStack zapcore.LevelEnabler callerSkip int } zapcore.Entry 日志主体内容结构体，表示一条具体日志，定义",
+  "inLanguage" : "zh-cn",
+  "wordCount":  3094 ,
+  "datePublished" : "2020-01-16T18:56:42",
+  "dateModified" : "2020-01-16T18:56:42",
+  "image" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+  "keywords" : [ "golang" ],
+  "mainEntityOfPage" : "https:\/\/blog.axiaoxin.com\/post\/2020-01-16-zap-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/blog.axiaoxin.com\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Zap 源码阅读笔记" />
+<meta property="og:description" content="zap.Logger 日志Logger结构体，以此调用打印日志内容，定义如下： type Logger struct { core zapcore.Core development bool name string errorOutput zapcore.WriteSyncer addCaller bool addStack zapcore.LevelEnabler callerSkip int } zapcore.Entry 日志主体内容结构体，表示一条具体日志，定义">
+<meta property="og:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+<meta property="og:url" content="https://blog.axiaoxin.com/post/2020-01-16-zap-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="阿小信的博客" />
+
+  <meta name="twitter:title" content="Zap 源码阅读笔记" />
+  <meta name="twitter:description" content="zap.Logger 日志Logger结构体，以此调用打印日志内容，定义如下： type Logger struct { core zapcore.Core development bool name string errorOutput zapcore.WriteSyncer addCaller bool addStack zapcore.LevelEnabler callerSkip int …">
+  <meta name="twitter:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://blog.axiaoxin.com/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.106.0">
+  <link rel="alternate" href="https://blog.axiaoxin.com/index.xml" type="application/rss+xml" title="阿小信的博客"><link href="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://blog.axiaoxin.com/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <script>
+      var head = document.getElementsByTagName('HEAD')[0];
+      var link = document.createElement("link");
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css";
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        
+        link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css";
+      }
+      head.appendChild(link);
+  </script><link rel="stylesheet" href="https://blog.axiaoxin.com/css/codeblock.css" /><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3022214826355647" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" ></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5KRFX25W8R"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-5KRFX25W8R', { 'anonymize_ip': false });
+}
+</script>
+<link href="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/css/glightbox.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://blog.axiaoxin.com/">阿小信的博客</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="主页" href="/">主页</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="归档" href="/page/archives/">归档</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/page/about/">关于</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent">网站</a>
+              <div class="navlinks-children">
+                
+                  <a href="http://mbti.axiaoxin.com" target="_blank">MBTI职业性格测试</a>
+                
+                  <a href="http://investool.axiaoxin.com" target="_blank">InvesTool</a>
+                
+                  <a href="http://m.psyctest.cn" target="_blank">赛可测试网:免费心理测试</a>
+                
+                  <a href="http://axiaoxin.com" target="_blank">个人主页</a>
+                
+                  <a href="http://dw.mcool.top" target="_blank">抖文-精选优质抖音视频文章</a>
+                
+              </div>
+            </li>
+          
+        
+
+        
+
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="阿小信的博客" href="https://blog.axiaoxin.com/">
+            <img class="avatar-img" src="https://blog.axiaoxin.com/img/avatar-icon.png" alt="阿小信的博客" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">搜索 阿小信的博客</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        
+                        <h1>Zap 源码阅读笔记</h1>
+                        
+                        
+                        
+                        
+                        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;发表于 2020-01-16
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;7&nbsp;分钟
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;3094&nbsp;个字
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;axiaoxin
+    
+  
+  
+</span>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-3022214826355647"
+                 data-ad-slot="6429996269"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <article role="main" class="blog-post">
+                <h2 id="zaplogger">zap.Logger</h2>
+<p>日志Logger结构体，以此调用打印日志内容，定义如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Logger</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">core</span> <span style="color:#a6e22e">zapcore</span>.<span style="color:#a6e22e">Core</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">development</span> <span style="color:#66d9ef">bool</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">name</span>        <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">errorOutput</span> <span style="color:#a6e22e">zapcore</span>.<span style="color:#a6e22e">WriteSyncer</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">addCaller</span> <span style="color:#66d9ef">bool</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">addStack</span>  <span style="color:#a6e22e">zapcore</span>.<span style="color:#a6e22e">LevelEnabler</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">callerSkip</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="zapcoreentry">zapcore.Entry</h2>
+<p>日志主体内容结构体，表示一条具体日志，定义如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Entry</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Level</span>      <span style="color:#a6e22e">Level</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Time</span>       <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">LoggerName</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Message</span>    <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Caller</span>     <span style="color:#a6e22e">EntryCaller</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Stack</span>      <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="zapcorecheckedentry">zapcore.CheckedEntry</h2>
+<p>经过检查之后的日志内容结构体，cores带有具体的打印方式，定义如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">CheckedEntry</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Entry</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">ErrorOutput</span> <span style="color:#a6e22e">WriteSyncer</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">dirty</span>       <span style="color:#66d9ef">bool</span> <span style="color:#75715e">// best-effort detection of pool misuse
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">should</span>      <span style="color:#a6e22e">CheckWriteAction</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cores</span>       []<span style="color:#a6e22e">Core</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>CheckedEntry嵌套了Entry，并保存core对象</p>
+<p>CheckedEntry的Write方法：<code>(ce *CheckedEntry) Write(fields ...Field)</code></p>
+<p>Write方法中的fields是zap的Field对象参数，一起添加打印到结构化的日志中</p>
+<h2 id="zapcorecore">zapcore.Core</h2>
+<p>Core定义了一个Logger实现日志具体要如何打印的一系列接口，其中的LevelEnabler也是一个接口，定义如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Core</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">LevelEnabler</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">With</span>([]<span style="color:#a6e22e">Field</span>) <span style="color:#a6e22e">Core</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Check</span>(<span style="color:#a6e22e">Entry</span>, <span style="color:#f92672">*</span><span style="color:#a6e22e">CheckedEntry</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">CheckedEntry</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Write</span>(<span style="color:#a6e22e">Entry</span>, []<span style="color:#a6e22e">Field</span>) <span style="color:#66d9ef">error</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Sync</span>() <span style="color:#66d9ef">error</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">LevelEnabler</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Enabled</span>(<span style="color:#a6e22e">Level</span>) <span style="color:#66d9ef">bool</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>LevelEnabler</code> 接口提供用于判断给定的日志级别是否应该打印该条日志的逻辑判断方法；</p>
+<p><code>With</code> 方法添加结构化的Field内容到Encoder对象中；</p>
+<p><code>Check</code> 方法通过<code>LevelEnabler</code>接口中的 Enabled 方法和其他逻辑判断传入的 Entry 日志对象否应该被打印，</p>
+<p>如果应该则添加 Core 对象到 CheckedEntry 的 cores 中，此时Entry 变为带有 Core 对象的 CheckedEntry 并返回 CheckedEntry，调用方必须在调用 Write 方法前使用 Check 方法。</p>
+<p><code>Write</code> 方法将日志对象 Entry 和 Fileds 写到具体实现的目的位置，在通过 CheckedEntry 中的 Write 方法完成日志打印时，CheckedEntry 的 Write 方法中会遍历调用其所有的 Core 对象的 Write 方法（即当前这里的 Write 方法）</p>
+<p><code>Sync</code> 方法，如果需要刷新日志缓冲区，在这儿实现。</p>
+<p>通过<code>zapcore.NewCore</code> 可以创建一个Core对象 ioCore，方法定义：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewCore</span>(<span style="color:#a6e22e">enc</span> <span style="color:#a6e22e">Encoder</span>, <span style="color:#a6e22e">ws</span> <span style="color:#a6e22e">WriteSyncer</span>, <span style="color:#a6e22e">enab</span> <span style="color:#a6e22e">LevelEnabler</span>) <span style="color:#a6e22e">Core</span><span style="color:#960050;background-color:#1e0010">`</span>
+</span></span></code></pre></div><p>需要传入 Encoder 和 WriteSyncer 和 LevelEnabler 三个对象。</p>
+<p>在 zapcore 中提供了 <code>NewTee(cores ...Core) Core</code> 方法可以把多个 Core 对象合并为一个 Core，即将传入的 Core 对象添加到 slice 中，在为该 slice 对象实现 Core 接口的方法，合并后的 Core 对象在执行接口方法时，会遍历所有 core 对象的对应方法调用。</p>
+<p><code>zap.Hooks</code> 对 core 对象注册回调函数，通过函数</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#a6e22e">RegisterHooks</span>(<span style="color:#a6e22e">core</span> <span style="color:#a6e22e">Core</span>, <span style="color:#a6e22e">hooks</span> <span style="color:#f92672">...</span><span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">Entry</span>) <span style="color:#66d9ef">error</span>) <span style="color:#a6e22e">Core</span>
+</span></span></code></pre></div><p>注册 hook 方法来生成新的带有 hooks 方法的 hookedCore 对象并在其 Check 方法中先对原始的 core 进行 Check，然后添加到 CheckedEntry 的 cores 列表，再将自己添加cores列表中；</p>
+<p>日志写入时除了原始的core的Write方法调用外，还会对 hooked core 的 Write 方法会调用所有传入的 hooks 回调函数。</p>
+<p><code>zap.WrapCore</code> 方法可以对 Core 做一次包装，并替换成 WrapCore 传入的方法所生成的 Core 对象。</p>
+<h2 id="zapcoreiocore">zapcore.ioCore</h2>
+<p>zapcore 提供了 <code>NewCore</code> 方法来创建 core 对象，创建 logger 的时候大部分是通过该方法来生成 core 对象，zapcore 实现了 ioCore 这个对象。</p>
+<p>NewCore 定义：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#a6e22e">NewCore</span>(<span style="color:#a6e22e">enc</span> <span style="color:#a6e22e">Encoder</span>, <span style="color:#a6e22e">ws</span> <span style="color:#a6e22e">WriteSyncer</span>, <span style="color:#a6e22e">enab</span> <span style="color:#a6e22e">LevelEnabler</span>) <span style="color:#a6e22e">Core</span>
+</span></span></code></pre></div><p>结构体定义：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ioCore</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">LevelEnabler</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">enc</span> <span style="color:#a6e22e">Encoder</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">out</span> <span style="color:#a6e22e">WriteSyncer</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>它实现了Core接口的所有方法，自定义Core可以参考或者复用这里的实现；</p>
+<p><code>Check</code> 方法通过 ioCore 中 LevelEnabler 接口的 Enabled 方法判断日志 Entry 的 Level 是否使用被打印，可以打印则使用 ioCore 对象和 Entry 日志对象构成 CheckedEntry。</p>
+<p><code>Write</code> 方法中使用 ioCore 中的 Encoder 对日志 Entry 和 Fields 先进行 Encoder 的 EncodeEntry 处理，再使用 WriteSyncer 中的 Write 方法将 Encode 之后的内容进行写入。</p>
+<p><code>With</code> 方法调用时，会调用 addFields 将 Fields 添加到 Encoder，对传入的 Fields 进行遍历调用 Field 的 AddTo 方法，将传入的 Field 全部添加到 Encoder 的 buffer 中。</p>
+<p><code>zapcore.Field</code> 定义</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Field</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Key</span>       <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Type</span>      <span style="color:#a6e22e">FieldType</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Integer</span>   <span style="color:#66d9ef">int64</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">String</span>    <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Interface</span> <span style="color:#66d9ef">interface</span>{}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>addFields方法定义:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#a6e22e">addFields</span>(<span style="color:#a6e22e">enc</span> <span style="color:#a6e22e">ObjectEncoder</span>, <span style="color:#a6e22e">fields</span> []<span style="color:#a6e22e">Field</span>)
+</span></span></code></pre></div><h2 id="encoder">Encoder</h2>
+<p>Encoder是一个数据编码接口，定义如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Encoder</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">ObjectEncoder</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Clone</span>() <span style="color:#a6e22e">Encoder</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">EncodeEntry</span>(<span style="color:#a6e22e">Entry</span>, []<span style="color:#a6e22e">Field</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">buffer</span>.<span style="color:#a6e22e">Buffer</span>, <span style="color:#66d9ef">error</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>每一个具体的 Encoder 实现都实现了 ObjectEncoder 接口中的一系列根据具体数据类型进行 Add 或者 Append 的方法；</p>
+<p>根据 field 的具体数据类型构造一个 buffer 储存对应的数据格式，例如 json_encoder 在 EncodeEntry 方法中构造出对应的 json 格式保存在 buffer 中返回出来。</p>
+<p>zap 提供了 console 和 json 两种 Encoder，可以通过函数</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#a6e22e">RegisterEncoder</span>(<span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">constructor</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">zapcore</span>.<span style="color:#a6e22e">EncoderConfig</span>) (<span style="color:#a6e22e">zapcore</span>.<span style="color:#a6e22e">Encoder</span>, <span style="color:#66d9ef">error</span>)) <span style="color:#66d9ef">error</span>
+</span></span></code></pre></div><p>注册自己的 Encoder 构造函数，该函数通过 EncoderConfig 参数生成对应的 Encoder。</p>
+<p><code>EncoderConfig</code> 结构体定义：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">EncoderConfig</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Set the keys used for each log entry. If any key is empty, that portion
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// of the entry is omitted.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">MessageKey</span>    <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;messageKey&#34; yaml:&#34;messageKey&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">LevelKey</span>      <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;levelKey&#34; yaml:&#34;levelKey&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">TimeKey</span>       <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;timeKey&#34; yaml:&#34;timeKey&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">NameKey</span>       <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;nameKey&#34; yaml:&#34;nameKey&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">CallerKey</span>     <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;callerKey&#34; yaml:&#34;callerKey&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">StacktraceKey</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;stacktraceKey&#34; yaml:&#34;stacktraceKey&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">LineEnding</span>    <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;lineEnding&#34; yaml:&#34;lineEnding&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Configure the primitive representations of common complex types. For
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// example, some users may want all time.Times serialized as floating-point
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// seconds since epoch, while others may prefer ISO8601 strings.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">EncodeLevel</span>    <span style="color:#a6e22e">LevelEncoder</span>    <span style="color:#e6db74">`json:&#34;levelEncoder&#34; yaml:&#34;levelEncoder&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">EncodeTime</span>     <span style="color:#a6e22e">TimeEncoder</span>     <span style="color:#e6db74">`json:&#34;timeEncoder&#34; yaml:&#34;timeEncoder&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">EncodeDuration</span> <span style="color:#a6e22e">DurationEncoder</span> <span style="color:#e6db74">`json:&#34;durationEncoder&#34; yaml:&#34;durationEncoder&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">EncodeCaller</span>   <span style="color:#a6e22e">CallerEncoder</span>   <span style="color:#e6db74">`json:&#34;callerEncoder&#34; yaml:&#34;callerEncoder&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Unlike the other primitive type encoders, EncodeName is optional. The
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">// zero value falls back to FullNameEncoder.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">EncodeName</span> <span style="color:#a6e22e">NameEncoder</span> <span style="color:#e6db74">`json:&#34;nameEncoder&#34; yaml:&#34;nameEncoder&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="writesyncer">WriteSyncer</h2>
+<p>WriteSyncer 是一个带有 Sync 方法的 io.Writer，定义如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">WriteSyncer</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Writer</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Sync</span>() <span style="color:#66d9ef">error</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这里的 Sink 是一个包含了 io.Closer 和 WriteSyncer 接口的接口，</p>
+<p>即 Sink 也是一种 WriteSyncer，它是一个包含了 io.Writer、io.Closer 和 Sync 方法的接口，定义如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Sink</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">zapcore</span>.<span style="color:#a6e22e">WriteSyncer</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Closer</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>通过 Sink 对象的 Write 方法进行日志的具体输出。</p>
+<p>在通过 Config 的 Build 方法创建 Logger 的时候， Build 方法通过 buildEncoder 使用 Config 中的 Encoding 名称获取到对应 Encoder 的构造函数，然后通过构造函数和配置项生成具体的 Encoder。</p>
+<p>同时会通过 openSinks 方法生成 WriteSyncer ，其中根据配置对象中的 OutputPaths 参数通过 Open 方法根据给定的输出位置生成各种对应的 Sink 对象，用于日志的输出实现。</p>
+<p>Open 方法会遍历所有给定的输出路径，根据每个路径使用 newSink 创建出对应的 WriteSyncer 即 sink 对象，然后通过 CombineWriteSyncers 方法将所有 sink 对象合并为一个 sink 对象，即全部添加到 slice 中，该 slice 实现了 WriteSyncer 接口， Write 方法遍历调用全部 WriteSyncer 的 Write 方法写入日志。</p>
+<p>newSink 方法在处理输出路径时的规则是按 URL 来解析，将解析出的 scheme 作为 key（<code>xxx://yyy</code>中xxx就是对应的scheme）从一个map对象中取出对应的sink对象的<code>factory</code>方法，然后使用该工厂方法生成对应的sink。
+如果输出路径没有解析出url的scheme，则表示<code>file</code>类型的sink，<code>file</code>类型的sink是zap默认实现的sink对象，其中为判断文件路径，如果是特定的<code>stdout</code>和<code>stderr</code>则直接输出到终端而非文本文件。
+如果需要自定义sink，可以使用<code>RegisterSink(scheme string, factory func(*url.URL) (Sink, error)) error</code> 方法注册自己实现的sink工厂方法，就可以通过<code>OutputPaths</code>中的特定<code>scheme</code>来获取对应的sink然后将日志输出到对应的位置。</p>
+<h2 id="日志打印流程">日志打印流程</h2>
+<p>Logger结构中包含了zapcore的Core接口对象，打印日志就是通过实现了Core接口的该对象完成的。</p>
+<p>zap通过创建Logger结构体来打印日志，创建新Logger提供了以下方法：</p>
+<ul>
+<li><code>New(core zapcore.Core, options ...Option) *Logger</code>  New方法通过传入的Core接口对象和Options构造Logger</li>
+<li><code>NewNop() *Logger</code>  NewNop返回一个不会真正打印日志的logger</li>
+<li><code>NewProduction(options ...Option) (*Logger, error)</code>  NewProduction返回一个日志级别为Info，以json形式输出日志到stderr的Logger</li>
+<li><code>NewDevelopment(options ...Option) (*Logger, error)</code>  NewDevelopment返回一个日志级别为Level，以json形式输出日志到stderr的Logger</li>
+<li><code>NewExample(options ...Option) *Logger</code>  NewExample返回用于测试的Logger，缺少了一些字段并且以debug级别输出到stdout</li>
+<li><code>(cfg Config) Build(opts ...Option) (*Logger, error)</code> 通过配置信息结构体的Build方法生成Logger</li>
+</ul>
+<p>然后通过<code>NewCore</code>方法使用Encoder和WriteSyncer生成Core对象构造具体Logger</p>
+<p>按日志级别提供了以下打印日志的方法：</p>
+<ul>
+<li><code>(log *Logger) Debug(msg string, fields ...Field)</code></li>
+<li>(<code>log *Logger) Info(msg string, fields ...Field)</code></li>
+<li>(<code>log *Logger) Warn(msg string, fields ...Field)</code></li>
+<li><code>(log *Logger) Error(msg string, fields ...Field)</code></li>
+<li><code>(log *Logger) DPanic(msg string, fields ...Field)</code></li>
+<li><code>(log *Logger) Panic(msg string, fields ...Field)</code></li>
+<li><code>(log *Logger) Fatal(msg string, fields ...Field)</code></li>
+</ul>
+<p>每个打印方法都会调用<code>logger.go</code>中的<code>check</code>方法完成打印日志。</p>
+<p>打印日志方法中的check方法：<code>(log *Logger) check(lvl zapcore.Level, msg string)</code></p>
+<p>打印日志执行流程：通过调用Logger具体的打印日志方法每打一条日志都会调用check方法，check方法通过传入的<code>lvl</code>和<code>msg</code>参数构造<code>zapcore.Entry</code>结构体，Entry即为要打印的日志信息对象，
+然后通过<code>Core接口</code>对象的<code>Check</code>方法对该<code>Entry</code>进行判断是否应该打印这条日志并把Core对象添加到<code>CheckedEntry</code>中并返回，
+再通过返回的CheckedEntry的<code>Write</code>方法遍历调用CheckedEntry中所有添加的Core对象的Write方法写入<code>msg</code>和<code>Fields</code>完成实际的日志输出。
+而Core对象的Write方法实际是调用的<code>WriteSyncer/Sink</code>对象中的<code>Write</code>方法完成输出。</p>
+
+
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-3022214826355647"
+                    data-ad-slot="3373260497"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+                
+                <div class="blog-tags">
+                    
+                    &nbsp;<a href="https://blog.axiaoxin.com//tags/golang/">golang</a>
+                    
+                </div>
+                
+
+                <ins id="content-ad"
+                     class="adsbygoogle"
+                     style="display:block; text-align:center;"
+                     data-ad-layout="in-article"
+                     data-ad-format="fluid"
+                     data-ad-client="ca-pub-3022214826355647"
+                     data-ad-slot="4546241981"></ins>
+
+                <script>
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        
+                        var id = "content-ad";
+                        var ins = document.getElementById(id);
+                        ins.setAttribute("data-ad-slot", "9889874488");
+                    }
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+
+                
+                <hr/>
+                <section id="social-share">
+                    <div class="list-inline footer-links">
+                        
+
+<div class="share-box" aria-hidden="true">
+    <div class="addthis_inline_share_toolbox"></div>
+</div>
+<script async src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-637606c33f0ab9be"></script>
+
+
+                    </div>
+                </section>
+                
+
+                
+                
+                
+                
+
+                
+                <h4 class="see-also">也可以看看</h4>
+                <ul>
+                    
+                    
+                    <li><a href="/post/2022-11-26-golang-%E4%BD%BF%E7%94%A8-redis-zset-%E5%AE%9E%E7%8E%B0%E6%8E%92%E8%A1%8C%E6%A6%9C/">Golang 使用 Redis ZSET 实现排行榜</a></li>
+                    
+                    <li><a href="/post/2022-06-23-gin-%E4%BD%BF%E7%94%A8-gnu-gettext-%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0-i18n-%E5%9B%BD%E9%99%85%E5%8C%96%E5%A4%9A%E8%AF%AD%E8%A8%80/">Gin 使用 GNU gettext 方式实现 i18n 国际化多语言</a></li>
+                    
+                    <li><a href="/post/2021-11-21-golang-json-%E5%BA%8F%E5%88%97%E5%8C%96%E6%97%B6-html-%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6%E8%BD%AC%E4%B9%89%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/">Golang JSON 序列化时 HTML 特殊字符转义问题分析</a></li>
+                    
+                    <li><a href="/post/2021-11-21-golang-%E8%BF%90%E8%A1%8C%E6%97%B6%E9%99%A4%E6%95%B0%E4%B8%BA-0-%E8%BF%94%E5%9B%9E-inf/">Golang 运行时除数为 0 返回 Inf</a></li>
+                    
+                    <li><a href="/post/2021-10-11-traefik-%E7%AE%80%E4%BB%8B%E4%BB%A5%E5%8F%8A%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/">Traefik 简介以及中间件插件开发</a></li>
+                    
+                </ul>
+
+                
+                
+
+                <div class="_ha8w4pb61zc"></div>
+                <script type="text/javascript">
+                    (window.slotbydup = window.slotbydup || []).push({
+                        id: "u6682238",
+                        container: "_ha8w4pb61zc",
+                        async: true
+                    });
+                </script>
+            </article>
+
+
+            
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://blog.axiaoxin.com/post/2019-04-29-%E6%88%91%E5%92%8C-dave-%E6%9C%89%E4%B8%AA%E7%BA%A6%E4%BC%9A/" data-toggle="tooltip" data-placement="top" title="我和 Dave 有个约会">&larr; 前一篇</a>
+                </li>
+                
+                
+                <li class="next">
+                    <a href="https://blog.axiaoxin.com/post/2020-03-15-%E5%9C%A8-zap-%E4%B8%AD%E9%9B%86%E6%88%90-sentry-%E8%87%AA%E5%8A%A8%E4%B8%8A%E6%8A%A5-error-%E4%BA%8B%E4%BB%B6/" data-toggle="tooltip" data-placement="top" title="在 Zap 中集成 Sentry 自动上报 Error 事件">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            
+
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-3022214826355647"
+                data-ad-slot="5644200610"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+            <div class="giscus"></div>
+            <script src="https://giscus.app/client.js"
+                    data-repo="axiaoxin-com/blog"
+                    data-repo-id="R_kgDOIdZQhA"
+                    data-category="Comments"
+                    data-category-id="DIC_kwDOIdZQhM4CSvR2"
+                    data-mapping="title"
+                    data-strict="0"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-input-position="bottom"
+                    data-theme="preferred_color_scheme"
+                    data-lang="zh-CN"
+                    data-loading="lazy"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center footer-links">
+                    
+                    <li>
+                        
+                            <a href="mailto:admin@axiaoxin.com" title="Email me">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    <li>
+                        
+                            <a href="https://github.com/axiaoxin" title="GitHub">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    
+                    <li>
+                        <a href="" title="RSS">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="credits copyright text-muted">
+                
+                
+                <a href="http://axiaoxin.com">axiaoxin</a>
+                
+                
+
+                &nbsp;&bull;&nbsp;&copy;
+                
+                2011 - 2022
+                
+
+                
+                &nbsp;&bull;&nbsp;
+                <a href="https://blog.axiaoxin.com/">人言兑</a>
+                
+                </p>
+                <p class="copyright"><a class="text-muted text-decoration-none" href="https://beian.miit.gov.cn" target="_blank">蜀ICP备20023217号</a></p>
+            </div>
+        </div>
+    </div>
+</footer><script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://blog.axiaoxin.com/js/main.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script> hljs.highlightAll(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script async src="https://blog.axiaoxin.com/js/load-photoswipe.js"></script>
+
+
+
+<script>
+    (function() {
+            var cx = '61c0d8f33c4084733';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+        })();
+</script>
+
+
+
+
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["trackPageView"]);
+    _paq.push(["enableLinkTracking"]);
+
+    (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://matomo.axiaoxin.com/";
+            _paq.push(["setTrackerUrl", u+"piwik.php"]);
+            _paq.push(["setSiteId", "5"]);
+            var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+            g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+        })();
+</script>
+<noscript>
+    
+    <img src="http://matomo.axiaoxin.com/piwik.php?idsite=5&amp;rec=1" style="border:0" alt="" />
+    
+</noscript>
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?fdfe48e67d25b3802d6139d4e629c718";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+</script><script src="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/js/glightbox.min.js"></script>
+<script type="text/javascript">
+    $('.blog-post img').each(function(idx){
+        var src = $(this).attr("src");
+        var wrap = `<a href="${src}" class="glightbox"></a>`;
+        if (!src.match(/\.(jpg|jpeg|png|gif)$/i)) {
+            wrap = `<a href="${src}" target="_blank" data-glightbox="type: image"></a>`;
+        }
+        $(this).wrap(wrap);
+    });
+  const lightbox = GLightbox({});
+</script>
+
+
+    
+  </body>
+</html>
+

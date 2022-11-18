@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+<title>Traefik 简介以及中间件插件开发 - 人言兑</title>
+  <meta name="description" content="Traefix 简介 Traefik 是整个系统的网关大门，负责拦截并路由每个传入的请求，它不需要像Nginx这类反向代理一样需要一个配置文件来配置所有可能路由，而是实时">
+  <meta name="author" content="axiaoxin"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "阿小信的博客",
+    
+    "url": "https:\/\/blog.axiaoxin.com\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/blog.axiaoxin.com\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/post\/2021-10-11-traefik-%E7%AE%80%E4%BB%8B%E4%BB%A5%E5%8F%8A%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91\/",
+          "name": "Traefik 简介以及中间件插件开发"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "axiaoxin"
+  },
+  "headline": "Traefik 简介以及中间件插件开发",
+  "description" : "Traefix 简介 Traefik 是整个系统的网关大门，负责拦截并路由每个传入的请求，它不需要像Nginx这类反向代理一样需要一个配置文件来配置所有可能路由，而是实时",
+  "inLanguage" : "zh-cn",
+  "wordCount":  3074 ,
+  "datePublished" : "2021-10-11T17:22:19",
+  "dateModified" : "2021-10-11T17:22:19",
+  "image" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+  "keywords" : [ "golang" ],
+  "mainEntityOfPage" : "https:\/\/blog.axiaoxin.com\/post\/2021-10-11-traefik-%E7%AE%80%E4%BB%8B%E4%BB%A5%E5%8F%8A%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/blog.axiaoxin.com\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Traefik 简介以及中间件插件开发" />
+<meta property="og:description" content="Traefix 简介 Traefik 是整个系统的网关大门，负责拦截并路由每个传入的请求，它不需要像Nginx这类反向代理一样需要一个配置文件来配置所有可能路由，而是实时">
+<meta property="og:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+<meta property="og:url" content="https://blog.axiaoxin.com/post/2021-10-11-traefik-%E7%AE%80%E4%BB%8B%E4%BB%A5%E5%8F%8A%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="阿小信的博客" />
+
+  <meta name="twitter:title" content="Traefik 简介以及中间件插件开发" />
+  <meta name="twitter:description" content="Traefix 简介 Traefik 是整个系统的网关大门，负责拦截并路由每个传入的请求，它不需要像Nginx这类反向代理一样需要一个配置文件来配置所有可能路由，而是实时">
+  <meta name="twitter:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://blog.axiaoxin.com/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.106.0">
+  <link rel="alternate" href="https://blog.axiaoxin.com/index.xml" type="application/rss+xml" title="阿小信的博客"><link href="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://blog.axiaoxin.com/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <script>
+      var head = document.getElementsByTagName('HEAD')[0];
+      var link = document.createElement("link");
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css";
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        
+        link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css";
+      }
+      head.appendChild(link);
+  </script><link rel="stylesheet" href="https://blog.axiaoxin.com/css/codeblock.css" /><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3022214826355647" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" ></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5KRFX25W8R"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-5KRFX25W8R', { 'anonymize_ip': false });
+}
+</script>
+<link href="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/css/glightbox.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://blog.axiaoxin.com/">阿小信的博客</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="主页" href="/">主页</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="归档" href="/page/archives/">归档</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/page/about/">关于</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent">网站</a>
+              <div class="navlinks-children">
+                
+                  <a href="http://mbti.axiaoxin.com" target="_blank">MBTI职业性格测试</a>
+                
+                  <a href="http://investool.axiaoxin.com" target="_blank">InvesTool</a>
+                
+                  <a href="http://m.psyctest.cn" target="_blank">赛可测试网:免费心理测试</a>
+                
+                  <a href="http://axiaoxin.com" target="_blank">个人主页</a>
+                
+                  <a href="http://dw.mcool.top" target="_blank">抖文-精选优质抖音视频文章</a>
+                
+              </div>
+            </li>
+          
+        
+
+        
+
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="阿小信的博客" href="https://blog.axiaoxin.com/">
+            <img class="avatar-img" src="https://blog.axiaoxin.com/img/avatar-icon.png" alt="阿小信的博客" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">搜索 阿小信的博客</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        
+                        <h1>Traefik 简介以及中间件插件开发</h1>
+                        
+                        
+                        
+                        
+                        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;发表于 2021-10-11
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;7&nbsp;分钟
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;3074&nbsp;个字
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;axiaoxin
+    
+  
+  
+</span>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-3022214826355647"
+                 data-ad-slot="6429996269"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <article role="main" class="blog-post">
+                <h2 id="traefix-简介">Traefix 简介</h2>
+<p>Traefik 是整个系统的网关大门，负责拦截并路由每个传入的请求，它不需要像Nginx这类反向代理一样需要一个配置文件来配置所有可能路由，而是实时的通过服务发现来自动更新路由规则，由服务自己告诉它该服务负责处理哪些请求。</p>
+<h3 id="traefik-的架构设计">Traefik 的架构设计：</h3>
+<p><img src="https://doc.traefik.io/traefik/assets/img/architecture-overview.png" alt="Traefik 的架构设计"></p>
+<h3 id="traefik-服务配置自动发现原理">Traefik 服务配置自动发现原理</h3>
+<p>Traefik 的配置分为静态配置和动态配置，静态配置是 Traefik 实例的启动配置；
+动态配置由 Provider 自己提供，这里包含了定义系统如何处理请求的所有内容，此配置可以被无缝热加载。</p>
+<p><img src="https://doc.traefik.io/traefik/assets/img/static-dynamic-configuration.png" alt="Traefik 服务配置自动发现原理"></p>
+<h3 id="traefik-各组件功能">Traefik 各组件功能：</h3>
+<p><strong>Entrypoints</strong>：监听请求端口</p>
+<p><img src="https://doc.traefik.io/traefik/assets/img/entrypoints.png" alt="Entrypoints"></p>
+<p><strong>Routers</strong>：根据Rule分析请求（host, path, headers, ssl, &hellip;）后，将其连接到对应的服务进行处理。在这个过程中，可以使用中间件处理经过的请求。</p>
+<p><img src="https://doc.traefik.io/traefik/assets/img/routers.png" alt="Routers"></p>
+<p><strong>Middlewares</strong>：将请求被转发到服务之前对请求做更新或调整</p>
+<p><img src="https://doc.traefik.io/traefik/assets/img/middleware/overview.png" alt="Middlewares"></p>
+<blockquote>
+<p><a href="https://doc.traefik.io/traefik/middlewares/http/overview/#available-http-middlewares">官方 HTTP Middlewares 列表</a></p>
+</blockquote>
+<p><strong>Services</strong>：负责配置请求如何到达实际服务，如负载均衡、传输控制协议、镜像流量等</p>
+<p><img src="https://doc.traefik.io/traefik/assets/img/services.png" alt="Services"></p>
+<p><strong>Providers</strong>：基础架构组件，它可以是编排器、容器引擎、云提供者或者键值存储等。</p>
+<blockquote>
+<p><a href="https://doc.traefik.io/traefik/providers/overview/#supported-providers">Traefik 支持的 Provider</a></p>
+</blockquote>
+<p>Traefik 通过 Provider 的 API 来获取有关路由的信息，检测到变更则动态进行更新。</p>
+<p>Traefik 实例启动时，在静态配置中定义了 Entrypoints 入口点（端口号）。路由器分析从入口点传入的请求，如果请求符合指定的规则，路由器会将请求经过中间件处理后再转发到对应的服务进行处理。</p>
+<h3 id="traefik-的安装与启动">Traefik 的安装与启动</h3>
+<blockquote>
+<p><a href="https://doc.traefik.io/traefik/getting-started/install-traefik/">Traefik 安装文档</a></p>
+</blockquote>
+<p>Traefik 默认会在以下路径查找 <code>traefik.yml</code> 或 <code>traefik.toml</code> 配置文件:</p>
+<ul>
+<li>/etc/traefik/</li>
+<li>$XDG_CONFIG_HOME/</li>
+<li>$HOME/.config/</li>
+<li>.</li>
+</ul>
+<p>也可以指定配置文件进行启动：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>traefik --configFile<span style="color:#f92672">=</span>foo/bar/myconfigfile.yml
+</span></span></code></pre></div><p>Traefik 配置参考：</p>
+<ul>
+<li><a href="https://raw.githubusercontent.com/traefik/traefik/v2.5/traefik.sample.yml">YAML 静态示例配置</a></li>
+<li><a href="https://raw.githubusercontent.com/traefik/traefik/v2.5/traefik.sample.toml">TOML 静态示例配置</a></li>
+<li><a href="https://doc.traefik.io/traefik/routing/entrypoints/">Entrypoints 配置文档</a></li>
+<li><a href="https://doc.traefik.io/traefik/routing/routers/">Routers 配置文档</a></li>
+<li><a href="https://doc.traefik.io/traefik/routing/services/">Services 配置文档</a></li>
+<li><a href="https://doc.traefik.io/traefik/providers/overview/#supported-providers">Provider 配置文档</a></li>
+</ul>
+<p>这里在 linux 下直接<a href="https://github.com/traefik/traefik/releases">下载 v2 的二进制版本</a>进行本地测试。</p>
+<p>下载解压出二进制，并下载 demo 配置文件，默认配置的端口是 80，需要以 sudo 权限启动：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://github.com/traefik/traefik/releases/download/v2.5.3/traefik_v2.5.3_linux_amd64.tar.gz
+</span></span><span style="display:flex;"><span>tar xzvf traefik_v2.5.3_linux_amd64.tar.gz
+</span></span><span style="display:flex;"><span>wget https://raw.githubusercontent.com/traefik/traefik/v2.5/traefik.sample.toml -O traefik.toml
+</span></span></code></pre></div><p>修改 <code>traefik.toml</code> 静态配置：</p>
+<p>开启 Dashboard 的 insecure 模式，修改配置文件中的 <code>api</code> 下的<code>insecure = true</code> 。</p>
+<p>Traefik 启动后访问: <a href="http://localhost:8080/dashboard/#/">http://localhost:8080/dashboard/#/</a> 可查看Dashboard</p>
+<p><img src="https://user-images.githubusercontent.com/2876405/136761950-d27ac704-c1ea-402d-87bc-25d19b6fe5fe.png" alt="traefik 配置"></p>
+<p>使用指定文件作为Provider的动态配置，直接追加配置：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">providers</span>]
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">providers</span>.<span style="color:#a6e22e">file</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">filename</span> = <span style="color:#e6db74">&#34;./dconf.toml&#34;</span>
+</span></span></code></pre></div><p>新建动态配置文件 <code>dconf.toml</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#75715e"># http routing section</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">http</span>]
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">routers</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Define a connection between requests and services</span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">routers</span>.<span style="color:#a6e22e">myserver</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">rule</span> = <span style="color:#e6db74">&#34;Host(`myserver.local`)&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># If the rule matches, applies the middleware</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">middlewares</span> = [<span style="color:#e6db74">&#34;test-user&#34;</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># If the rule matches, forward to the myserver service (declared below)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">service</span> = <span style="color:#e6db74">&#34;myserver&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">middlewares</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Define an authentication mechanism</span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">middlewares</span>.<span style="color:#a6e22e">test-user</span>.<span style="color:#a6e22e">basicAuth</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 注意这里的basic用户的密码必须使用htpasswd生成，不能直接填明文，这里对应的明文为asd</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">users</span> = [<span style="color:#e6db74">&#34;asd:$apr1$KsluegO9$bbuP8Q1X3pLkx8XVRegse/&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">services</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Define how to reach an existing service on our infrastructure</span>
+</span></span><span style="display:flex;"><span>    [<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">services</span>.<span style="color:#a6e22e">myserver</span>.<span style="color:#a6e22e">loadBalancer</span>]
+</span></span><span style="display:flex;"><span>    [[<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">services</span>.<span style="color:#a6e22e">myserver</span>.<span style="color:#a6e22e">loadBalancer</span>.<span style="color:#a6e22e">servers</span>]]
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">url</span> = <span style="color:#e6db74">&#34;http://localhost:8000&#34;</span>
+</span></span></code></pre></div><p>上面的文件动态配置指定了 Host 为 <code>myserver.local</code> 的请求经过默认的 80 端口后，再由中间件进行 basic 认证，然后转发到 myserver 服务，myserver 服务的后端地址为:<a href="http://localhost:8000">http://localhost:8000</a></p>
+<p>启动Traefik实例：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo ./traefik
+</span></span></code></pre></div><p>启动一个 8000 端口的服务模拟后端服务：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m SimpleHTTPServer
+</span></span></code></pre></div><p>通过 curl 请求 Traefik 的 80 端口进行测试：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 直接curl不满足rule，返回404</span>
+</span></span><span style="display:flex;"><span>curl http://localhost:80
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">404</span> page not found
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 添加满足rule的host进行请求，中间件basic认证失败，返回401</span>
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;host:myserver.local&#39;</span> http://localhost:80
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">401</span> Unauthorized
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 添加认证进行请求，成功将80端口的请求路由到了8000端口的服务进行处理并返回结果</span>
+</span></span><span style="display:flex;"><span>curl -H <span style="color:#e6db74">&#39;host:myserver.local&#39;</span> -u <span style="color:#e6db74">&#39;asd:asd&#39;</span> http://localhost:80
+</span></span><span style="display:flex;"><span>&lt;!DOCTYPE html PUBLIC <span style="color:#e6db74">&#34;-//W3C//DTD HTML 3.2 Final//EN&#34;</span>&gt;&lt;html&gt;
+</span></span><span style="display:flex;"><span>&lt;title&gt;Directory listing <span style="color:#66d9ef">for</span> /&lt;/title&gt;
+</span></span><span style="display:flex;"><span>&lt;body&gt;
+</span></span><span style="display:flex;"><span>&lt;h2&gt;Directory listing <span style="color:#66d9ef">for</span> /&lt;/h2&gt;
+</span></span><span style="display:flex;"><span>&lt;hr&gt;
+</span></span><span style="display:flex;"><span>&lt;ul&gt;
+</span></span><span style="display:flex;"><span>&lt;li&gt;&lt;a href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dconf.toml&#34;</span>&gt;dconf.toml&lt;/a&gt;
+</span></span><span style="display:flex;"><span>&lt;li&gt;&lt;a href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;traefik&#34;</span>&gt;traefik&lt;/a&gt;
+</span></span><span style="display:flex;"><span>&lt;li&gt;&lt;a href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;traefik.toml&#34;</span>&gt;traefik.toml&lt;/a&gt;
+</span></span><span style="display:flex;"><span>&lt;li&gt;&lt;a href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;x.md&#34;</span>&gt;x.md&lt;/a&gt;
+</span></span><span style="display:flex;"><span>&lt;/ul&gt;
+</span></span><span style="display:flex;"><span>&lt;hr&gt;
+</span></span><span style="display:flex;"><span>&lt;/body&gt;
+</span></span><span style="display:flex;"><span>&lt;/html&gt;
+</span></span></code></pre></div><h2 id="使用-golang-开发-traefik-中间件插件">使用 Golang 开发 Traefik 中间件插件</h2>
+<p>在开发自己的插件前，先了解一下 Traefik 插件的使用方式。</p>
+<h3 id="traefik-pilot-插件的使用">Traefik Pilot 插件的使用</h3>
+<p>通过 Dashboard 右上角使用 GitHub 账号授权连接 Traefik Pilot 可以对 Traefik 进行监控和管理，同时拥有公共插件中心。</p>
+<p><img src="https://user-images.githubusercontent.com/2876405/136770153-5e4336ed-6798-4168-9e3c-4f3dd8de332a.png" alt="Traefik Pilot"></p>
+<p>Traefik 管理员可以从 Traefik Pilot 仪表板中的目录浏览插件并将其添加到实例中，每个插件的实际代码都存储并托管在公共 GitHub。</p>
+<p>Traefik Pilot 每隔 30 分钟轮询一次 GitHub，以查找符合 Traefik 插件标准的仓库，并将其添加到目录中。</p>
+<p>要被 Traefik Pilot 识别，插件的仓库必须满足以下标准：</p>
+<ul>
+<li>Github 代码仓库必须添加 <code>traefik-plugin</code> 的topic。</li>
+<li>必须存在有效的 <code>.traefik.yml</code> 文件，<a href="https://doc.traefik.io/traefik-pilot/plugins/plugin-dev/#manifest">格式参考文档</a></li>
+<li>需要对插件打上版本号 tag</li>
+</ul>
+<p>使用插件中心的插件时，需要修改静态和动态配置进行插件安装，实际是下载对应插件的源码到本地的<code>plugin-storage</code>路径下。</p>
+<p>Traefik官方实现了 <a href="https://github.com/traefik/yaegi">Yaegi</a> 解释器，可以动态执行 Golang 源码，插件代码执行时由 Yaegi 动态加载执行，无需进行编译链接。</p>
+<p>要激活插件，必须在 Traefik 实例的静态配置中声明它，插件在 Traefik 启动期间才会被解析加载，加载过程中出现错误，插件将被禁用，添加新插件和修改插件必须重启 Traefik 实例才能生效。</p>
+<p>Traefik 启动时，会根据静态配置文件去 Pilot 插件中心去获取插件代码，对插件下载，校验，解压，然后加载插件源码通过 yaegi 来执行，先调用插件的 CreateConfig 函数再调用插件的 New 函数进行指定配置的插件实例创建。</p>
+<p>在插件中心选择一个插件，有对应的安装文档，按执行进行即可。</p>
+<p>这里安装 <a href="https://github.com/Lepkem/traefik-plugin-response-code-override">traefik-plugin-response-code-override</a> 插件进行测试：</p>
+<p>在静态配置中添加插件：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">experimental</span>.<span style="color:#a6e22e">plugins</span>.<span style="color:#a6e22e">traefik-plugin-response-code-override</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">moduleName</span> = <span style="color:#e6db74">&#34;github.com/Lepkem/traefik-plugin-response-code-override&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;v0.0.3&#34;</span>
+</span></span></code></pre></div><p>文件动态配置中添加中间件配置：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">middlewares</span>.<span style="color:#a6e22e">my-traefik-plugin-response-code-override</span>]
+</span></span><span style="display:flex;"><span>    [<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">middlewares</span>.<span style="color:#a6e22e">my-traefik-plugin-response-code-override</span>.<span style="color:#a6e22e">plugin</span>]
+</span></span><span style="display:flex;"><span>    [<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">middlewares</span>.<span style="color:#a6e22e">my-traefik-plugin-response-code-override</span>.<span style="color:#a6e22e">plugin</span>.<span style="color:#a6e22e">traefik-plugin-response-code-override</span>]
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 移除响应头里面的Date</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">HeadersToRemove</span> = [<span style="color:#e6db74">&#34;Date&#34;</span>]
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">RemoveBody</span> = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>        [<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">middlewares</span>.<span style="color:#a6e22e">my-traefik-plugin-response-code-override</span>.<span style="color:#a6e22e">plugin</span>.<span style="color:#a6e22e">traefik-plugin-response-code-override</span>.<span style="color:#a6e22e">Overrides</span>]
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 将200状态码替换为222</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">200</span> = <span style="color:#ae81ff">222</span>
+</span></span></code></pre></div><p>文件动态配置中routers添加该中间件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#a6e22e">middlewares</span> = [<span style="color:#e6db74">&#34;test-user&#34;</span>, <span style="color:#e6db74">&#34;my-traefik-plugin-response-code-override&#34;</span>]
+</span></span></code></pre></div><p>重启 Traefik，curl 请求可以看到没有 Date 信息，200 也被替换为了 222：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -v -H <span style="color:#e6db74">&#39;host:myserver.local&#39;</span> -u <span style="color:#e6db74">&#39;asd:asd&#39;</span> http://localhost:80
+</span></span><span style="display:flex;"><span>*   Trying 127.0.0.1:80...
+</span></span><span style="display:flex;"><span>* TCP_NODELAY set
+</span></span><span style="display:flex;"><span>* Connected to localhost <span style="color:#f92672">(</span>127.0.0.1<span style="color:#f92672">)</span> port <span style="color:#ae81ff">80</span> <span style="color:#f92672">(</span><span style="color:#75715e">#0)</span>
+</span></span><span style="display:flex;"><span>* Server auth using Basic with user <span style="color:#e6db74">&#39;asd&#39;</span>
+</span></span><span style="display:flex;"><span>&gt; GET / HTTP/1.1
+</span></span><span style="display:flex;"><span>&gt; Host:myserver.local
+</span></span><span style="display:flex;"><span>&gt; Authorization: Basic YXNkOmFzZA<span style="color:#f92672">==</span>
+</span></span><span style="display:flex;"><span>&gt; User-Agent: curl/7.68.0
+</span></span><span style="display:flex;"><span>&gt; Accept: */*
+</span></span><span style="display:flex;"><span>&gt;
+</span></span><span style="display:flex;"><span>* Mark bundle as not supporting multiuse
+</span></span><span style="display:flex;"><span>&lt; HTTP/1.1 <span style="color:#ae81ff">222</span> status code <span style="color:#ae81ff">222</span>
+</span></span><span style="display:flex;"><span>&lt; Content-Length: <span style="color:#ae81ff">376</span>
+</span></span><span style="display:flex;"><span>&lt; Content-Type: text/html; charset<span style="color:#f92672">=</span>UTF-8
+</span></span><span style="display:flex;"><span>&lt; Server: SimpleHTTP/0.6 Python/2.7.18
+</span></span><span style="display:flex;"><span>&lt; Date: Mon, <span style="color:#ae81ff">11</span> Oct <span style="color:#ae81ff">2021</span> 09:41:25 GMT
+</span></span><span style="display:flex;"><span>&lt;
+</span></span><span style="display:flex;"><span>&lt;!DOCTYPE html PUBLIC <span style="color:#e6db74">&#34;-//W3C//DTD HTML 3.2 Final//EN&#34;</span>&gt;&lt;html&gt;
+</span></span><span style="display:flex;"><span>&lt;title&gt;Directory listing <span style="color:#66d9ef">for</span> /&lt;/title&gt;
+</span></span><span style="display:flex;"><span>&lt;body&gt;
+</span></span><span style="display:flex;"><span>&lt;h2&gt;Directory listing <span style="color:#66d9ef">for</span> /&lt;/h2&gt;
+</span></span><span style="display:flex;"><span>&lt;hr&gt;
+</span></span><span style="display:flex;"><span>&lt;ul&gt;
+</span></span><span style="display:flex;"><span>&lt;li&gt;&lt;a href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dconf.toml&#34;</span>&gt;dconf.toml&lt;/a&gt;
+</span></span><span style="display:flex;"><span>&lt;li&gt;&lt;a href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;plugins-storage/&#34;</span>&gt;plugins-storage/&lt;/a&gt;
+</span></span><span style="display:flex;"><span>&lt;li&gt;&lt;a href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;traefik&#34;</span>&gt;traefik&lt;/a&gt;
+</span></span><span style="display:flex;"><span>&lt;li&gt;&lt;a href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;traefik.toml&#34;</span>&gt;traefik.toml&lt;/a&gt;
+</span></span><span style="display:flex;"><span>&lt;li&gt;&lt;a href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;x.md&#34;</span>&gt;x.md&lt;/a&gt;
+</span></span><span style="display:flex;"><span>&lt;/ul&gt;
+</span></span><span style="display:flex;"><span>&lt;hr&gt;
+</span></span><span style="display:flex;"><span>&lt;/body&gt;
+</span></span><span style="display:flex;"><span>&lt;/html&gt;
+</span></span></code></pre></div><h3 id="使用-golang-开发-traefik-http-中间件插件">使用 Golang 开发 Traefik HTTP 中间件插件</h3>
+<p>Traefik 的 HTTP 中间件插件只是一个 Golang 包，提供一个 http.Handler 来执行请求和响应的特定处理。</p>
+<p>插件包必须定义以下导出的 Go 对象：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>type Config struct { ... } 结构体，字段任意。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>func CreateConfig() *Config 函数。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>func New(ctx context.Context, next http.Handler, config *Config, name string) (http.Handler, error) 函数。
+</span></span></code></pre></div><p>如果插件有任何外部模块依赖项，必须将这些依赖包以 vendor 的形式放入当前插件的源码路径下以本地源码的方式进行使用，不支持 Go mod 的方式使用外部依赖。</p>
+<p><strong>本地开发模式</strong></p>
+<p>Traefik 提供了开发者模式在本地模式下使用插件，可用于临时测试未托管在 GitHub 上的插件。</p>
+<p>Traefik 静态配置必须定 Golang 模块名称。这里需要注意的是，官方文档当前写的是 devPlugin 的配置方式，在 v2 上无法识别该字段，需要使用 plugins-local 的方式。</p>
+<p>本地开发者模式的插件代码必须放在 <code>./plugins-local</code> 目录中，该目录应位于运行 Traefik 二进制文件的进程的工作目录中。</p>
+<p>插件的源代码按如下方式组织：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>plugins-local
+</span></span><span style="display:flex;"><span>└── src
+</span></span><span style="display:flex;"><span>    └── github.com
+</span></span><span style="display:flex;"><span>        └── axiaoxin
+</span></span><span style="display:flex;"><span>            └── traefikplugindemo
+</span></span><span style="display:flex;"><span>                ├── .git
+</span></span><span style="display:flex;"><span>                ├── go.mod
+</span></span><span style="display:flex;"><span>                ├── go.sum
+</span></span><span style="display:flex;"><span>                ├── header_resp.go
+</span></span><span style="display:flex;"><span>                ├── header_resp_test.go
+</span></span><span style="display:flex;"><span>                ├── README.md
+</span></span><span style="display:flex;"><span>                ├── traefik_dynamic_conf.toml
+</span></span><span style="display:flex;"><span>                ├── traefik_static_conf.toml
+</span></span><span style="display:flex;"><span>                ├── .traefik.yml
+</span></span><span style="display:flex;"><span>                └── vendor
+</span></span></code></pre></div><p>traefikplugindemo 是我实现的一个自定义中间件插件示例，功能是在返回header中添加 <code>resp:xxx</code>。</p>
+<p>源码地址：<a href="https://github.com/axiaoxin/traefikplugindemo">https://github.com/axiaoxin/traefikplugindemo</a>，</p>
+<p>header_resp.go:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#75715e">// Package traefikplugindemo Traefik插件示例
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 给请求响应头添加 resp:xxx
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">traefikplugindemo</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;context&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;net/http&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;github.com/iancoleman/strcase&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Config the plugin configuration.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Config</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// resp header值的字符串风格：snake, camel
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">ValueStrCase</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// resp header的默认值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">DefaultValue</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// CreateConfig creates the default plugin configuration.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">CreateConfig</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">Config</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Config</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ValueStrCase</span>: <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">DefaultValue</span>: <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// HeaderResp a plugin.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">HeaderResp</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">next</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Handler</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">conf</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Config</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// New created a new plugin.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">next</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Handler</span>, <span style="color:#a6e22e">config</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Config</span>, <span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>) (<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Handler</span>, <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">HeaderResp</span>{
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">next</span>: <span style="color:#a6e22e">next</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">name</span>: <span style="color:#a6e22e">name</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">conf</span>: <span style="color:#a6e22e">config</span>,
+</span></span><span style="display:flex;"><span>    }, <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">h</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">HeaderResp</span>) <span style="color:#a6e22e">ServeHTTP</span>(<span style="color:#a6e22e">rw</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">req</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 默认返回头 resp:axiaoxin
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">val</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">conf</span>.<span style="color:#a6e22e">DefaultValue</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 如果请求头带有 x-resp，则返回头 resp:x-resp的值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">customVal</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">Header</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#e6db74">&#34;x-resp&#34;</span>); <span style="color:#a6e22e">customVal</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;&#34;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">val</span> = <span style="color:#a6e22e">customVal</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 使用外部依赖包，发布插件时需要采用vendor模式
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">conf</span>.<span style="color:#a6e22e">ValueStrCase</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;camel&#34;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">val</span> = <span style="color:#a6e22e">strcase</span>.<span style="color:#a6e22e">ToCamel</span>(<span style="color:#a6e22e">val</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;snake&#34;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">val</span> = <span style="color:#a6e22e">strcase</span>.<span style="color:#a6e22e">ToSnake</span>(<span style="color:#a6e22e">val</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 设置返回头
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">rw</span>.<span style="color:#a6e22e">Header</span>().<span style="color:#a6e22e">Add</span>(<span style="color:#e6db74">&#34;resp&#34;</span>, <span style="color:#a6e22e">val</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 继续后续请求处理
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">next</span>.<span style="color:#a6e22e">ServeHTTP</span>(<span style="color:#a6e22e">rw</span>, <span style="color:#a6e22e">req</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>写好代码后，修改静态配置，添加本地插件：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">experimental</span>.<span style="color:#a6e22e">localPlugins</span>.<span style="color:#a6e22e">axiaoxin-traefik-plugin-demo</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">moduleName</span> = <span style="color:#e6db74">&#34;github.com/axiaoxin/traefikplugindemo&#34;</span>
+</span></span></code></pre></div><p>动态配置添加中间件，命名为 <code>axiaoxin-middleware</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#a6e22e">middlewares</span> = [<span style="color:#e6db74">&#34;test-user&#34;</span>, <span style="color:#e6db74">&#34;my-traefik-plugin-response-code-override&#34;</span>, <span style="color:#e6db74">&#34;axiaoxin-middleware&#34;</span>]
+</span></span></code></pre></div><p>动态配置中添加中间件的配置，配置项与 Config 结构体中的字段一一对应：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">middlewares</span>.<span style="color:#a6e22e">axiaoxin-middleware</span>.<span style="color:#a6e22e">plugin</span>.<span style="color:#a6e22e">axiaoxin-traefik-plugin-demo</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ValueStrCase</span> = <span style="color:#e6db74">&#34;snake&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">DefaultValue</span> = <span style="color:#e6db74">&#34;axiaoxin&#34;</span>
+</span></span></code></pre></div><p>重启 Traefik，curl 请求中通过 <code>x-resp</code> 设置自定义 resp 的值：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -v -H <span style="color:#e6db74">&#39;host:myserver.local&#39;</span> -u <span style="color:#e6db74">&#39;asd:asd&#39;</span> -H <span style="color:#e6db74">&#39;x-resp:axiaxoin test demo&#39;</span> http://localhost:80
+</span></span><span style="display:flex;"><span>*   Trying 127.0.0.1:80...
+</span></span><span style="display:flex;"><span>* TCP_NODELAY set
+</span></span><span style="display:flex;"><span>* Connected to localhost <span style="color:#f92672">(</span>127.0.0.1<span style="color:#f92672">)</span> port <span style="color:#ae81ff">80</span> <span style="color:#f92672">(</span><span style="color:#75715e">#0)</span>
+</span></span><span style="display:flex;"><span>* Server auth using Basic with user <span style="color:#e6db74">&#39;asd&#39;</span>
+</span></span><span style="display:flex;"><span>&gt; GET / HTTP/1.1
+</span></span><span style="display:flex;"><span>&gt; Host:myserver.local
+</span></span><span style="display:flex;"><span>&gt; Authorization: Basic YXNkOmFzZA<span style="color:#f92672">==</span>
+</span></span><span style="display:flex;"><span>&gt; User-Agent: curl/7.68.0
+</span></span><span style="display:flex;"><span>&gt; Accept: */*
+</span></span><span style="display:flex;"><span>&gt; x-resp:axiaxoin test demo
+</span></span><span style="display:flex;"><span>&gt;
+</span></span><span style="display:flex;"><span>* Mark bundle as not supporting multiuse
+</span></span><span style="display:flex;"><span>&lt; HTTP/1.1 <span style="color:#ae81ff">502</span> Bad Gateway
+</span></span><span style="display:flex;"><span>&lt; Resp: axiaxoin_test_demo
+</span></span><span style="display:flex;"><span>&lt; Date: Tue, <span style="color:#ae81ff">12</span> Oct <span style="color:#ae81ff">2021</span> 04:10:50 GMT
+</span></span><span style="display:flex;"><span>&lt; Content-Length: <span style="color:#ae81ff">11</span>
+</span></span><span style="display:flex;"><span>&lt; Content-Type: text/plain; charset<span style="color:#f92672">=</span>utf-8
+</span></span><span style="display:flex;"><span>&lt;
+</span></span></code></pre></div><h3 id="将插件发布到-traefik-pilot">将插件发布到 Traefik Pilot</h3>
+<p>本地测试通过，使用 <code>go mod vendor</code> 将依赖打包到 vendor 目录，再打上 tag 提交到 github，并在 github 仓库的 about 设置添加 <code>traefik-plugin</code> 的 topic，等一段时间插件就会被同步到 Traefik Pilot 的插件中心，接下来你就能安装使用了，如图所示：</p>
+<p><img src="https://user-images.githubusercontent.com/2876405/136800519-a959426a-f5b3-4413-a8b4-38ac952d6dba.png" alt="Traefik Pilot"></p>
+
+
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-3022214826355647"
+                    data-ad-slot="3373260497"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+                
+                <div class="blog-tags">
+                    
+                    &nbsp;<a href="https://blog.axiaoxin.com//tags/golang/">golang</a>
+                    
+                </div>
+                
+
+                <ins id="content-ad"
+                     class="adsbygoogle"
+                     style="display:block; text-align:center;"
+                     data-ad-layout="in-article"
+                     data-ad-format="fluid"
+                     data-ad-client="ca-pub-3022214826355647"
+                     data-ad-slot="4546241981"></ins>
+
+                <script>
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        
+                        var id = "content-ad";
+                        var ins = document.getElementById(id);
+                        ins.setAttribute("data-ad-slot", "9889874488");
+                    }
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+
+                
+                <hr/>
+                <section id="social-share">
+                    <div class="list-inline footer-links">
+                        
+
+<div class="share-box" aria-hidden="true">
+    <div class="addthis_inline_share_toolbox"></div>
+</div>
+<script async src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-637606c33f0ab9be"></script>
+
+
+                    </div>
+                </section>
+                
+
+                
+                
+                
+                
+
+                
+                <h4 class="see-also">也可以看看</h4>
+                <ul>
+                    
+                    
+                    <li><a href="/post/2022-11-26-golang-%E4%BD%BF%E7%94%A8-redis-zset-%E5%AE%9E%E7%8E%B0%E6%8E%92%E8%A1%8C%E6%A6%9C/">Golang 使用 Redis ZSET 实现排行榜</a></li>
+                    
+                    <li><a href="/post/2022-06-23-gin-%E4%BD%BF%E7%94%A8-gnu-gettext-%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0-i18n-%E5%9B%BD%E9%99%85%E5%8C%96%E5%A4%9A%E8%AF%AD%E8%A8%80/">Gin 使用 GNU gettext 方式实现 i18n 国际化多语言</a></li>
+                    
+                    <li><a href="/post/2021-11-21-golang-json-%E5%BA%8F%E5%88%97%E5%8C%96%E6%97%B6-html-%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6%E8%BD%AC%E4%B9%89%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/">Golang JSON 序列化时 HTML 特殊字符转义问题分析</a></li>
+                    
+                    <li><a href="/post/2021-11-21-golang-%E8%BF%90%E8%A1%8C%E6%97%B6%E9%99%A4%E6%95%B0%E4%B8%BA-0-%E8%BF%94%E5%9B%9E-inf/">Golang 运行时除数为 0 返回 Inf</a></li>
+                    
+                    <li><a href="/post/2021-06-19-%E4%BD%BF%E7%94%A8-github-actions-%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2-golang-%E5%BA%94%E7%94%A8%E5%88%B0-vps-%E6%9C%8D%E5%8A%A1%E5%99%A8/">使用 Github Actions 自动部署 Golang 应用到 VPS 服务器</a></li>
+                    
+                </ul>
+
+                
+                
+
+                <div class="_ha8w4pb61zc"></div>
+                <script type="text/javascript">
+                    (window.slotbydup = window.slotbydup || []).push({
+                        id: "u6682238",
+                        container: "_ha8w4pb61zc",
+                        async: true
+                    });
+                </script>
+            </article>
+
+
+            
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://blog.axiaoxin.com/post/2021-08-27-%E6%8A%95%E8%B5%84%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84%E4%BA%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" data-toggle="tooltip" data-placement="top" title="《投资最重要的事》读书笔记">&larr; 前一篇</a>
+                </li>
+                
+                
+                <li class="next">
+                    <a href="https://blog.axiaoxin.com/post/2021-11-21-golang-%E8%BF%90%E8%A1%8C%E6%97%B6%E9%99%A4%E6%95%B0%E4%B8%BA-0-%E8%BF%94%E5%9B%9E-inf/" data-toggle="tooltip" data-placement="top" title="Golang 运行时除数为 0 返回 Inf">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            
+
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-3022214826355647"
+                data-ad-slot="5644200610"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+            <div class="giscus"></div>
+            <script src="https://giscus.app/client.js"
+                    data-repo="axiaoxin-com/blog"
+                    data-repo-id="R_kgDOIdZQhA"
+                    data-category="Comments"
+                    data-category-id="DIC_kwDOIdZQhM4CSvR2"
+                    data-mapping="title"
+                    data-strict="0"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-input-position="bottom"
+                    data-theme="preferred_color_scheme"
+                    data-lang="zh-CN"
+                    data-loading="lazy"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center footer-links">
+                    
+                    <li>
+                        
+                            <a href="mailto:admin@axiaoxin.com" title="Email me">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    <li>
+                        
+                            <a href="https://github.com/axiaoxin" title="GitHub">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    
+                    <li>
+                        <a href="" title="RSS">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="credits copyright text-muted">
+                
+                
+                <a href="http://axiaoxin.com">axiaoxin</a>
+                
+                
+
+                &nbsp;&bull;&nbsp;&copy;
+                
+                2011 - 2022
+                
+
+                
+                &nbsp;&bull;&nbsp;
+                <a href="https://blog.axiaoxin.com/">人言兑</a>
+                
+                </p>
+                <p class="copyright"><a class="text-muted text-decoration-none" href="https://beian.miit.gov.cn" target="_blank">蜀ICP备20023217号</a></p>
+            </div>
+        </div>
+    </div>
+</footer><script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://blog.axiaoxin.com/js/main.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script> hljs.highlightAll(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script async src="https://blog.axiaoxin.com/js/load-photoswipe.js"></script>
+
+
+
+<script>
+    (function() {
+            var cx = '61c0d8f33c4084733';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+        })();
+</script>
+
+
+
+
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["trackPageView"]);
+    _paq.push(["enableLinkTracking"]);
+
+    (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://matomo.axiaoxin.com/";
+            _paq.push(["setTrackerUrl", u+"piwik.php"]);
+            _paq.push(["setSiteId", "5"]);
+            var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+            g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+        })();
+</script>
+<noscript>
+    
+    <img src="http://matomo.axiaoxin.com/piwik.php?idsite=5&amp;rec=1" style="border:0" alt="" />
+    
+</noscript>
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?fdfe48e67d25b3802d6139d4e629c718";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+</script><script src="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/js/glightbox.min.js"></script>
+<script type="text/javascript">
+    $('.blog-post img').each(function(idx){
+        var src = $(this).attr("src");
+        var wrap = `<a href="${src}" class="glightbox"></a>`;
+        if (!src.match(/\.(jpg|jpeg|png|gif)$/i)) {
+            wrap = `<a href="${src}" target="_blank" data-glightbox="type: image"></a>`;
+        }
+        $(this).wrap(wrap);
+    });
+  const lightbox = GLightbox({});
+</script>
+
+
+    
+  </body>
+</html>
+

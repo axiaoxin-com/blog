@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on 阿小信的博客</title>
+    <link>https://blog.axiaoxin.com/tags/</link>
+    <description>Recent content in Tags on 阿小信的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cmn-Hans</language>
+    <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
+    <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster>
+    <lastBuildDate>Fri, 23 Dec 2022 14:59:08 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>年度报告</title>
+      <link>https://blog.axiaoxin.com/tags/%E5%B9%B4%E5%BA%A6%E6%8A%A5%E5%91%8A/</link>
+      <pubDate>Fri, 23 Dec 2022 14:59:08 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/%E5%B9%B4%E5%BA%A6%E6%8A%A5%E5%91%8A/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>https://blog.axiaoxin.com/tags/linux/</link>
+      <pubDate>Thu, 22 Dec 2022 16:37:26 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>github</title>
+      <link>https://blog.axiaoxin.com/tags/github/</link>
+      <pubDate>Tue, 13 Dec 2022 21:18:11 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/github/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>生活</title>
+      <link>https://blog.axiaoxin.com/tags/%E7%94%9F%E6%B4%BB/</link>
+      <pubDate>Mon, 12 Dec 2022 15:11:49 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/%E7%94%9F%E6%B4%BB/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>医药</title>
+      <link>https://blog.axiaoxin.com/tags/%E5%8C%BB%E8%8D%AF/</link>
+      <pubDate>Mon, 12 Dec 2022 15:11:49 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/%E5%8C%BB%E8%8D%AF/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>golang</title>
+      <link>https://blog.axiaoxin.com/tags/golang/</link>
+      <pubDate>Sat, 26 Nov 2022 22:04:06 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>redis</title>
+      <link>https://blog.axiaoxin.com/tags/redis/</link>
+      <pubDate>Sat, 26 Nov 2022 22:04:06 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/redis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>markdown</title>
+      <link>https://blog.axiaoxin.com/tags/markdown/</link>
+      <pubDate>Tue, 22 Nov 2022 10:08:58 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/markdown/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>投资</title>
+      <link>https://blog.axiaoxin.com/tags/%E6%8A%95%E8%B5%84/</link>
+      <pubDate>Sat, 30 Jul 2022 11:24:49 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/%E6%8A%95%E8%B5%84/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mysql</title>
+      <link>https://blog.axiaoxin.com/tags/mysql/</link>
+      <pubDate>Sat, 07 May 2022 20:35:35 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/mysql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>读书笔记</title>
+      <link>https://blog.axiaoxin.com/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Fri, 27 Aug 2021 17:07:28 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>debug</title>
+      <link>https://blog.axiaoxin.com/tags/debug/</link>
+      <pubDate>Thu, 05 Aug 2021 16:27:00 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/debug/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>elasticsearch</title>
+      <link>https://blog.axiaoxin.com/tags/elasticsearch/</link>
+      <pubDate>Thu, 05 Aug 2021 16:27:00 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/elasticsearch/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>工具</title>
+      <link>https://blog.axiaoxin.com/tags/%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Sat, 19 Jun 2021 16:12:08 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/%E5%B7%A5%E5%85%B7/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>并发</title>
+      <link>https://blog.axiaoxin.com/tags/%E5%B9%B6%E5%8F%91/</link>
+      <pubDate>Thu, 13 May 2021 00:00:00 +0000</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/%E5%B9%B6%E5%8F%91/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lua</title>
+      <link>https://blog.axiaoxin.com/tags/lua/</link>
+      <pubDate>Tue, 16 Jun 2020 15:17:02 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/lua/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>nginx</title>
+      <link>https://blog.axiaoxin.com/tags/nginx/</link>
+      <pubDate>Tue, 16 Jun 2020 15:17:02 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/nginx/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>docker</title>
+      <link>https://blog.axiaoxin.com/tags/docker/</link>
+      <pubDate>Fri, 02 Mar 2018 16:24:39 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://blog.axiaoxin.com/tags/python/</link>
+      <pubDate>Fri, 21 Jul 2017 15:15:53 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>旅行</title>
+      <link>https://blog.axiaoxin.com/tags/%E6%97%85%E8%A1%8C/</link>
+      <pubDate>Tue, 18 Jul 2017 14:56:43 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/%E6%97%85%E8%A1%8C/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>flask</title>
+      <link>https://blog.axiaoxin.com/tags/flask/</link>
+      <pubDate>Thu, 14 Apr 2016 12:06:49 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/flask/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>上海</title>
+      <link>https://blog.axiaoxin.com/tags/%E4%B8%8A%E6%B5%B7/</link>
+      <pubDate>Sat, 18 Jul 2015 11:03:07 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/%E4%B8%8A%E6%B5%B7/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vim</title>
+      <link>https://blog.axiaoxin.com/tags/vim/</link>
+      <pubDate>Thu, 06 Nov 2014 00:00:00 +0000</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/vim/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>乐山</title>
+      <link>https://blog.axiaoxin.com/tags/%E4%B9%90%E5%B1%B1/</link>
+      <pubDate>Fri, 06 Jul 2012 23:23:28 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/%E4%B9%90%E5%B1%B1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jquery</title>
+      <link>https://blog.axiaoxin.com/tags/jquery/</link>
+      <pubDate>Tue, 01 May 2012 17:25:50 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/jquery/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

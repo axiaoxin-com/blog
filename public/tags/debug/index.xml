@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>debug on 阿小信的博客</title>
+    <link>https://blog.axiaoxin.com/tags/debug/</link>
+    <description>Recent content in debug on 阿小信的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cmn-Hans</language>
+    <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
+    <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster>
+    <lastBuildDate>Thu, 05 Aug 2021 16:27:00 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/tags/debug/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Elasticsearch 性能优化实践纪要</title>
+      <link>https://blog.axiaoxin.com/post/2021-08-05-elasticsearch-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5%E7%BA%AA%E8%A6%81/</link>
+      <pubDate>Thu, 05 Aug 2021 16:27:00 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2021-08-05-elasticsearch-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5%E7%BA%AA%E8%A6%81/</guid>
+      <description>ES 性能优化实践：节点负载不均衡 现象： 每个索引使用默认的 1 个分片，1 个副本，在 3 节点集群出现负载不均衡现象，两个节点 cpu 负载很高，另外一个节点 cpu</description>
+    </item>
+    
+    <item>
+      <title>php-fpm 超时原因分析</title>
+      <link>https://blog.axiaoxin.com/post/2021-05-13-php-fpm-%E8%B6%85%E6%97%B6%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90/</link>
+      <pubDate>Thu, 13 May 2021 15:25:22 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2021-05-13-php-fpm-%E8%B6%85%E6%97%B6%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90/</guid>
+      <description>背景 线上PHP服务，同一台机器上部有AB两个服务，A接收外部请求后再通过本地nginx请求部署在本地的B服务获取数据，同时也有大量的请求直接</description>
+    </item>
+    
+    <item>
+      <title>Celery 4.1.0 版本定时任务执行时间 BUG</title>
+      <link>https://blog.axiaoxin.com/post/2017-12-27-celery-4.1.0-%E7%89%88%E6%9C%AC%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4-bug/</link>
+      <pubDate>Wed, 27 Dec 2017 15:44:10 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2017-12-27-celery-4.1.0-%E7%89%88%E6%9C%AC%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4-bug/</guid>
+      <description>为什么使用celery代替crontab？ 关于Celery，他是一个分布式的任务队列。http://docs.celeryproject.o</description>
+    </item>
+    
+    <item>
+      <title>记一次系统性能问题排查</title>
+      <link>https://blog.axiaoxin.com/post/2017-11-23-%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</link>
+      <pubDate>Thu, 23 Nov 2017 15:21:03 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2017-11-23-%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</guid>
+      <description>在客户的环境中，我们的代码表现为twisted封装的http接口处理web请求忽快忽慢。 客户反馈一个页面上有获取绘图数据的请求，一页在一个屏</description>
+    </item>
+    
+  </channel>
+</rss>

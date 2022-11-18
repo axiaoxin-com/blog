@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on 阿小信的博客</title>
+    <link>https://blog.axiaoxin.com/tags/linux/</link>
+    <description>Recent content in linux on 阿小信的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cmn-Hans</language>
+    <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
+    <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster>
+    <lastBuildDate>Thu, 22 Dec 2022 16:37:26 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在 Ubuntu 上安装 .NET SDK 或 .NET Runtime</title>
+      <link>https://blog.axiaoxin.com/post/2022-12-22-%E5%9C%A8-ubuntu-%E4%B8%8A%E5%AE%89%E8%A3%85-.net-sdk-%E6%88%96-.net-runtime/</link>
+      <pubDate>Thu, 22 Dec 2022 16:37:26 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2022-12-22-%E5%9C%A8-ubuntu-%E4%B8%8A%E5%AE%89%E8%A3%85-.net-sdk-%E6%88%96-.net-runtime/</guid>
+      <description>如果要开发 .NET 应用，请安装 SDK（包括 Runtime ）。或者，如果只需要运行应用，请安装 Runtime 。如果要安装 Runtime ，建议安装 ASP.NET 核心 Runtime ，因为它包括 .NET 和 ASP.NET 核心 Runtime 。 下表列</description>
+    </item>
+    
+    <item>
+      <title>模拟网络设备和 netflow</title>
+      <link>https://blog.axiaoxin.com/post/2018-03-18-%E6%A8%A1%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E5%92%8C-netflow/</link>
+      <pubDate>Sun, 18 Mar 2018 16:36:54 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2018-03-18-%E6%A8%A1%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E5%92%8C-netflow/</guid>
+      <description>使用 snmpsim 模拟网络设备 登录到对应的模拟服务器上新建 Python 虚拟环境安装 snmpsim virtualenv snmp . snmp/bin/activate pip install snmpsim 在虚拟环境目录下的 snmpsim/data/ 文件夹里配置新的 community（如果需要</description>
+    </item>
+    
+    <item>
+      <title>Linux 终端默认编辑方法快捷键</title>
+      <link>https://blog.axiaoxin.com/post/2011-03-08-linux-%E7%BB%88%E7%AB%AF%E9%BB%98%E8%AE%A4%E7%BC%96%E8%BE%91%E6%96%B9%E6%B3%95%E5%BF%AB%E6%8D%B7%E9%94%AE/</link>
+      <pubDate>Tue, 08 Mar 2011 17:25:50 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2011-03-08-linux-%E7%BB%88%E7%AB%AF%E9%BB%98%E8%AE%A4%E7%BC%96%E8%BE%91%E6%96%B9%E6%B3%95%E5%BF%AB%E6%8D%B7%E9%94%AE/</guid>
+      <description>C-a ：移到行首（Home） C-e ：移到行尾（End） C-b ：往左移动一个字符 C-f ：往右移动一个字符 M-b ：往左移动一个单词 M-f ：往右移动一个单词 C-l ：清屏 C-h ：删</description>
+    </item>
+    
+    <item>
+      <title>Bash 学习笔记</title>
+      <link>https://blog.axiaoxin.com/post/2011-01-18-bash-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Tue, 18 Jan 2011 17:25:50 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2011-01-18-bash-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>Bash 的工作控制 %% 或 %+ 可调用 jobs 里面现在的工作，%- 调用前一个工作 %n 将工作编号为 n 的进程置于前台来执行 == fg %n %?s1 调用程序名称中含有s1的工作，? 表示</description>
+    </item>
+    
+  </channel>
+</rss>

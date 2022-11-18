@@ -1,0 +1,56 @@
+{{ define "main" }}
+<div role="main" class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            {{ with .Content }}
+            <div class="well">
+                {{.}}
+            </div>
+            {{ end }}
+
+            <div class="posts-list">
+                {{ $pag := .Paginate (where site.RegularPages "Type" "in" site.Params.mainSections) }}
+                {{ range $idx, $post := $pag.Pages }}
+                {{ partial "post_preview" $post }}
+                {{ if eq (mod $idx 2) 0 }}
+                <article class="post-preview">
+                    <ins id="list-ad-{{ $idx }}"
+                         class="adsbygoogle"
+                         style="display:block"
+                         data-ad-format="fluid"
+                         data-ad-layout-key="-ft-14+m-64+jg"
+                         data-ad-client="ca-pub-3022214826355647"
+                         data-ad-slot="9165708928"></ins>
+
+                    <script>
+                        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                            // dark mode
+                            var id = "list-ad-{{ $idx }}";
+                            var ins = document.getElementById(id);
+                            ins.setAttribute("data-ad-slot", "2595634983");
+                        }
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </article>
+                {{ end }}
+                {{ end }}
+            </div>
+
+            {{ if or (.Paginator.HasPrev) (.Paginator.HasNext) }}
+            <ul class="pager main-pager">
+                {{ if .Paginator.HasPrev }}
+                <li class="previous">
+                    <a href="{{ .Permalink }}page/{{ .Paginator.Prev.PageNumber }}/">&larr; {{ i18n "newerPosts" }}</a>
+                </li>
+                {{ end }}
+                {{ if .Paginator.HasNext }}
+                <li class="next">
+                    <a href="{{ .Permalink }}page/{{ .Paginator.Next.PageNumber }}/">{{ i18n "olderPosts" }} &rarr;</a>
+                </li>
+                {{ end }}
+            </ul>
+            {{ end }}
+        </div>
+    </div>
+</div>
+{{ end }}

@@ -1,0 +1,108 @@
+baseurl = "https://blog.axiaoxin.com/"
+LanguageCode = "zh-cmn-Hans"
+DefaultContentLanguage = "zh-cn"
+title = "阿小信的博客"
+theme = "beautifulhugo"
+googleAnalytics = "G-5KRFX25W8R"
+hasCJKLanguage = true
+
+[Params]
+  selfHosted = false
+  since = 2011
+  homeTitle = "人言兑"
+  subtitle = "人言成信 言兑才说"
+  mainSections = ["post"]
+  logo = "img/avatar-icon.png" # Expecting square dimensions
+  favicon = "img/favicon.ico"
+  dateFormat = "2006-01-02"
+  commit = false
+  rss = true
+  comments = true
+  readingTime = true
+  wordCount = true
+  useHLJS = true
+  socialShare = true
+  delayDisqus = true
+  showRelatedPosts = true
+  hideAuthor = false
+  gcse = "61c0d8f33c4084733" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
+
+[Params.piwik]
+  server = "matomo.axiaoxin.com"
+  id = 5
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+#[[Params.bigimg]]
+#  src = "img/triangle.jpg"
+#  desc = "Triangle"
+#[[Params.bigimg]]
+#  src = "img/sphere.jpg"
+#  desc = "Sphere"
+#  # position: see values of CSS background-position.
+#  position = "center top"
+#[[Params.bigimg]]
+#  src = "img/hexagon.jpg"
+#  desc = "Hexagon"
+
+[Author]
+  name = "axiaoxin"
+  website = "http://axiaoxin.com"
+  email = "admin@axiaoxin.com"
+  github = "axiaoxin"
+
+[[menu.main]]
+    name = "主页"
+    url = ""
+    weight = 1
+
+[[menu.main]]
+    name = "Tags"
+    url = "tags"
+    weight = 2
+
+[[menu.main]]
+    name = "归档"
+    url = "page/archives/"
+    weight = 3
+
+[[menu.main]]
+    name = "关于"
+    url = "page/about/"
+    weight = 4
+
+[[menu.main]]
+    identifier = "sites"
+    name = "网站"
+    weight = 5
+
+[[menu.main]]
+    parent = "sites"
+    name = "MBTI职业性格测试"
+    url = "http://mbti.axiaoxin.com"
+    weight = 1
+
+[[menu.main]]
+    parent = "sites"
+    name = "InvesTool"
+    url = "http://investool.axiaoxin.com"
+    weight = 2
+
+[[menu.main]]
+    parent = "sites"
+    name = "赛可测试网:免费心理测试"
+    url = "http://m.psyctest.cn"
+    weight = 3
+
+[[menu.main]]
+    parent = "sites"
+    name = "个人主页"
+    url = "http://axiaoxin.com"
+    weight = 4
+
+[[menu.main]]
+    parent = "sites"
+    name = "抖文-精选优质抖音视频文章"
+    url = "http://dw.mcool.top"
+    weight = 5

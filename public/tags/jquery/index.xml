@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jquery on 阿小信的博客</title>
+    <link>https://blog.axiaoxin.com/tags/jquery/</link>
+    <description>Recent content in jquery on 阿小信的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cmn-Hans</language>
+    <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
+    <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster>
+    <lastBuildDate>Tue, 01 May 2012 17:25:50 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/tags/jquery/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>JQuery 基础教程练习笔记</title>
+      <link>https://blog.axiaoxin.com/post/2012-05-01-jquery-%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Tue, 01 May 2012 17:25:50 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2012-05-01-jquery-%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>jQuery 基础用法示例 用 $() 函数选择元素，$ 是对标识符 jQuery 的一种简写 $(&amp;#39;div&amp;#39;) $(&amp;#39;#some-id&amp;#39;) $(&amp;#39;.some-class&amp;#39;) $(document).ready() 其中代码会在 dom 加载后立即运行 示例1： $(document).ready(function(){ $(&amp;#39;#selected-plays &amp;gt; li&amp;#39;).addClass(&amp;#39;horizontal&amp;#39;); // 查找id为#selected-</description>
+    </item>
+    
+    <item>
+      <title>JQuery 选择器用法示例</title>
+      <link>https://blog.axiaoxin.com/post/2012-03-15-jquery-%E9%80%89%E6%8B%A9%E5%99%A8%E7%94%A8%E6%B3%95%E7%A4%BA%E4%BE%8B/</link>
+      <pubDate>Thu, 15 Mar 2012 17:25:50 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2012-03-15-jquery-%E9%80%89%E6%8B%A9%E5%99%A8%E7%94%A8%E6%B3%95%E7%A4%BA%E4%BE%8B/</guid>
+      <description>jQuery 基本选择器用法示例 // 选择 id为 one 的元素 $(&amp;#39;#btn1&amp;#39;).click(function(){ $(&amp;#39;#one&amp;#39;).css(&amp;#34;background&amp;#34;,&amp;#34;#bfa&amp;#34;); }); // 选择 class 为 mini 的所有元素 $(&amp;#39;#btn2&amp;#39;).click(function(){ $(&amp;#39;.mini&amp;#39;).css(&amp;#34;background&amp;#34;,&amp;#34;#bfa&amp;#34;); }); // 选择元素名是 div 的所有元素 $(&amp;#39;#btn3&amp;#39;).click(function(){ $(&amp;#39;div&amp;#39;).css(&amp;#34;background&amp;#34;,&amp;#34;#bfa&amp;#34;); }); // 选择所有的元素 $(&amp;#39;#btn4&amp;#39;).click(function(){ $(&amp;#39;*&amp;#39;).css(&amp;#34;background&amp;#34;,&amp;#34;#bfa&amp;#34;); }); // 选择所有的</description>
+    </item>
+    
+  </channel>
+</rss>

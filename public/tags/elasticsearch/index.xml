@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>elasticsearch on 阿小信的博客</title>
+    <link>https://blog.axiaoxin.com/tags/elasticsearch/</link>
+    <description>Recent content in elasticsearch on 阿小信的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cmn-Hans</language>
+    <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
+    <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster>
+    <lastBuildDate>Thu, 05 Aug 2021 16:27:00 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/tags/elasticsearch/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Elasticsearch 性能优化实践纪要</title>
+      <link>https://blog.axiaoxin.com/post/2021-08-05-elasticsearch-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5%E7%BA%AA%E8%A6%81/</link>
+      <pubDate>Thu, 05 Aug 2021 16:27:00 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2021-08-05-elasticsearch-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5%E7%BA%AA%E8%A6%81/</guid>
+      <description>ES 性能优化实践：节点负载不均衡 现象： 每个索引使用默认的 1 个分片，1 个副本，在 3 节点集群出现负载不均衡现象，两个节点 cpu 负载很高，另外一个节点 cpu</description>
+    </item>
+    
+    <item>
+      <title>搭建 Filebeat Elasticsearch Kibana V6.3.0 日志监控</title>
+      <link>https://blog.axiaoxin.com/post/2018-07-05-%E6%90%AD%E5%BB%BA-filebeat-elasticsearch-kibana-v6.3.0-%E6%97%A5%E5%BF%97%E7%9B%91%E6%8E%A7/</link>
+      <pubDate>Thu, 05 Jul 2018 16:48:56 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2018-07-05-%E6%90%AD%E5%BB%BA-filebeat-elasticsearch-kibana-v6.3.0-%E6%97%A5%E5%BF%97%E7%9B%91%E6%8E%A7/</guid>
+      <description>Filebeat+Elasticsearch+Kibana 环境搭建 上次搭建 ELK 还是两年前，现在使用当时的方法发现不行了，不得不说 ELK 的版本更新速度真的很快。 本文记录使用 ELK Stack 最新的 6.3.0 版本，使用 filebeat 进行日志</description>
+    </item>
+    
+  </channel>
+</rss>

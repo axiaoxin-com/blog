@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+<title>关于 Python 中的 None 和 is - 人言兑</title>
+  <meta name="description" content="Python 中的 None x is None 比 x == None 更快。 is 是用 C 实现的, 简单的比较两个对象的 ID，不需要调用任何方法函数, is 是比较 id，== 是比较值。 创建一个 None 实例： Python">
+  <meta name="author" content="axiaoxin"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "阿小信的博客",
+    
+    "url": "https:\/\/blog.axiaoxin.com\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/blog.axiaoxin.com\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/post\/2015-07-01-%E5%85%B3%E4%BA%8E-python-%E4%B8%AD%E7%9A%84-none-%E5%92%8C-is\/",
+          "name": "关于 python 中的 none 和 is"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "axiaoxin"
+  },
+  "headline": "关于 Python 中的 None 和 is",
+  "description" : "Python 中的 None x is None 比 x == None 更快。 is 是用 C 实现的, 简单的比较两个对象的 ID，不需要调用任何方法函数, is 是比较 id，== 是比较值。 创建一个 None 实例： Python",
+  "inLanguage" : "zh-cn",
+  "wordCount":  1012 ,
+  "datePublished" : "2015-07-01T11:46:27",
+  "dateModified" : "2015-07-01T11:46:27",
+  "image" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+  "keywords" : [ "python" ],
+  "mainEntityOfPage" : "https:\/\/blog.axiaoxin.com\/post\/2015-07-01-%E5%85%B3%E4%BA%8E-python-%E4%B8%AD%E7%9A%84-none-%E5%92%8C-is\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/blog.axiaoxin.com\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="关于 Python 中的 None 和 is" />
+<meta property="og:description" content="Python 中的 None x is None 比 x == None 更快。 is 是用 C 实现的, 简单的比较两个对象的 ID，不需要调用任何方法函数, is 是比较 id，== 是比较值。 创建一个 None 实例： Python">
+<meta property="og:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+<meta property="og:url" content="https://blog.axiaoxin.com/post/2015-07-01-%E5%85%B3%E4%BA%8E-python-%E4%B8%AD%E7%9A%84-none-%E5%92%8C-is/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="阿小信的博客" />
+
+  <meta name="twitter:title" content="关于 Python 中的 None 和 is" />
+  <meta name="twitter:description" content="Python 中的 None x is None 比 x == None 更快。 is 是用 C 实现的, 简单的比较两个对象的 ID，不需要调用任何方法函数, is 是比较 id，== 是比较值。 创建一个 None 实例： Python">
+  <meta name="twitter:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://blog.axiaoxin.com/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.106.0">
+  <link rel="alternate" href="https://blog.axiaoxin.com/index.xml" type="application/rss+xml" title="阿小信的博客"><link href="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://blog.axiaoxin.com/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <script>
+      var head = document.getElementsByTagName('HEAD')[0];
+      var link = document.createElement("link");
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css";
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        
+        link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css";
+      }
+      head.appendChild(link);
+  </script><link rel="stylesheet" href="https://blog.axiaoxin.com/css/codeblock.css" /><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3022214826355647" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" ></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5KRFX25W8R"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-5KRFX25W8R', { 'anonymize_ip': false });
+}
+</script>
+<link href="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/css/glightbox.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://blog.axiaoxin.com/">阿小信的博客</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="主页" href="/">主页</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="归档" href="/page/archives/">归档</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/page/about/">关于</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent">网站</a>
+              <div class="navlinks-children">
+                
+                  <a href="http://mbti.axiaoxin.com" target="_blank">MBTI职业性格测试</a>
+                
+                  <a href="http://investool.axiaoxin.com" target="_blank">InvesTool</a>
+                
+                  <a href="http://m.psyctest.cn" target="_blank">赛可测试网:免费心理测试</a>
+                
+                  <a href="http://axiaoxin.com" target="_blank">个人主页</a>
+                
+                  <a href="http://dw.mcool.top" target="_blank">抖文-精选优质抖音视频文章</a>
+                
+              </div>
+            </li>
+          
+        
+
+        
+
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="阿小信的博客" href="https://blog.axiaoxin.com/">
+            <img class="avatar-img" src="https://blog.axiaoxin.com/img/avatar-icon.png" alt="阿小信的博客" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">搜索 阿小信的博客</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        
+                        <h1>关于 Python 中的 None 和 is</h1>
+                        
+                        
+                        
+                        
+                        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;发表于 2015-07-01
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;3&nbsp;分钟
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1012&nbsp;个字
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;axiaoxin
+    
+  
+  
+</span>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-3022214826355647"
+                 data-ad-slot="6429996269"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <article role="main" class="blog-post">
+                <h2 id="python-中的-none">Python 中的 None</h2>
+<p><code>x is None</code> 比 <code>x == None</code> 更快。</p>
+<p><code>is</code> 是用 C 实现的, 简单的比较两个对象的 ID，不需要调用任何方法函数, <code>is</code> 是比较 id，<code>==</code> 是比较值。</p>
+<p>创建一个 None 实例：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>Python <span style="color:#ae81ff">2.7.6</span> (default, Sep  <span style="color:#ae81ff">9</span> <span style="color:#ae81ff">2014</span>, <span style="color:#ae81ff">15</span>:<span style="color:#ae81ff">04</span>:<span style="color:#ae81ff">36</span>)
+</span></span><span style="display:flex;"><span>[GCC <span style="color:#ae81ff">4.2.1</span> Compatible Apple LLVM <span style="color:#ae81ff">6.0</span> (clang<span style="color:#f92672">-</span><span style="color:#ae81ff">600.0.39</span>)] on darwin
+</span></span><span style="display:flex;"><span>Type <span style="color:#e6db74">&#34;help&#34;</span>, <span style="color:#e6db74">&#34;copyright&#34;</span>, <span style="color:#e6db74">&#34;credits&#34;</span> <span style="color:#f92672">or</span> <span style="color:#e6db74">&#34;license&#34;</span> <span style="color:#66d9ef">for</span> more information<span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">=</span> type(<span style="color:#66d9ef">None</span>)()
+</span></span><span style="display:flex;"><span>Traceback (most recent call last):
+</span></span><span style="display:flex;"><span>File <span style="color:#e6db74">&#34;&lt;stdin&gt;&#34;</span>, line <span style="color:#ae81ff">1</span>, <span style="color:#f92672">in</span> <span style="color:#f92672">&lt;</span>module<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">TypeError</span>: cannot create <span style="color:#e6db74">&#39;NoneType&#39;</span> instances
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Python <span style="color:#ae81ff">3.4.3</span> (default, Mar <span style="color:#ae81ff">17</span> <span style="color:#ae81ff">2015</span>, <span style="color:#ae81ff">18</span>:<span style="color:#ae81ff">12</span>:<span style="color:#ae81ff">35</span>)
+</span></span><span style="display:flex;"><span>[GCC <span style="color:#ae81ff">4.2.1</span> Compatible Apple LLVM <span style="color:#ae81ff">6.0</span> (clang<span style="color:#f92672">-</span><span style="color:#ae81ff">600.0.56</span>)] on darwin
+</span></span><span style="display:flex;"><span>Type <span style="color:#e6db74">&#34;help&#34;</span>, <span style="color:#e6db74">&#34;copyright&#34;</span>, <span style="color:#e6db74">&#34;credits&#34;</span> <span style="color:#f92672">or</span> <span style="color:#e6db74">&#34;license&#34;</span> <span style="color:#66d9ef">for</span> more information<span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">=</span> type(<span style="color:#66d9ef">None</span>)()
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> type(x)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">NoneType</span><span style="color:#e6db74">&#39;&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">True</span>
+</span></span></code></pre></div><p>无论如何, <code>id(None)</code> 总是返回相同的值. 因为 None 在 Python 中是一个单例：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">=</span> type(<span style="color:#66d9ef">None</span>)()
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> id(x)
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">4489363032</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> y <span style="color:#f92672">=</span> type(<span style="color:#66d9ef">None</span>)()
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> id(y)
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">4489363032</span>
+</span></span></code></pre></div><h2 id="python-中的-is">Python 中的 is</h2>
+<p>CPython 对 is 的优化：</p>
+<p>参考代码：</p>
+<ul>
+<li><a href="https://github.com/python/cpython/blob/829b49cbd2e4b1d573470da79ca844b730120f3d/Python/peephole.c#L223">https://github.com/python/cpython/blob/829b49cbd2e4b1d573470da79ca844b730120f3d/Python/peephole.c#L223</a></li>
+<li><a href="https://gist.github.com/mrluanma/9118bf2ada09ebd017d3">https://gist.github.com/mrluanma/9118bf2ada09ebd017d3</a></li>
+</ul>
+<p>演示代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">is</span> y
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">21</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">21</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">is</span> y
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">21</span>; y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">21</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">is</span> y
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;aaaaaaaaaaaaaaaaaaaaa&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> len(x)
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">21</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;aaaaaaaaaaaaaaaaaaaaa&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">is</span> y
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">=</span> intern(<span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">21</span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> y <span style="color:#f92672">=</span> intern(<span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">21</span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">is</span> y
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">True</span>
+</span></span></code></pre></div><p>intern 是 Python2 的内建方法：接受一个字符串作为参数(并且只有一个字符串)。</p>
+<p>它返回一个引用——要么创建一个新的字符串,或一个已经分配好内存的字符串。</p>
+<p>“intern”保证每一个独一无二的字符串只分配一次。</p>
+<p>如果你使用“intern”第二次传入相同的字符串, Python 返回一个对第一个字符串的引用。</p>
+<p>所以在需要使用重复的长字符串时，可以考虑使用intern减少内存分配。</p>
+<p>Python2:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>Python <span style="color:#ae81ff">2.7.6</span> (default, Sep  <span style="color:#ae81ff">9</span> <span style="color:#ae81ff">2014</span>, <span style="color:#ae81ff">15</span>:<span style="color:#ae81ff">04</span>:<span style="color:#ae81ff">36</span>)
+</span></span><span style="display:flex;"><span>[GCC <span style="color:#ae81ff">4.2.1</span> Compatible Apple LLVM <span style="color:#ae81ff">6.0</span> (clang<span style="color:#f92672">-</span><span style="color:#ae81ff">600.0.39</span>)] on darwin
+</span></span><span style="display:flex;"><span>Type <span style="color:#e6db74">&#34;help&#34;</span>, <span style="color:#e6db74">&#34;copyright&#34;</span>, <span style="color:#e6db74">&#34;credits&#34;</span> <span style="color:#f92672">or</span> <span style="color:#e6db74">&#34;license&#34;</span> <span style="color:#66d9ef">for</span> more information<span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">25</span>):
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>   x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> i
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>   y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> i
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>   print(<span style="color:#e6db74">&#34;[</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">]: x is y == </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(i, x <span style="color:#f92672">is</span> y))
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">0</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">1</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">2</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">3</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">4</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">5</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">6</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">7</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">8</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">9</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">10</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">11</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">12</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">13</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">14</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">15</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">16</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">17</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">18</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">19</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">20</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">21</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">22</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">23</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">24</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span></code></pre></div><p>Python3:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>Python <span style="color:#ae81ff">3.4.3</span> (default, Mar <span style="color:#ae81ff">17</span> <span style="color:#ae81ff">2015</span>, <span style="color:#ae81ff">18</span>:<span style="color:#ae81ff">12</span>:<span style="color:#ae81ff">35</span>)
+</span></span><span style="display:flex;"><span>[GCC <span style="color:#ae81ff">4.2.1</span> Compatible Apple LLVM <span style="color:#ae81ff">6.0</span> (clang<span style="color:#f92672">-</span><span style="color:#ae81ff">600.0.56</span>)] on darwin
+</span></span><span style="display:flex;"><span>Type <span style="color:#e6db74">&#34;help&#34;</span>, <span style="color:#e6db74">&#34;copyright&#34;</span>, <span style="color:#e6db74">&#34;credits&#34;</span> <span style="color:#f92672">or</span> <span style="color:#e6db74">&#34;license&#34;</span> <span style="color:#66d9ef">for</span> more information<span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">25</span>):
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>   x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> i
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>   y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">*</span> i
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>   print(<span style="color:#e6db74">&#34;[</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">]: x is y == </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(i, x <span style="color:#f92672">is</span> y))
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">0</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">1</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">2</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">3</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">4</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">5</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">6</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">7</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">8</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">9</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">10</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">11</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">12</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">13</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">14</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">15</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">16</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">17</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">18</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">19</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">20</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">21</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">22</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">23</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">24</span>]: x <span style="color:#f92672">is</span> y <span style="color:#f92672">==</span> <span style="color:#66d9ef">False</span>
+</span></span></code></pre></div><p>当整数在某个范围内时，他们使用同一个对象，超出范围就会分为两个不同对象，在同一行代码里面分配他们却使用的是同一个对象，在 for 循环里面都使用同一个对象</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> y <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">is</span> y
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">=</span> <span style="color:#ae81ff">20000</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> y <span style="color:#f92672">=</span> <span style="color:#ae81ff">20000</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">is</span> y
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">=</span> <span style="color:#ae81ff">20000</span>; y <span style="color:#f92672">=</span> <span style="color:#ae81ff">20000</span>;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">is</span> y
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2000</span>):
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>   x <span style="color:#f92672">=</span> i
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>   y <span style="color:#f92672">=</span> i
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>   <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> x <span style="color:#f92672">is</span> y:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     print i
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>
+</span></span></code></pre></div>
+
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-3022214826355647"
+                    data-ad-slot="3373260497"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+                
+                <div class="blog-tags">
+                    
+                    &nbsp;<a href="https://blog.axiaoxin.com//tags/python/">python</a>
+                    
+                </div>
+                
+
+                <ins id="content-ad"
+                     class="adsbygoogle"
+                     style="display:block; text-align:center;"
+                     data-ad-layout="in-article"
+                     data-ad-format="fluid"
+                     data-ad-client="ca-pub-3022214826355647"
+                     data-ad-slot="4546241981"></ins>
+
+                <script>
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        
+                        var id = "content-ad";
+                        var ins = document.getElementById(id);
+                        ins.setAttribute("data-ad-slot", "9889874488");
+                    }
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+
+                
+                <hr/>
+                <section id="social-share">
+                    <div class="list-inline footer-links">
+                        
+
+<div class="share-box" aria-hidden="true">
+    <div class="addthis_inline_share_toolbox"></div>
+</div>
+<script async src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-637606c33f0ab9be"></script>
+
+
+                    </div>
+                </section>
+                
+
+                
+                
+                
+                
+
+                
+                <h4 class="see-also">也可以看看</h4>
+                <ul>
+                    
+                    
+                    <li><a href="/post/2017-07-21-flask-%E4%B8%AD%E6%97%A5%E5%BF%97%E6%8C%89%E7%85%A7%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB%E5%88%86%E5%BC%80%E4%BF%9D%E5%AD%98%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6/">Flask 中日志按照日志级别分开保存到不同文件</a></li>
+                    
+                    <li><a href="/post/2017-03-03-sentry-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99%E6%80%BB%E7%BB%93/">Sentry 插件编写总结</a></li>
+                    
+                    <li><a href="/post/2015-05-29-%E5%88%86%E4%BA%AB%E5%87%A0%E4%B8%AA-python-%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7/">分享几个 Python 实现的实用命令行工具</a></li>
+                    
+                    <li><a href="/post/2017-05-04-python-%E6%9C%89%E5%BA%8F%E6%9B%B4%E6%96%B0-yaml-%E6%96%87%E4%BB%B6/">Python 有序更新 yaml 文件</a></li>
+                    
+                    <li><a href="/post/2015-05-15-%E4%BD%BF%E7%94%A8-python-%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%81%B0%E5%BA%A6%E7%AD%96%E7%95%A5%E5%87%BD%E6%95%B0/">使用 Python 实现一个灰度策略函数</a></li>
+                    
+                </ul>
+
+                
+                
+
+                <div class="_ha8w4pb61zc"></div>
+                <script type="text/javascript">
+                    (window.slotbydup = window.slotbydup || []).push({
+                        id: "u6682238",
+                        container: "_ha8w4pb61zc",
+                        async: true
+                    });
+                </script>
+            </article>
+
+
+            
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://blog.axiaoxin.com/post/2015-04-26-%E7%9C%8B%E4%BA%86%E4%B8%80%E5%9C%BA%E8%88%9E%E5%8F%B0%E5%89%A7%E4%BB%99%E5%89%91%E5%A5%87%E4%BE%A0%E4%BC%A0/" data-toggle="tooltip" data-placement="top" title="看了一场舞台剧《仙剑奇侠传》">&larr; 前一篇</a>
+                </li>
+                
+                
+                <li class="next">
+                    <a href="https://blog.axiaoxin.com/post/2016-07-18-%E4%B8%8A%E6%B5%B7%E8%BF%AA%E5%A3%AB%E5%B0%BC%E4%B8%80%E6%97%A5%E6%B8%B8%E8%AE%B0/" data-toggle="tooltip" data-placement="top" title="上海迪士尼一日游记">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            
+
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-3022214826355647"
+                data-ad-slot="5644200610"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+            <div class="giscus"></div>
+            <script src="https://giscus.app/client.js"
+                    data-repo="axiaoxin-com/blog"
+                    data-repo-id="R_kgDOIdZQhA"
+                    data-category="Comments"
+                    data-category-id="DIC_kwDOIdZQhM4CSvR2"
+                    data-mapping="title"
+                    data-strict="0"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-input-position="bottom"
+                    data-theme="preferred_color_scheme"
+                    data-lang="zh-CN"
+                    data-loading="lazy"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center footer-links">
+                    
+                    <li>
+                        
+                            <a href="mailto:admin@axiaoxin.com" title="Email me">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    <li>
+                        
+                            <a href="https://github.com/axiaoxin" title="GitHub">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    
+                    <li>
+                        <a href="" title="RSS">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="credits copyright text-muted">
+                
+                
+                <a href="http://axiaoxin.com">axiaoxin</a>
+                
+                
+
+                &nbsp;&bull;&nbsp;&copy;
+                
+                2011 - 2022
+                
+
+                
+                &nbsp;&bull;&nbsp;
+                <a href="https://blog.axiaoxin.com/">人言兑</a>
+                
+                </p>
+                <p class="copyright"><a class="text-muted text-decoration-none" href="https://beian.miit.gov.cn" target="_blank">蜀ICP备20023217号</a></p>
+            </div>
+        </div>
+    </div>
+</footer><script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://blog.axiaoxin.com/js/main.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script> hljs.highlightAll(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script async src="https://blog.axiaoxin.com/js/load-photoswipe.js"></script>
+
+
+
+<script>
+    (function() {
+            var cx = '61c0d8f33c4084733';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+        })();
+</script>
+
+
+
+
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["trackPageView"]);
+    _paq.push(["enableLinkTracking"]);
+
+    (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://matomo.axiaoxin.com/";
+            _paq.push(["setTrackerUrl", u+"piwik.php"]);
+            _paq.push(["setSiteId", "5"]);
+            var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+            g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+        })();
+</script>
+<noscript>
+    
+    <img src="http://matomo.axiaoxin.com/piwik.php?idsite=5&amp;rec=1" style="border:0" alt="" />
+    
+</noscript>
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?fdfe48e67d25b3802d6139d4e629c718";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+</script><script src="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/js/glightbox.min.js"></script>
+<script type="text/javascript">
+    $('.blog-post img').each(function(idx){
+        var src = $(this).attr("src");
+        var wrap = `<a href="${src}" class="glightbox"></a>`;
+        if (!src.match(/\.(jpg|jpeg|png|gif)$/i)) {
+            wrap = `<a href="${src}" target="_blank" data-glightbox="type: image"></a>`;
+        }
+        $(this).wrap(wrap);
+    });
+  const lightbox = GLightbox({});
+</script>
+
+
+    
+  </body>
+</html>
+

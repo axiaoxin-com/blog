@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>lua on 阿小信的博客</title>
+    <link>https://blog.axiaoxin.com/tags/lua/</link>
+    <description>Recent content in lua on 阿小信的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cmn-Hans</language>
+    <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
+    <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster>
+    <lastBuildDate>Tue, 16 Jun 2020 15:17:02 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/tags/lua/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Nginx&#43;Lua&#43;Redis 实现基础的令牌桶算法限流</title>
+      <link>https://blog.axiaoxin.com/post/2020-06-16-nginx&#43;lua&#43;redis-%E5%AE%9E%E7%8E%B0%E5%9F%BA%E7%A1%80%E7%9A%84%E4%BB%A4%E7%89%8C%E6%A1%B6%E7%AE%97%E6%B3%95%E9%99%90%E6%B5%81/</link>
+      <pubDate>Tue, 16 Jun 2020 15:17:02 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2020-06-16-nginx&#43;lua&#43;redis-%E5%AE%9E%E7%8E%B0%E5%9F%BA%E7%A1%80%E7%9A%84%E4%BB%A4%E7%89%8C%E6%A1%B6%E7%AE%97%E6%B3%95%E9%99%90%E6%B5%81/</guid>
+      <description>关于令牌桶（ token bucket ） 令牌桶限流的原理是系统以一个恒定的速度往固定容量的桶里放入令牌，当有请求进来时，需要先从桶里获取并消耗一个令牌，当桶里没有</description>
+    </item>
+    
+    <item>
+      <title>使用 Nginx Lua 修改 Influxdb API 的返回结构</title>
+      <link>https://blog.axiaoxin.com/post/2017-12-13-%E4%BD%BF%E7%94%A8-nginx-lua-%E4%BF%AE%E6%94%B9-influxdb-api-%E7%9A%84%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%84/</link>
+      <pubDate>Wed, 13 Dec 2017 15:29:55 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2017-12-13-%E4%BD%BF%E7%94%A8-nginx-lua-%E4%BF%AE%E6%94%B9-influxdb-api-%E7%9A%84%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%84/</guid>
+      <description>有一个API平台服务，所有接口都通过API平台转发到实际的服务上，然后再把实际服务的结果返回给客户端，API平台的规范是所有实际服务的接口返</description>
+    </item>
+    
+  </channel>
+</rss>

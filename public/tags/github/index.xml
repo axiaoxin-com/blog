@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>github on 阿小信的博客</title>
+    <link>https://blog.axiaoxin.com/tags/github/</link>
+    <description>Recent content in github on 阿小信的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cmn-Hans</language>
+    <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
+    <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster>
+    <lastBuildDate>Tue, 13 Dec 2022 21:18:11 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/tags/github/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Github 2022 年度报告</title>
+      <link>https://blog.axiaoxin.com/post/2022-12-13-github-2022-%E5%B9%B4%E5%BA%A6%E6%8A%A5%E5%91%8A/</link>
+      <pubDate>Tue, 13 Dec 2022 21:18:11 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2022-12-13-github-2022-%E5%B9%B4%E5%BA%A6%E6%8A%A5%E5%91%8A/</guid>
+      <description>又要到年底了，各大 APP 2022 的年度报告还没出炉，今天就先来看一下 Github 的 2022 年度报告。 2012 年我注册了 Github 账号，当年 12 月 19 日，Github 发布了第一份年度报告</description>
+    </item>
+    
+    <item>
+      <title>使用 Github Actions 自动部署 Golang 应用到 VPS 服务器</title>
+      <link>https://blog.axiaoxin.com/post/2021-06-19-%E4%BD%BF%E7%94%A8-github-actions-%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2-golang-%E5%BA%94%E7%94%A8%E5%88%B0-vps-%E6%9C%8D%E5%8A%A1%E5%99%A8/</link>
+      <pubDate>Sat, 19 Jun 2021 16:12:08 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2021-06-19-%E4%BD%BF%E7%94%A8-github-actions-%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2-golang-%E5%BA%94%E7%94%A8%E5%88%B0-vps-%E6%9C%8D%E5%8A%A1%E5%99%A8/</guid>
+      <description>环境说明 使用 GitHub Actions 可以在你提交代码后自动将最新代码编译发布部署到你的 VPS 服务器，这里记录一下配置步骤。 服务没有使用 Docker 部署，直接通过 supervisord 启动二进制文</description>
+    </item>
+    
+  </channel>
+</rss>

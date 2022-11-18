@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+<title>Elasticsearch 性能优化实践纪要 - 人言兑</title>
+  <meta name="description" content="ES 性能优化实践：节点负载不均衡 现象： 每个索引使用默认的 1 个分片，1 个副本，在 3 节点集群出现负载不均衡现象，两个节点 cpu 负载很高，另外一个节点 cpu">
+  <meta name="author" content="axiaoxin"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "阿小信的博客",
+    
+    "url": "https:\/\/blog.axiaoxin.com\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/blog.axiaoxin.com\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/post\/2021-08-05-elasticsearch-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5%E7%BA%AA%E8%A6%81\/",
+          "name": "Elasticsearch 性能优化实践纪要"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "axiaoxin"
+  },
+  "headline": "Elasticsearch 性能优化实践纪要",
+  "description" : "ES 性能优化实践：节点负载不均衡 现象： 每个索引使用默认的 1 个分片，1 个副本，在 3 节点集群出现负载不均衡现象，两个节点 cpu 负载很高，另外一个节点 cpu",
+  "inLanguage" : "zh-cn",
+  "wordCount":  1259 ,
+  "datePublished" : "2021-08-05T16:27:00",
+  "dateModified" : "2021-08-05T16:27:00",
+  "image" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+  "keywords" : [ "elasticsearch, debug" ],
+  "mainEntityOfPage" : "https:\/\/blog.axiaoxin.com\/post\/2021-08-05-elasticsearch-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5%E7%BA%AA%E8%A6%81\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/blog.axiaoxin.com\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Elasticsearch 性能优化实践纪要" />
+<meta property="og:description" content="ES 性能优化实践：节点负载不均衡 现象： 每个索引使用默认的 1 个分片，1 个副本，在 3 节点集群出现负载不均衡现象，两个节点 cpu 负载很高，另外一个节点 cpu">
+<meta property="og:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+<meta property="og:url" content="https://blog.axiaoxin.com/post/2021-08-05-elasticsearch-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5%E7%BA%AA%E8%A6%81/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="阿小信的博客" />
+
+  <meta name="twitter:title" content="Elasticsearch 性能优化实践纪要" />
+  <meta name="twitter:description" content="ES 性能优化实践：节点负载不均衡 现象： 每个索引使用默认的 1 个分片，1 个副本，在 3 节点集群出现负载不均衡现象，两个节点 cpu 负载很高，另外一个节点 cpu">
+  <meta name="twitter:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://blog.axiaoxin.com/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.106.0">
+  <link rel="alternate" href="https://blog.axiaoxin.com/index.xml" type="application/rss+xml" title="阿小信的博客"><link href="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://blog.axiaoxin.com/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <script>
+      var head = document.getElementsByTagName('HEAD')[0];
+      var link = document.createElement("link");
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css";
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        
+        link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css";
+      }
+      head.appendChild(link);
+  </script><link rel="stylesheet" href="https://blog.axiaoxin.com/css/codeblock.css" /><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3022214826355647" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" ></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5KRFX25W8R"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-5KRFX25W8R', { 'anonymize_ip': false });
+}
+</script>
+<link href="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/css/glightbox.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://blog.axiaoxin.com/">阿小信的博客</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="主页" href="/">主页</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="归档" href="/page/archives/">归档</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/page/about/">关于</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent">网站</a>
+              <div class="navlinks-children">
+                
+                  <a href="http://mbti.axiaoxin.com" target="_blank">MBTI职业性格测试</a>
+                
+                  <a href="http://investool.axiaoxin.com" target="_blank">InvesTool</a>
+                
+                  <a href="http://m.psyctest.cn" target="_blank">赛可测试网:免费心理测试</a>
+                
+                  <a href="http://axiaoxin.com" target="_blank">个人主页</a>
+                
+                  <a href="http://dw.mcool.top" target="_blank">抖文-精选优质抖音视频文章</a>
+                
+              </div>
+            </li>
+          
+        
+
+        
+
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="阿小信的博客" href="https://blog.axiaoxin.com/">
+            <img class="avatar-img" src="https://blog.axiaoxin.com/img/avatar-icon.png" alt="阿小信的博客" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">搜索 阿小信的博客</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        
+                        <h1>Elasticsearch 性能优化实践纪要</h1>
+                        
+                        
+                        
+                        
+                        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;发表于 2021-08-05
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;3&nbsp;分钟
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1259&nbsp;个字
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;axiaoxin
+    
+  
+  
+</span>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-3022214826355647"
+                 data-ad-slot="6429996269"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <article role="main" class="blog-post">
+                <h2 id="es-性能优化实践节点负载不均衡">ES 性能优化实践：节点负载不均衡</h2>
+<p><strong>现象</strong>：</p>
+<p>每个索引使用默认的 1 个分片，1 个副本，在 3 节点集群出现负载不均衡现象，两个节点 cpu 负载很高，另外一个节点 cpu 负载更低。</p>
+<p><strong>原因</strong>：</p>
+<p>分片+副本一共 2 个，只能被分散到两个节点上，查询请求只能命中这两个节点。</p>
+<p><strong>解决方案</strong>：</p>
+<p>ES 创建索引后无法动态修改分片数，但是可以动态修改副本数，增加副本数可以分散查询请求。</p>
+<p>在不改变分片数的情况下，通过调整分片的副本数，使分片副本数+原始分片数的总数为节点数基数或倍数，以达到节点负载均衡；
+将索引的分片副本数增加到 2，加上分片自身，一共3个，刚好均分给3个节点，调整后节点cpu负载到达均衡。</p>
+<h2 id="es-性能优化实践慢查询">ES 性能优化实践：慢查询</h2>
+<p><strong>现象</strong>：</p>
+<p>一个简单的查询，耗时需要 500ms</p>
+<p>查询请求参数中使用terms条件查询如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;terms&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;my_int_field&#34;</span>: [
+</span></span><span style="display:flex;"><span>            <span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>原因</strong>：</p>
+<p>生产环境的数据中， <code>my_int_field</code> 字段的默认值为0，这里需求是查特定非 0 值，由于代码逻辑没有过滤默认值，查询字段中出现0，导致几乎全部记录被匹配，于是产生了慢查询。</p>
+<h2 id="es-性能优化实践开启es慢查询日志">ES 性能优化实践：开启ES慢查询日志：</h2>
+<p>ES 默认没有开启慢查询日志，需要手动调用 api 进行开启。</p>
+<p>如下对全部索引都配置开启慢查询日志：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">PUT</span> <span style="color:#960050;background-color:#1e0010">*/_settings</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;index.indexing.slowlog.threshold.index.debug&#34;</span> : <span style="color:#e6db74">&#34;5ms&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;index.indexing.slowlog.threshold.index.info&#34;</span> : <span style="color:#e6db74">&#34;50ms&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;index.indexing.slowlog.threshold.index.warn&#34;</span> : <span style="color:#e6db74">&#34;100ms&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;index.search.slowlog.threshold.fetch.debug&#34;</span> : <span style="color:#e6db74">&#34;10ms&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;index.search.slowlog.threshold.fetch.info&#34;</span> : <span style="color:#e6db74">&#34;50ms&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;index.search.slowlog.threshold.fetch.warn&#34;</span> : <span style="color:#e6db74">&#34;100ms&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;index.search.slowlog.threshold.query.debug&#34;</span> : <span style="color:#e6db74">&#34;100ms&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;index.search.slowlog.threshold.query.info&#34;</span> : <span style="color:#e6db74">&#34;200ms&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;index.search.slowlog.threshold.query.warn&#34;</span> : <span style="color:#e6db74">&#34;500ms&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>具体时长可以根据实际情况调整。</p>
+<h2 id="es-性能优化实践使用-filter-子句优化-bool-查询">ES 性能优化实践：使用 filter 子句优化 bool 查询</h2>
+<p>默认情况下，Elasticsearch 按相关性分数对匹配的搜索结果进行排序，相关性分数衡量每个文档与查询的匹配程度。</p>
+<p>相关性分数是一个正浮点数，在搜索 API 的 <code>_score</code> 元数据字段中返回。 <code>_score</code> 越高，文档越相关。</p>
+<p>分数计算决于查询子句是在 query context 中还是在 filter context 中运行。</p>
+<p>对于 bool 查询，must 和 should 子句使用 query context，filter 和 must_not 使用 filter context。</p>
+<p>query context 关注的是文档的匹配程度，因此查询除了关注文档是否匹配以外还需要计算匹配度得分。</p>
+<p>filter context 关注的只是文档是否匹配，没有额外计算，并且 ES 会自动缓存 filter context 的查询结果。</p>
+<p>如果只关注是否匹配，尽量使用 filter context 构造查询子句。</p>
+<blockquote>
+<p>参考文档：<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html</a></p>
+</blockquote>
+<p><strong>ES 性能优化实践：查询性能分析</strong></p>
+<p>在 kibana 的 dev tool 中，使用 search profile 可以查看具体耗时分析</p>
+<p><img src="https://user-images.githubusercontent.com/2876405/128311432-04d11aa8-1192-4981-ada6-a0efb6522beb.png" alt="ES 查询性能分析"></p>
+<p>从 View details 中可以看到主要耗时是在 should 子句的计算得分</p>
+<p><img src="https://user-images.githubusercontent.com/2876405/128311453-10bc608d-b4f9-496d-b7ae-767709294cb3.png" alt="ES 查询性能分析"></p>
+<p>这里的 should 子句在使用 filter context 后，es 会缓存结果，当 3 个节点都有缓存时耗时明显减少，在 console 中进行查询时基本可以在 30 毫秒内返回。</p>
+<h2 id="es-性能优化实践terms-查询优化">ES 性能优化实践：terms 查询优化：</h2>
+<p>将 terms 替换为多个 term 查询可以提高性能。精确匹配使用 term 查询，不要使用 match 查询。</p>
+<p>should 子句中使用了 terms 查询，可以看到耗时较多，类型为 PointInSetQuery，这里主要耗时也是在计算得分。</p>
+<p><img src="https://user-images.githubusercontent.com/2876405/128311653-4ff5c67e-4b7e-495d-82a2-02bdd9238ee5.png" alt="ES 性能优化实践：terms 查询优化"></p>
+<p><img src="https://user-images.githubusercontent.com/2876405/128311687-a892fce6-d3a9-4e46-bcd1-848188fc53bb.png" alt="ES 性能优化实践：terms 查询优化"></p>
+<p>将 terms 查询条件替换为多个 term 的组合查询，可以看到查询类型变成了 PointRangeQuery 类型，性能又得到了相当大的提升！</p>
+<p><img src="https://user-images.githubusercontent.com/2876405/128311767-5ec8f0a9-c7a0-476a-83f9-fbde686f548f.png" alt="ES 性能优化实践：terms 查询优化"></p>
+<p>term 查询数字类型的值使用 range 查询，查询类型会变成 IndexOrDocValuesQuery，性能可以更进一步提升：</p>
+<p><img src="https://user-images.githubusercontent.com/2876405/128311827-4c9dee3d-5ba1-4eb1-91bb-2b719fd2244b.png" alt="ES 性能优化实践：terms 查询优化"></p>
+<p>同样的查询场景，耗时从最开始的 270ms-&gt;99ms-&gt;12ms，性能提升20多倍。</p>
+
+
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-3022214826355647"
+                    data-ad-slot="3373260497"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+                
+                <div class="blog-tags">
+                    
+                    &nbsp;<a href="https://blog.axiaoxin.com//tags/elasticsearch/">elasticsearch</a>
+                    
+                    &nbsp;<a href="https://blog.axiaoxin.com//tags/debug/">debug</a>
+                    
+                </div>
+                
+
+                <ins id="content-ad"
+                     class="adsbygoogle"
+                     style="display:block; text-align:center;"
+                     data-ad-layout="in-article"
+                     data-ad-format="fluid"
+                     data-ad-client="ca-pub-3022214826355647"
+                     data-ad-slot="4546241981"></ins>
+
+                <script>
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        
+                        var id = "content-ad";
+                        var ins = document.getElementById(id);
+                        ins.setAttribute("data-ad-slot", "9889874488");
+                    }
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+
+                
+                <hr/>
+                <section id="social-share">
+                    <div class="list-inline footer-links">
+                        
+
+<div class="share-box" aria-hidden="true">
+    <div class="addthis_inline_share_toolbox"></div>
+</div>
+<script async src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-637606c33f0ab9be"></script>
+
+
+                    </div>
+                </section>
+                
+
+                
+                
+                
+                
+
+                
+                <h4 class="see-also">也可以看看</h4>
+                <ul>
+                    
+                    
+                    <li><a href="/post/2021-05-13-php-fpm-%E8%B6%85%E6%97%B6%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90/">php-fpm 超时原因分析</a></li>
+                    
+                    <li><a href="/post/2018-07-05-%E6%90%AD%E5%BB%BA-filebeat-elasticsearch-kibana-v6.3.0-%E6%97%A5%E5%BF%97%E7%9B%91%E6%8E%A7/">搭建 Filebeat Elasticsearch Kibana V6.3.0 日志监控</a></li>
+                    
+                    <li><a href="/post/2017-12-27-celery-4.1.0-%E7%89%88%E6%9C%AC%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4-bug/">Celery 4.1.0 版本定时任务执行时间 BUG</a></li>
+                    
+                    <li><a href="/post/2017-11-23-%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">记一次系统性能问题排查</a></li>
+                    
+                </ul>
+
+                
+                
+
+                <div class="_ha8w4pb61zc"></div>
+                <script type="text/javascript">
+                    (window.slotbydup = window.slotbydup || []).push({
+                        id: "u6682238",
+                        container: "_ha8w4pb61zc",
+                        async: true
+                    });
+                </script>
+            </article>
+
+
+            
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://blog.axiaoxin.com/post/2021-06-19-%E4%BD%BF%E7%94%A8-github-actions-%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2-golang-%E5%BA%94%E7%94%A8%E5%88%B0-vps-%E6%9C%8D%E5%8A%A1%E5%99%A8/" data-toggle="tooltip" data-placement="top" title="使用 Github Actions 自动部署 Golang 应用到 VPS 服务器">&larr; 前一篇</a>
+                </li>
+                
+                
+                <li class="next">
+                    <a href="https://blog.axiaoxin.com/post/2021-08-27-%E6%8A%95%E8%B5%84%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84%E4%BA%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" data-toggle="tooltip" data-placement="top" title="《投资最重要的事》读书笔记">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            
+
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-3022214826355647"
+                data-ad-slot="5644200610"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+            <div class="giscus"></div>
+            <script src="https://giscus.app/client.js"
+                    data-repo="axiaoxin-com/blog"
+                    data-repo-id="R_kgDOIdZQhA"
+                    data-category="Comments"
+                    data-category-id="DIC_kwDOIdZQhM4CSvR2"
+                    data-mapping="title"
+                    data-strict="0"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-input-position="bottom"
+                    data-theme="preferred_color_scheme"
+                    data-lang="zh-CN"
+                    data-loading="lazy"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center footer-links">
+                    
+                    <li>
+                        
+                            <a href="mailto:admin@axiaoxin.com" title="Email me">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    <li>
+                        
+                            <a href="https://github.com/axiaoxin" title="GitHub">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    
+                    <li>
+                        <a href="" title="RSS">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="credits copyright text-muted">
+                
+                
+                <a href="http://axiaoxin.com">axiaoxin</a>
+                
+                
+
+                &nbsp;&bull;&nbsp;&copy;
+                
+                2011 - 2022
+                
+
+                
+                &nbsp;&bull;&nbsp;
+                <a href="https://blog.axiaoxin.com/">人言兑</a>
+                
+                </p>
+                <p class="copyright"><a class="text-muted text-decoration-none" href="https://beian.miit.gov.cn" target="_blank">蜀ICP备20023217号</a></p>
+            </div>
+        </div>
+    </div>
+</footer><script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://blog.axiaoxin.com/js/main.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script> hljs.highlightAll(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script async src="https://blog.axiaoxin.com/js/load-photoswipe.js"></script>
+
+
+
+<script>
+    (function() {
+            var cx = '61c0d8f33c4084733';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+        })();
+</script>
+
+
+
+
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["trackPageView"]);
+    _paq.push(["enableLinkTracking"]);
+
+    (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://matomo.axiaoxin.com/";
+            _paq.push(["setTrackerUrl", u+"piwik.php"]);
+            _paq.push(["setSiteId", "5"]);
+            var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+            g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+        })();
+</script>
+<noscript>
+    
+    <img src="http://matomo.axiaoxin.com/piwik.php?idsite=5&amp;rec=1" style="border:0" alt="" />
+    
+</noscript>
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?fdfe48e67d25b3802d6139d4e629c718";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+</script><script src="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/js/glightbox.min.js"></script>
+<script type="text/javascript">
+    $('.blog-post img').each(function(idx){
+        var src = $(this).attr("src");
+        var wrap = `<a href="${src}" class="glightbox"></a>`;
+        if (!src.match(/\.(jpg|jpeg|png|gif)$/i)) {
+            wrap = `<a href="${src}" target="_blank" data-glightbox="type: image"></a>`;
+        }
+        $(this).wrap(wrap);
+    });
+  const lightbox = GLightbox({});
+</script>
+
+
+    
+  </body>
+</html>
+

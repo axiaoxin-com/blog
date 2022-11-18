@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+<title>php-fpm 超时原因分析 - 人言兑</title>
+  <meta name="description" content="背景 线上PHP服务，同一台机器上部有AB两个服务，A接收外部请求后再通过本地nginx请求部署在本地的B服务获取数据，同时也有大量的请求直接">
+  <meta name="author" content="axiaoxin"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "阿小信的博客",
+    
+    "url": "https:\/\/blog.axiaoxin.com\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/blog.axiaoxin.com\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/post\/2021-05-13-php-fpm-%E8%B6%85%E6%97%B6%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90\/",
+          "name": "Php fpm 超时原因分析"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "axiaoxin"
+  },
+  "headline": "php-fpm 超时原因分析",
+  "description" : "背景 线上PHP服务，同一台机器上部有AB两个服务，A接收外部请求后再通过本地nginx请求部署在本地的B服务获取数据，同时也有大量的请求直接",
+  "inLanguage" : "zh-cn",
+  "wordCount":  3461 ,
+  "datePublished" : "2021-05-13T15:25:22",
+  "dateModified" : "2021-05-13T15:25:22",
+  "image" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+  "keywords" : [ "debug" ],
+  "mainEntityOfPage" : "https:\/\/blog.axiaoxin.com\/post\/2021-05-13-php-fpm-%E8%B6%85%E6%97%B6%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/blog.axiaoxin.com\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="php-fpm 超时原因分析" />
+<meta property="og:description" content="背景 线上PHP服务，同一台机器上部有AB两个服务，A接收外部请求后再通过本地nginx请求部署在本地的B服务获取数据，同时也有大量的请求直接">
+<meta property="og:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+<meta property="og:url" content="https://blog.axiaoxin.com/post/2021-05-13-php-fpm-%E8%B6%85%E6%97%B6%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="阿小信的博客" />
+
+  <meta name="twitter:title" content="php-fpm 超时原因分析" />
+  <meta name="twitter:description" content="背景 线上PHP服务，同一台机器上部有AB两个服务，A接收外部请求后再通过本地nginx请求部署在本地的B服务获取数据，同时也有大量的请求直接">
+  <meta name="twitter:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://blog.axiaoxin.com/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.106.0">
+  <link rel="alternate" href="https://blog.axiaoxin.com/index.xml" type="application/rss+xml" title="阿小信的博客"><link href="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://blog.axiaoxin.com/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <script>
+      var head = document.getElementsByTagName('HEAD')[0];
+      var link = document.createElement("link");
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css";
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        
+        link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css";
+      }
+      head.appendChild(link);
+  </script><link rel="stylesheet" href="https://blog.axiaoxin.com/css/codeblock.css" /><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3022214826355647" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" ></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5KRFX25W8R"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-5KRFX25W8R', { 'anonymize_ip': false });
+}
+</script>
+<link href="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/css/glightbox.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://blog.axiaoxin.com/">阿小信的博客</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="主页" href="/">主页</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="归档" href="/page/archives/">归档</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/page/about/">关于</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent">网站</a>
+              <div class="navlinks-children">
+                
+                  <a href="http://mbti.axiaoxin.com" target="_blank">MBTI职业性格测试</a>
+                
+                  <a href="http://investool.axiaoxin.com" target="_blank">InvesTool</a>
+                
+                  <a href="http://m.psyctest.cn" target="_blank">赛可测试网:免费心理测试</a>
+                
+                  <a href="http://axiaoxin.com" target="_blank">个人主页</a>
+                
+                  <a href="http://dw.mcool.top" target="_blank">抖文-精选优质抖音视频文章</a>
+                
+              </div>
+            </li>
+          
+        
+
+        
+
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="阿小信的博客" href="https://blog.axiaoxin.com/">
+            <img class="avatar-img" src="https://blog.axiaoxin.com/img/avatar-icon.png" alt="阿小信的博客" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">搜索 阿小信的博客</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        
+                        <h1>php-fpm 超时原因分析</h1>
+                        
+                        
+                        
+                        
+                        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;发表于 2021-05-13
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;7&nbsp;分钟
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;3461&nbsp;个字
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;axiaoxin
+    
+  
+  
+</span>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-3022214826355647"
+                 data-ad-slot="6429996269"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <article role="main" class="blog-post">
+                <h2 id="背景">背景</h2>
+<p>线上PHP服务，同一台机器上部有AB两个服务，A接收外部请求后再通过本地nginx请求部署在本地的B服务获取数据，同时也有大量的请求直接请求B服务获取数据，偶发会在一段时间内Nginx大量返回504请求超时和少量502连接被断开。</p>
+<p>超时期间机器的CPU、内存、IO等负载都正常，请求量相对有增加但QPS不到100，比起高峰时间的请求量（QPS差不多2800）这点起伏几乎可以忽略不计，高峰时期服务却没有任何异常。通过日志中的requestid分析，发现从A服务到B服务之间的日志打印时间间隔很长，请求链路从A服务的最后一条日志到B服务的第一条日志之间间隔有10多秒之长。</p>
+<h2 id="问题定位">问题定位</h2>
+<p>观测机器的全部基础指标，发现唯一能和超时日志量曲线对应起来的指标是CurrEstab指标，该指标表示TCP连接数，峰值到达900+，起伏和超时日志的起伏基本吻合，可以初步猜测导致超时原因是在这个时间段内TCP的连接数过多导致超时。</p>
+<h2 id="超时原因分析">超时原因分析</h2>
+<p><strong>线上PHP相关信息</strong></p>
+<p>php 版本：<code>PHP 5.6.29 (fpm-fcgi) (built: Jan 12 2017 09:49:19)</code></p>
+<p>php-fpm 线上服务配置：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#66d9ef">[global]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">; Pid file</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">; Note: the default prefix is /usr/local/services/php-5.3.6/var</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">; Default Value: none</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;pid = run/php-fpm.pid</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">pid</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/usr/local/services/php-5.6.29/log/php-fpm.pid</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">; Error log file</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">; Note: the default prefix is /usr/local/services/php-5.3.6/var</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">; Default Value: log/php-fpm.log</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;error_log = log/php-fpm.log</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">error_log</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/usr/local/services/php-5.6.29/log/php-fpm.log</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">; Log level</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">; Possible Values: alert, error, warning, notice, debug</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">; Default Value: notice</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;log_level = notice</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">[www]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">listen</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">127.0.0.1:9000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">user</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">user_00</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">group</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">users</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">pm</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">static</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">pm.max_children</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">200</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">pm.max_requests</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">2000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">pm.status_path</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/status</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ping.path</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/ping</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ping.response</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">pong</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">access.log</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">log/$pool.access.log</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">access.format</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;%R - %u %t \&#34;%m %r%Q%q\&#34; %s %f %{mili}d %{kilo}M %C%%&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">slowlog</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">log/$pool.log.slow</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">request_slowlog_timeout</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">5s</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;request_terminate_timeout = 60s</span>
+</span></span></code></pre></div><p>线上 php-fpm.log 中存在一些看起来有一些危险的日志内容：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[16-Jul-2020 15:47:32] NOTICE: [pool www] child 12140 exited with code 0 after 7548.179510 seconds from start
+</span></span></code></pre></div><p>了解完配置项后确认为无害日志无需关注， 配置中设置了 <code>pm.max_requests</code> 每个子进程处理了对应请求数后会自动重启，这里是打印子进程从启动到退出期间的运行时长。</p>
+<h3 id="php-配置项">PHP 配置项</h3>
+<p>先了解 php-fpm 各配置项的作用：</p>
+<ul>
+<li><a href="https://www.php.net/manual/zh/install.fpm.configuration.php">php-fpm 配置项文档地址</a> （重要）</li>
+<li><a href="https://www.php.net/manual/zh/ini.php">php.ini 配置项文档地址</a></li>
+</ul>
+<p>php-fpm的默认配置文件（php-fpm.conf.default）中有对当前版本php的每个配置项有详细解释和默认值说明，可以参考</p>
+<p><strong>pm参数</strong></p>
+<p>由于机器大多都是8G内存以上，这里的<code>pm</code>配置使用<code>static</code>是比较合理的，一般一个 php-fpm 占用 20M 内存左右，动态适合小内存机器，灵活分配进程，省内存。静态适用于大内存机器，动态创建回收进程对服务器资源也是一种消耗。</p>
+<p>设置为static 后只有 pm.max_children 一个参数会有效</p>
+<p><strong>request_terminate_timeout参数</strong></p>
+<p>request_terminate_timeout的值如果设置为 0 或者过长的时间，可能会引起 file_get_contents 的资源问题。
+如果 file_get_contents 请求的远程资源如果反应过慢， file_get_contents 就会一直卡在那里不会超时</p>
+<p>php.ini 里面 max_execution_time 可以设置 PHP 脚本的最大执行时间，但是，在 php-cgi(php-fpm) 中，该参数不会起效。真正能够控制 PHP 脚本最大执行时间的是 php-fpm.conf 配置文件中的 request_terminate_timeout 参数。</p>
+<p><strong>backlog</strong></p>
+<p>backlog 的定义是已连接但未进行 accept 处理的 SOCKET 队列（全连接）大小</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#75715e">; Set listen(2) backlog.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">; Default Value: 65535 (-1 on FreeBSD and OpenBSD)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;listen.backlog = 65535</span>
+</span></span></code></pre></div><p>当前该版本listen.backlog 默认值为65535，看网络文章介绍最新版已改为511</p>
+<p>backlog 数，设置 TCP 建立连接时 listen 的全连接队列长度，-1 表示在 php-fpm 中不做限制，交由操作系统的 backlog 设置来决定，设置为其余数值，实际生效的是应用层面backlog值和系统层面 somaxconn 的最小值，即 min(backlog,somaxconn)，因此这里的65535并不一定是就是65535</p>
+<p><strong>查看相关参数值</strong></p>
+<p>查看php-fpm当前的全连接队列长度，可以看到实际生效的backlog数为操作系统设置的128：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ss -tlnp |egrep -i <span style="color:#e6db74">&#39;(9000|Recv-Q)&#39;</span>
+</span></span><span style="display:flex;"><span>State      Recv-Q Send-Q Local Address:Port               Peer Address:Port
+</span></span><span style="display:flex;"><span>LISTEN     <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">128</span>    127.0.0.1:9000                     *:*                   users:<span style="color:#f92672">((</span><span style="color:#e6db74">&#34;php-fpm&#34;</span>,pid<span style="color:#f92672">=</span>32558,fd<span style="color:#f92672">=</span>0<span style="color:#f92672">)</span>,...<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>在 listen 状态情况下： Recv-Q 表示存在于 backlog 当中未被服务端应用程序 accept 的队列大小； Send-Q 表示最大的 backlog 的大小</p>
+<p>如果nginx配置了php-fpm的status路径，也可以通过请求status查看相关状态：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#a6e22e">pool:                 www</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">process manager:      static</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">start time:           21/Jul/2020:11:22:12 +0800</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">start since:          35033</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">accepted conn:        6178811</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">listen queue:         0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">max listen queue:     0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">listen queue len:     128</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">idle processes:       199</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">active processes:     1</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">total processes:      200</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">max active processes: 201</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">max children reached: 0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">slow requests:        0</span>
+</span></span></code></pre></div><p>查看操作系统全连接最大值</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cat /proc/sys/net/core/somaxconn  <span style="color:#75715e">## 定义了系统中每一个端口最大的监听队列的长度</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">128</span>
+</span></span></code></pre></div><p>半连接最大值</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cat /proc/sys/net/ipv4/tcp_max_syn_backlog
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">4096</span>
+</span></span></code></pre></div><p><code>ss -s</code> 查看队列的溢出统计数据</p>
+<p><strong>当全连接到达backlog限制后会发生什么</strong>？</p>
+<p>TCP 在第二次握手时 server 端收到 syn 包后将相关信息放到 syn queue 这个半连接队列中同时向 client 发送 syn+ack ， client 收到后向 server 端回 ack 并确认后，会将信息从 syn 半连接队列取出到 accept 全连接队列，进到这个队列才能从 listen()变成 accept()，backlog 限制达到，系统将停止对 SYN 包响应 SYN/ACK 包。</p>
+<blockquote>
+<p>参考文章：<a href="http://jm.taobao.org/2017/05/25/525-1/">http://jm.taobao.org/2017/05/25/525-1/</a></p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cat /proc/sys/net/ipv4/tcp_abort_on_overflow
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><p>tcp_abort_on_overflow 为 0 表示如果三次握手第三步的时候全连接队列满了那么 server 忽略 client 发过来的 ack ， server 端没有收到 ack 认为连接还没建立起来会重传 SYN ACK ，而客户端以为连接已建立，开始后续调用等待直至超时，1 表示第三步的时候如果全连接队列满了， server 发送一个 reset 包给 client</p>
+<h2 id="超时原因总结">超时原因总结</h2>
+<p>超时期间，tcp连接数激增，导致php-fpm的全连接队列被占满，后续的请求在建立tcp连接时，A服务在完成三次握手时最后的ack被B服务忽略导致到accept的调用而无法真正建立连接但A服务侧却认为连接已经建立，而B服务认为A服务的连接还没建立，一直在重传syn ack，在A服务端就会一直等待B服务的响应，最后直到超时。</p>
+<h2 id="backlog-应该设置为多少">backlog 应该设置为多少？</h2>
+<p>在设置 backlog 时，既不能太大，也不能太小，设置太大，当访问流量突然增加超过服务器的负载时，客户端不能快速失败，造成读取连接超时，对服务端来讲，会影响网络 I/O ，同时造成内存使用过大， cpu 负载增加；</p>
+<p>如果设置太小，不能充分发挥服务端的负载能力，并且会客户端造成连接失败的情况。应根服务端能够承受的最大 qps 进行设置， backlog 的大小，应设置成在服务端最大能够承受 qps 的 1-1.5 倍左右。</p>
+<blockquote>
+<p>参考文章：<a href="https://juejin.im/post/5d8488256fb9a06b065cad98">https://juejin.im/post/5d8488256fb9a06b065cad98</a></p>
+</blockquote>
+<p>本地搭建服务模拟线上服务进行压测来确认backlog值</p>
+<ul>
+<li>服务接口平均耗时： 0.14s</li>
+<li>最大 qps: 2850</li>
+<li>本地机器：4核8G</li>
+</ul>
+<p><strong>配置 nginx 模拟接口</strong></p>
+<p>sleep.conf</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#66d9ef">server</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">listen</span> <span style="color:#ae81ff">2142</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">location</span> ~ <span style="color:#e6db74">\.php$</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">root</span> <span style="color:#e6db74">/path/to/phpfile</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">include</span> <span style="color:#e6db74">fastcgi_params</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">fastcgi_param</span> <span style="color:#e6db74">REQUEST_METHOD</span> $request_method;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">fastcgi_param</span> <span style="color:#e6db74">SCRIPT_FILENAME</span> $document_root$fastcgi_script_name;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">fastcgi_pass</span> 127.0.0.1:<span style="color:#ae81ff">9000</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">fastcgi_index</span> <span style="color:#e6db74">sleep.php</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>sleep.php</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span>$i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.14</span>;
+</span></span><span style="display:flex;"><span>$seconds <span style="color:#f92672">=</span> $i <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">usleep</span>($seconds);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;wakeup!&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p><strong>原始线上配置压测数据</strong></p>
+<p><strong>不配置 backlog</strong>（线上配置，128）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#a6e22e">Concurrency Level:      3000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Time taken for tests:   15.360 seconds</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Complete requests:      3000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Failed requests:        949</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">(Connect: 0, Receive: 0, Length: 949, Exceptions: 0)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Write errors:           0</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Non-2xx responses:      949</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Total transferred:      669982 bytes</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">HTML transferred:       152911 bytes</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Requests per second:    195.31 [##/sec] (mean)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Time per request:       15360.390 [ms] (mean)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Time per request:       5.120 [ms] (mean, across all concurrent requests)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Transfer rate:          42.60 [Kbytes/sec] received</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Connection Times (ms)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">min  mean[+/-sd] median   max</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Connect:        0   87  19.5     89     122</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Processing:   141 6924 5903.2   4610   15051</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Waiting:      140 6923 5902.9   4609   15051</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">Total:        252 7011 5885.4   4699   15127</span>
+</span></span></code></pre></div><h3 id="参数调整">参数调整</h3>
+<p><strong>backlog：accept队列大小</strong></p>
+<p>以5秒超时为基准，目前以最大请求量的地域为参考的话平均一个子进程处理一个请求需要0.14秒，5秒内约处理35个，每秒约7个，共200个子进程，则5秒内处理完全部请求的话，backlog队列可以接收约7000个请求(<code>5/0.14*200=7142.857142857141</code>)</p>
+<p>有的地域是100子进程，可接收约3500个请求，目前最大并发量不到3000，backlog设为1.5倍较为合适 <code>3000*1.5=4500</code></p>
+<p><strong>max_children： php-fpm子进程数</strong></p>
+<p>当前为200，按当前最高并发量2800/s算，200个子进程每个子进程需每秒约处理14个请求，无法完成5秒内返回结果，调整为400可预防极端情况，每个进程约20M，满负荷时<code>400*20=8000M</code>，8G内存不适用。</p>
+<p><strong>max_requests：完成对应次请求处理后重启子进程</strong></p>
+<p>当前为2000，每个进程每秒完成7次处理，平均不到5分钟就会重启一次，这里调整为60分钟左右重启一次的量约 25000，避免频繁重启导致502</p>
+<p><strong>修改系统 somaxconn</strong></p>
+<p>临时修改：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sysctl -w net.core.somaxcon<span style="color:#e6db74">`</span>
+</span></span></code></pre></div><p>永久修改：在<code>/etc/sysctl.conf</code>中增加一行</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#a6e22e">net.core.somaxconn</span><span style="color:#f92672">=</span> <span style="color:#e6db74">4000</span>
+</span></span></code></pre></div><p>然后执行命令</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sysctl -p
+</span></span></code></pre></div><h3 id="新配置压测数据">新配置压测数据：</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#75715e">;;;;;;;;;;;;;;;;;;;;;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">; FPM Configuration ;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;;;;;;;;;;;;;;;;;;;;;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">; All relative paths in this configuration file are relative to PHP&#39;s install</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">; prefix (/usr/local/services/php-5.6.29). This prefix can be dynamically changed by using the</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">; &#39;-p&#39; argument from the command line.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">[global]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">pid</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/usr/local/services/php-5.6.29/log/php-fpm.pid</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">error_log</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/usr/local/services/php-5.6.29/log/php-fpm.log</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">[www]</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">user</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">user_00</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">group</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">users</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">listen</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">127.0.0.1:9000</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">listen.backlog</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">4500</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">pm</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">static</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">pm.max_children</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">200</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">pm.max_requests</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">25000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">pm.status_path</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/status</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ping.path</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/ping</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ping.response</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">pong</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">access.log</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">log/$pool.access.log</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">access.format</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;%R - %u %t \&#34;%m %r%Q%q\&#34; %s %f %{mili}d %{kilo}M %C%%&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">slowlog</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">log/$pool.log.slow</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">request_slowlog_timeout</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">5s</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">;request_terminate_timeout = 10s</span>
+</span></span></code></pre></div><p>ab 结果，3000并发完全无压力</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Concurrency Level:      3000
+</span></span><span style="display:flex;"><span>Time taken for tests:   2.421 seconds
+</span></span><span style="display:flex;"><span>Complete requests:      3000
+</span></span><span style="display:flex;"><span>Failed requests:        0
+</span></span><span style="display:flex;"><span>Write errors:           0
+</span></span><span style="display:flex;"><span>Total transferred:      558000 bytes
+</span></span><span style="display:flex;"><span>HTML transferred:       21000 bytes
+</span></span><span style="display:flex;"><span>Requests per second:    1239.28 [##/sec] (mean)
+</span></span><span style="display:flex;"><span>Time per request:       2420.754 [ms] (mean)
+</span></span><span style="display:flex;"><span>Time per request:       0.807 [ms] (mean, across all concurrent requests)
+</span></span><span style="display:flex;"><span>Transfer rate:          225.10 [Kbytes/sec] received
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Connection Times (ms)
+</span></span><span style="display:flex;"><span>            min  mean[+/-sd] median   max
+</span></span><span style="display:flex;"><span>Connect:        0   80  19.2     78     116
+</span></span><span style="display:flex;"><span>Processing:   140 1134 602.0   1121    2130
+</span></span><span style="display:flex;"><span>Waiting:      140 1134 602.1   1121    2130
+</span></span><span style="display:flex;"><span>Total:        238 1214 593.7   1174    2194
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Concurrency Level:      3000
+</span></span><span style="display:flex;"><span>Time taken for tests:   10.860 seconds
+</span></span><span style="display:flex;"><span>Complete requests:      15000
+</span></span><span style="display:flex;"><span>Failed requests:        0
+</span></span><span style="display:flex;"><span>Write errors:           0
+</span></span><span style="display:flex;"><span>Total transferred:      2790000 bytes
+</span></span><span style="display:flex;"><span>HTML transferred:       105000 bytes
+</span></span><span style="display:flex;"><span>Requests per second:    1381.27 [##/sec] (mean)
+</span></span><span style="display:flex;"><span>Time per request:       2171.909 [ms] (mean)
+</span></span><span style="display:flex;"><span>Time per request:       0.724 [ms] (mean, across all concurrent requests)
+</span></span><span style="display:flex;"><span>Transfer rate:          250.90 [Kbytes/sec] received
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Connection Times (ms)
+</span></span><span style="display:flex;"><span>            min  mean[+/-sd] median   max
+</span></span><span style="display:flex;"><span>Connect:        0   19  37.9      0     122
+</span></span><span style="display:flex;"><span>Processing:   141 1911 477.2   2106    2131
+</span></span><span style="display:flex;"><span>Waiting:      140 1911 477.3   2106    2131
+</span></span><span style="display:flex;"><span>Total:        247 1929 443.0   2106    2167
+</span></span></code></pre></div><p>15000并发时偶发存在失败请求</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Concurrency Level:      15000
+</span></span><span style="display:flex;"><span>Time taken for tests:   17.543 seconds
+</span></span><span style="display:flex;"><span>Complete requests:      15000
+</span></span><span style="display:flex;"><span>Failed requests:        107
+</span></span><span style="display:flex;"><span>(Connect: 0, Receive: 0, Length: 107, Exceptions: 0)
+</span></span><span style="display:flex;"><span>Write errors:           0
+</span></span><span style="display:flex;"><span>Non-2xx responses:      107
+</span></span><span style="display:flex;"><span>Total transferred:      2802626 bytes
+</span></span><span style="display:flex;"><span>HTML transferred:       119873 bytes
+</span></span><span style="display:flex;"><span>Requests per second:    855.06 [##/sec] (mean)
+</span></span><span style="display:flex;"><span>Time per request:       17542.629 [ms] (mean)
+</span></span><span style="display:flex;"><span>Time per request:       1.170 [ms] (mean, across all concurrent requests)
+</span></span><span style="display:flex;"><span>Transfer rate:          156.02 [Kbytes/sec] received
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Connection Times (ms)
+</span></span><span style="display:flex;"><span>            min  mean[+/-sd] median   max
+</span></span><span style="display:flex;"><span>Connect:        0  429  86.1    430     585
+</span></span><span style="display:flex;"><span>Processing:   243 6360 4215.0   6603   16664
+</span></span><span style="display:flex;"><span>Waiting:      140 6360 4215.1   6603   16664
+</span></span><span style="display:flex;"><span>Total:        725 6788 4154.7   6973   17102
+</span></span></code></pre></div><p>siege 1000并发下 100%可用</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>siege -c <span style="color:#ae81ff">1000</span> http://localhost:2142/sleep.php
+</span></span><span style="display:flex;"><span>^C
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>       <span style="color:#e6db74">&#34;transactions&#34;</span>:                      5783157,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;availability&#34;</span>:                       100.00,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;elapsed_time&#34;</span>:                      4064.78,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;data_transferred&#34;</span>:                   148.91,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;response_time&#34;</span>:                        0.70,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;transaction_rate&#34;</span>:                  1422.75,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;throughput&#34;</span>:                           0.04,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;concurrency&#34;</span>:                        999.24,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;successful_transactions&#34;</span>:           5783157,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;failed_transactions&#34;</span>:                     0,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;longest_transaction&#34;</span>:                  1.40,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;shortest_transaction&#34;</span>:                 0.15
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h2 id="优化结果">优化结果</h2>
+<p>修改配置后，持续观测服务状态，tcp连接依旧有暴涨，服务无超时</p>
+
+
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-3022214826355647"
+                    data-ad-slot="3373260497"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+                
+                <div class="blog-tags">
+                    
+                    &nbsp;<a href="https://blog.axiaoxin.com//tags/debug/">debug</a>
+                    
+                </div>
+                
+
+                <ins id="content-ad"
+                     class="adsbygoogle"
+                     style="display:block; text-align:center;"
+                     data-ad-layout="in-article"
+                     data-ad-format="fluid"
+                     data-ad-client="ca-pub-3022214826355647"
+                     data-ad-slot="4546241981"></ins>
+
+                <script>
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        
+                        var id = "content-ad";
+                        var ins = document.getElementById(id);
+                        ins.setAttribute("data-ad-slot", "9889874488");
+                    }
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+
+                
+                <hr/>
+                <section id="social-share">
+                    <div class="list-inline footer-links">
+                        
+
+<div class="share-box" aria-hidden="true">
+    <div class="addthis_inline_share_toolbox"></div>
+</div>
+<script async src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-637606c33f0ab9be"></script>
+
+
+                    </div>
+                </section>
+                
+
+                
+                
+                
+                
+
+                
+                <h4 class="see-also">也可以看看</h4>
+                <ul>
+                    
+                    
+                    <li><a href="/post/2021-08-05-elasticsearch-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5%E7%BA%AA%E8%A6%81/">Elasticsearch 性能优化实践纪要</a></li>
+                    
+                    <li><a href="/post/2017-12-27-celery-4.1.0-%E7%89%88%E6%9C%AC%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4-bug/">Celery 4.1.0 版本定时任务执行时间 BUG</a></li>
+                    
+                    <li><a href="/post/2017-11-23-%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">记一次系统性能问题排查</a></li>
+                    
+                </ul>
+
+                
+                
+
+                <div class="_ha8w4pb61zc"></div>
+                <script type="text/javascript">
+                    (window.slotbydup = window.slotbydup || []).push({
+                        id: "u6682238",
+                        container: "_ha8w4pb61zc",
+                        async: true
+                    });
+                </script>
+            </article>
+
+
+            
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://blog.axiaoxin.com/post/2021-05-13-golang-%E5%B9%B6%E5%8F%91-append-slice-%E6%97%B6%E7%9A%84%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90%E4%B8%8E%E6%80%BB%E7%BB%93/" data-toggle="tooltip" data-placement="top" title="Golang 并发 append slice 时的并发安全问题分析与总结">&larr; 前一篇</a>
+                </li>
+                
+                
+                <li class="next">
+                    <a href="https://blog.axiaoxin.com/post/2021-05-13-gin-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%E4%B8%AD%E9%97%B4%E4%BB%B6/" data-toggle="tooltip" data-placement="top" title="实现自定义的 Gin Logger 中间件">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            
+
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-3022214826355647"
+                data-ad-slot="5644200610"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+            <div class="giscus"></div>
+            <script src="https://giscus.app/client.js"
+                    data-repo="axiaoxin-com/blog"
+                    data-repo-id="R_kgDOIdZQhA"
+                    data-category="Comments"
+                    data-category-id="DIC_kwDOIdZQhM4CSvR2"
+                    data-mapping="title"
+                    data-strict="0"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-input-position="bottom"
+                    data-theme="preferred_color_scheme"
+                    data-lang="zh-CN"
+                    data-loading="lazy"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center footer-links">
+                    
+                    <li>
+                        
+                            <a href="mailto:admin@axiaoxin.com" title="Email me">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    <li>
+                        
+                            <a href="https://github.com/axiaoxin" title="GitHub">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    
+                    <li>
+                        <a href="" title="RSS">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="credits copyright text-muted">
+                
+                
+                <a href="http://axiaoxin.com">axiaoxin</a>
+                
+                
+
+                &nbsp;&bull;&nbsp;&copy;
+                
+                2011 - 2022
+                
+
+                
+                &nbsp;&bull;&nbsp;
+                <a href="https://blog.axiaoxin.com/">人言兑</a>
+                
+                </p>
+                <p class="copyright"><a class="text-muted text-decoration-none" href="https://beian.miit.gov.cn" target="_blank">蜀ICP备20023217号</a></p>
+            </div>
+        </div>
+    </div>
+</footer><script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://blog.axiaoxin.com/js/main.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script> hljs.highlightAll(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script async src="https://blog.axiaoxin.com/js/load-photoswipe.js"></script>
+
+
+
+<script>
+    (function() {
+            var cx = '61c0d8f33c4084733';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+        })();
+</script>
+
+
+
+
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["trackPageView"]);
+    _paq.push(["enableLinkTracking"]);
+
+    (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://matomo.axiaoxin.com/";
+            _paq.push(["setTrackerUrl", u+"piwik.php"]);
+            _paq.push(["setSiteId", "5"]);
+            var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+            g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+        })();
+</script>
+<noscript>
+    
+    <img src="http://matomo.axiaoxin.com/piwik.php?idsite=5&amp;rec=1" style="border:0" alt="" />
+    
+</noscript>
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?fdfe48e67d25b3802d6139d4e629c718";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+</script><script src="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/js/glightbox.min.js"></script>
+<script type="text/javascript">
+    $('.blog-post img').each(function(idx){
+        var src = $(this).attr("src");
+        var wrap = `<a href="${src}" class="glightbox"></a>`;
+        if (!src.match(/\.(jpg|jpeg|png|gif)$/i)) {
+            wrap = `<a href="${src}" target="_blank" data-glightbox="type: image"></a>`;
+        }
+        $(this).wrap(wrap);
+    });
+  const lightbox = GLightbox({});
+</script>
+
+
+    
+  </body>
+</html>
+

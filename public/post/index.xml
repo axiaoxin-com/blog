@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on 阿小信的博客</title>
+    <link>https://blog.axiaoxin.com/post/</link>
+    <description>Recent content in Posts on 阿小信的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cmn-Hans</language>
+    <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
+    <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster>
+    <lastBuildDate>Fri, 23 Dec 2022 14:59:08 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2022 微信读书年度榜单</title>
+      <link>https://blog.axiaoxin.com/post/2022-12-23-2022-%E5%BE%AE%E4%BF%A1%E8%AF%BB%E4%B9%A6%E5%B9%B4%E5%BA%A6%E6%A6%9C%E5%8D%95/</link>
+      <pubDate>Fri, 23 Dec 2022 14:59:08 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2022-12-23-2022-%E5%BE%AE%E4%BF%A1%E8%AF%BB%E4%B9%A6%E5%B9%B4%E5%BA%A6%E6%A6%9C%E5%8D%95/</guid>
+      <description>我们相信，无论何时，只要不将书丢掉，一切皆不会丢掉。 愿新的一年，书籍仍能带给你爱，自由和浪漫。 —— 二零二二微信读书年度榜单 / WEREAD YEARBOOK OF 2022 以下为微</description>
+    </item>
+    
+    <item>
+      <title>在 Ubuntu 上安装 .NET SDK 或 .NET Runtime</title>
+      <link>https://blog.axiaoxin.com/post/2022-12-22-%E5%9C%A8-ubuntu-%E4%B8%8A%E5%AE%89%E8%A3%85-.net-sdk-%E6%88%96-.net-runtime/</link>
+      <pubDate>Thu, 22 Dec 2022 16:37:26 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2022-12-22-%E5%9C%A8-ubuntu-%E4%B8%8A%E5%AE%89%E8%A3%85-.net-sdk-%E6%88%96-.net-runtime/</guid>
+      <description>如果要开发 .NET 应用，请安装 SDK（包括 Runtime ）。或者，如果只需要运行应用，请安装 Runtime 。如果要安装 Runtime ，建议安装 ASP.NET 核心 Runtime ，因为它包括 .NET 和 ASP.NET 核心 Runtime 。 下表列</description>
+    </item>
+    
+    <item>
+      <title>Github 2022 年度报告</title>
+      <link>https://blog.axiaoxin.com/post/2022-12-13-github-2022-%E5%B9%B4%E5%BA%A6%E6%8A%A5%E5%91%8A/</link>
+      <pubDate>Tue, 13 Dec 2022 21:18:11 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2022-12-13-github-2022-%E5%B9%B4%E5%BA%A6%E6%8A%A5%E5%91%8A/</guid>
+      <description>又要到年底了，各大 APP 2022 的年度报告还没出炉，今天就先来看一下 Github 的 2022 年度报告。 2012 年我注册了 Github 账号，当年 12 月 19 日，Github 发布了第一份年度报告</description>
+    </item>
+    
+    <item>
+      <title>布洛芬 VS 对乙酰氨基酚</title>
+      <link>https://blog.axiaoxin.com/post/2022-12-12-%E5%B8%83%E6%B4%9B%E8%8A%AC-vs-%E5%AF%B9%E4%B9%99%E9%85%B0%E6%B0%A8%E5%9F%BA%E9%85%9A/</link>
+      <pubDate>Mon, 12 Dec 2022 15:11:49 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2022-12-12-%E5%B8%83%E6%B4%9B%E8%8A%AC-vs-%E5%AF%B9%E4%B9%99%E9%85%B0%E6%B0%A8%E5%9F%BA%E9%85%9A/</guid>
+      <description>正确认识发热 在这个感冒发热频发的时间，本文记录了通过网络了解到的常用退热药品的功效与起效原理。对于药品的了解当然应该是从专业人士和专业报告中</description>
+    </item>
+    
+    <item>
+      <title>Golang 使用 Redis ZSET 实现排行榜</title>
+      <link>https://blog.axiaoxin.com/post/2022-11-26-golang-%E4%BD%BF%E7%94%A8-redis-zset-%E5%AE%9E%E7%8E%B0%E6%8E%92%E8%A1%8C%E6%A6%9C/</link>
+      <pubDate>Sat, 26 Nov 2022 22:04:06 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2022-11-26-golang-%E4%BD%BF%E7%94%A8-redis-zset-%E5%AE%9E%E7%8E%B0%E6%8E%92%E8%A1%8C%E6%A6%9C/</guid>
+      <description>本文介绍如何使用 Golang 采用 Redis 的有序集合 zset 实现一个用户排行榜。 用户排行榜按用户的某一种排序值进行排序，比如充值金额，当该排序值相同时，则需按达成该</description>
+    </item>
+    
+    <item>
+      <title>Markdown 代码块语言声明列表</title>
+      <link>https://blog.axiaoxin.com/post/2022-11-22-markdown-%E4%BB%A3%E7%A0%81%E5%9D%97%E8%AF%AD%E8%A8%80%E5%A3%B0%E6%98%8E%E5%88%97%E8%A1%A8/</link>
+      <pubDate>Tue, 22 Nov 2022 10:08:58 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2022-11-22-markdown-%E4%BB%A3%E7%A0%81%E5%9D%97%E8%AF%AD%E8%A8%80%E5%A3%B0%E6%98%8E%E5%88%97%E8%A1%A8/</guid>
+      <description>语言名称 Markdown 语言声明 常见文件名 1C Enterprise 1c-enterprise *.bsl 4D 4d *.4dm ABAP abap *.abap ABNF abnf *.abnf AGS Script ags-script, ags *.asc AMPL ampl *.ampl ANTLR antlr *.g4 API Blueprint api-blueprint *.apib APL apl *.apl ASN.1 asn.1 *.asn ASP asp, aspx, aspx-vb *.asp ATS ats, ats2 *.dats ActionScript actionscript, actionscript3, as3 *.as Ada ada, ada95, ada2005 *.adb Adobe Font Metrics</description>
+    </item>
+    
+    <item>
+      <title>网站接入广告实现副业赚钱</title>
+      <link>https://blog.axiaoxin.com/post/2022-07-30-%E7%BD%91%E7%AB%99%E6%8E%A5%E5%85%A5%E5%B9%BF%E5%91%8A%E5%AE%9E%E7%8E%B0%E5%89%AF%E4%B8%9A%E8%B5%9A%E9%92%B1/</link>
+      <pubDate>Sat, 30 Jul 2022 11:24:49 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2022-07-30-%E7%BD%91%E7%AB%99%E6%8E%A5%E5%85%A5%E5%B9%BF%E5%91%8A%E5%AE%9E%E7%8E%B0%E5%89%AF%E4%B8%9A%E8%B5%9A%E9%92%B1/</guid>
+      <description>除了谷歌 Adsense 和百度联盟以外，网站要通过谷歌广告审核还是需要一定优质内容和流量的并且网站链接在审核期间不能使用重定向，百度联盟的接入审核十分苛刻</description>
+    </item>
+    
+    <item>
+      <title>Gin 使用 GNU gettext 方式实现 i18n 国际化多语言</title>
+      <link>https://blog.axiaoxin.com/post/2022-06-23-gin-%E4%BD%BF%E7%94%A8-gnu-gettext-%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0-i18n-%E5%9B%BD%E9%99%85%E5%8C%96%E5%A4%9A%E8%AF%AD%E8%A8%80/</link>
+      <pubDate>Thu, 23 Jun 2022 10:50:19 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2022-06-23-gin-%E4%BD%BF%E7%94%A8-gnu-gettext-%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0-i18n-%E5%9B%BD%E9%99%85%E5%8C%96%E5%A4%9A%E8%AF%AD%E8%A8%80/</guid>
+      <description>i18n 国际化多语言本质上就是先写好一堆映射，在根据想要的语言取对应的文字。 Golang 的 i18n 多语言方案网上查了一下，文章都讲的不太细致，而且代码看起来也不太</description>
+    </item>
+    
+    <item>
+      <title>记一次由 MySQL UPDATE 语句导致锁等待后引发的服务炸裂</title>
+      <link>https://blog.axiaoxin.com/post/2022-05-07-%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%94%B1-mysql-update-%E8%AF%AD%E5%8F%A5%E5%AF%BC%E8%87%B4%E9%94%81%E7%AD%89%E5%BE%85%E5%90%8E%E5%BC%95%E5%8F%91%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%82%B8%E8%A3%82/</link>
+      <pubDate>Sat, 07 May 2022 20:35:35 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2022-05-07-%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%94%B1-mysql-update-%E8%AF%AD%E5%8F%A5%E5%AF%BC%E8%87%B4%E9%94%81%E7%AD%89%E5%BE%85%E5%90%8E%E5%BC%95%E5%8F%91%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%82%B8%E8%A3%82/</guid>
+      <description>场景描述 接收到 P99 超时告警，定位到某接口导致，接口是由同事实现的，逻辑较简单，是一个 MySQL 的 INSERT OR UPDATE 逻辑， 一个请求过来，判断某个非主键字段是否存在，</description>
+    </item>
+    
+    <item>
+      <title>我的 2021 年度总结</title>
+      <link>https://blog.axiaoxin.com/post/2021-12-31-%E6%88%91%E7%9A%84-2021-%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Fri, 31 Dec 2021 14:00:53 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2021-12-31-%E6%88%91%E7%9A%84-2021-%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/</guid>
+      <description>好几年没有记录过年终总结了，今年发生了太多改变，觉得有必要记录一下。 年度关键词：转折。 今年最重大变动是换了工作，目前来看不好说是一个非常好的</description>
+    </item>
+    
+    <item>
+      <title>Golang JSON 序列化时 HTML 特殊字符转义问题分析</title>
+      <link>https://blog.axiaoxin.com/post/2021-11-21-golang-json-%E5%BA%8F%E5%88%97%E5%8C%96%E6%97%B6-html-%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6%E8%BD%AC%E4%B9%89%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/</link>
+      <pubDate>Sun, 21 Nov 2021 20:19:45 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2021-11-21-golang-json-%E5%BA%8F%E5%88%97%E5%8C%96%E6%97%B6-html-%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6%E8%BD%AC%E4%B9%89%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/</guid>
+      <description>场景复现 在 API 实现中返回一个 JSON 结果，其中有一个字段为 URL 链接，客户端拿到该链接后做请求，URL 链接中存在多个使用 &amp;amp; 连接的 querystring 参数。 服务端实现时，通</description>
+    </item>
+    
+    <item>
+      <title>Golang 运行时除数为 0 返回 Inf</title>
+      <link>https://blog.axiaoxin.com/post/2021-11-21-golang-%E8%BF%90%E8%A1%8C%E6%97%B6%E9%99%A4%E6%95%B0%E4%B8%BA-0-%E8%BF%94%E5%9B%9E-inf/</link>
+      <pubDate>Sun, 21 Nov 2021 18:23:31 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2021-11-21-golang-%E8%BF%90%E8%A1%8C%E6%97%B6%E9%99%A4%E6%95%B0%E4%B8%BA-0-%E8%BF%94%E5%9B%9E-inf/</guid>
+      <description>在 Golang 中，除数为 0 时，常规情况下是无法编译通过的，但是如果除数是由运行时决定的，那么为除数为 0 时则不会 panic，而是实现为 IEEE 754 标准，返回 In</description>
+    </item>
+    
+    <item>
+      <title>Traefik 简介以及中间件插件开发</title>
+      <link>https://blog.axiaoxin.com/post/2021-10-11-traefik-%E7%AE%80%E4%BB%8B%E4%BB%A5%E5%8F%8A%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/</link>
+      <pubDate>Mon, 11 Oct 2021 17:22:19 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2021-10-11-traefik-%E7%AE%80%E4%BB%8B%E4%BB%A5%E5%8F%8A%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/</guid>
+      <description>Traefix 简介 Traefik 是整个系统的网关大门，负责拦截并路由每个传入的请求，它不需要像Nginx这类反向代理一样需要一个配置文件来配置所有可能路由，而是实时</description>
+    </item>
+    
+    <item>
+      <title>《投资最重要的事》读书笔记</title>
+      <link>https://blog.axiaoxin.com/post/2021-08-27-%E6%8A%95%E8%B5%84%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84%E4%BA%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Fri, 27 Aug 2021 17:07:28 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2021-08-27-%E6%8A%95%E8%B5%84%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84%E4%BA%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</guid>
+      <description>关于作者 霍华德·马克斯 (英语：Howard Stanley Marks, 1946年4月23日－)是一位美国投资者，企业家和作家。橡树资本管理创办人。 1946年，霍华德</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 性能优化实践纪要</title>
+      <link>https://blog.axiaoxin.com/post/2021-08-05-elasticsearch-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5%E7%BA%AA%E8%A6%81/</link>
+      <pubDate>Thu, 05 Aug 2021 16:27:00 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2021-08-05-elasticsearch-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5%E7%BA%AA%E8%A6%81/</guid>
+      <description>ES 性能优化实践：节点负载不均衡 现象： 每个索引使用默认的 1 个分片，1 个副本，在 3 节点集群出现负载不均衡现象，两个节点 cpu 负载很高，另外一个节点 cpu</description>
+    </item>
+    
+    <item>
+      <title>使用 Github Actions 自动部署 Golang 应用到 VPS 服务器</title>
+      <link>https://blog.axiaoxin.com/post/2021-06-19-%E4%BD%BF%E7%94%A8-github-actions-%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2-golang-%E5%BA%94%E7%94%A8%E5%88%B0-vps-%E6%9C%8D%E5%8A%A1%E5%99%A8/</link>
+      <pubDate>Sat, 19 Jun 2021 16:12:08 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2021-06-19-%E4%BD%BF%E7%94%A8-github-actions-%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2-golang-%E5%BA%94%E7%94%A8%E5%88%B0-vps-%E6%9C%8D%E5%8A%A1%E5%99%A8/</guid>
+      <description>环境说明 使用 GitHub Actions 可以在你提交代码后自动将最新代码编译发布部署到你的 VPS 服务器，这里记录一下配置步骤。 服务没有使用 Docker 部署，直接通过 supervisord 启动二进制文</description>
+    </item>
+    
+    <item>
+      <title>实现自定义的 Gin Logger 中间件</title>
+      <link>https://blog.axiaoxin.com/post/2021-05-13-gin-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%E4%B8%AD%E9%97%B4%E4%BB%B6/</link>
+      <pubDate>Thu, 13 May 2021 15:49:52 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2021-05-13-gin-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%E4%B8%AD%E9%97%B4%E4%BB%B6/</guid>
+      <description>gin 的中间件原理解析 在 gin 中，中间件是一系列 gin.HandlerFunc 链，它的函数签名类型和我们业务中写的URL对应的 handler 是一样的，都是gin.HandlerFunc。 gin</description>
+    </item>
+    
+    <item>
+      <title>php-fpm 超时原因分析</title>
+      <link>https://blog.axiaoxin.com/post/2021-05-13-php-fpm-%E8%B6%85%E6%97%B6%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90/</link>
+      <pubDate>Thu, 13 May 2021 15:25:22 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2021-05-13-php-fpm-%E8%B6%85%E6%97%B6%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90/</guid>
+      <description>背景 线上PHP服务，同一台机器上部有AB两个服务，A接收外部请求后再通过本地nginx请求部署在本地的B服务获取数据，同时也有大量的请求直接</description>
+    </item>
+    
+    <item>
+      <title>Golang 并发 append slice 时的并发安全问题分析与总结</title>
+      <link>https://blog.axiaoxin.com/post/2021-05-13-golang-%E5%B9%B6%E5%8F%91-append-slice-%E6%97%B6%E7%9A%84%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90%E4%B8%8E%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Thu, 13 May 2021 00:00:00 +0000</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2021-05-13-golang-%E5%B9%B6%E5%8F%91-append-slice-%E6%97%B6%E7%9A%84%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90%E4%B8%8E%E6%80%BB%E7%BB%93/</guid>
+      <description>背景 导出数据库中的数据，由于数据量巨大且查询复杂，完成导出的时间很长，因此通过将并发查询然后将结果合并到一起。 在导出的数据量只有30多万时，</description>
+    </item>
+    
+    <item>
+      <title>Nginx&#43;Lua&#43;Redis 实现基础的令牌桶算法限流</title>
+      <link>https://blog.axiaoxin.com/post/2020-06-16-nginx&#43;lua&#43;redis-%E5%AE%9E%E7%8E%B0%E5%9F%BA%E7%A1%80%E7%9A%84%E4%BB%A4%E7%89%8C%E6%A1%B6%E7%AE%97%E6%B3%95%E9%99%90%E6%B5%81/</link>
+      <pubDate>Tue, 16 Jun 2020 15:17:02 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2020-06-16-nginx&#43;lua&#43;redis-%E5%AE%9E%E7%8E%B0%E5%9F%BA%E7%A1%80%E7%9A%84%E4%BB%A4%E7%89%8C%E6%A1%B6%E7%AE%97%E6%B3%95%E9%99%90%E6%B5%81/</guid>
+      <description>关于令牌桶（ token bucket ） 令牌桶限流的原理是系统以一个恒定的速度往固定容量的桶里放入令牌，当有请求进来时，需要先从桶里获取并消耗一个令牌，当桶里没有</description>
+    </item>
+    
+    <item>
+      <title>Go 单元测试 gostub 打桩使用方法</title>
+      <link>https://blog.axiaoxin.com/post/2020-06-02-go-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-gostub-%E6%89%93%E6%A1%A9%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Tue, 02 Jun 2020 15:10:33 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2020-06-02-go-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-gostub-%E6%89%93%E6%A1%A9%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</guid>
+      <description>golang 单元测试中常用以下 4 个库方便测试代码的编写： gostub 主要用来给变量、函数、过程打桩 但是给函数打桩时，需要做侵入式修改 convey 主要用途是用来组织测试用例</description>
+    </item>
+    
+    <item>
+      <title>在 Zap 中集成 Sentry 自动上报 Error 事件</title>
+      <link>https://blog.axiaoxin.com/post/2020-03-15-%E5%9C%A8-zap-%E4%B8%AD%E9%9B%86%E6%88%90-sentry-%E8%87%AA%E5%8A%A8%E4%B8%8A%E6%8A%A5-error-%E4%BA%8B%E4%BB%B6/</link>
+      <pubDate>Sun, 15 Mar 2020 10:03:10 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2020-03-15-%E5%9C%A8-zap-%E4%B8%AD%E9%9B%86%E6%88%90-sentry-%E8%87%AA%E5%8A%A8%E4%B8%8A%E6%8A%A5-error-%E4%BA%8B%E4%BB%B6/</guid>
+      <description>在项目中发生了错误时我们都会打印 Error 级别的日志，但是即使有日志采集，在对发生 Error 时的告警通知和信息采集都不一定能快速且完善，目前对日志的告警也只</description>
+    </item>
+    
+    <item>
+      <title>Zap 源码阅读笔记</title>
+      <link>https://blog.axiaoxin.com/post/2020-01-16-zap-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Thu, 16 Jan 2020 18:56:42 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2020-01-16-zap-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</guid>
+      <description>zap.Logger 日志Logger结构体，以此调用打印日志内容，定义如下： type Logger struct { core zapcore.Core development bool name string errorOutput zapcore.WriteSyncer addCaller bool addStack zapcore.LevelEnabler callerSkip int } zapcore.Entry 日志主体内容结构体，表示一条具体日志，定义</description>
+    </item>
+    
+    <item>
+      <title>我和 Dave 有个约会</title>
+      <link>https://blog.axiaoxin.com/post/2019-04-29-%E6%88%91%E5%92%8C-dave-%E6%9C%89%E4%B8%AA%E7%BA%A6%E4%BC%9A/</link>
+      <pubDate>Mon, 29 Apr 2019 17:50:57 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2019-04-29-%E6%88%91%E5%92%8C-dave-%E6%9C%89%E4%B8%AA%E7%BA%A6%E4%BC%9A/</guid>
+      <description>Start 今天上午参加了 Go 语言项目开发成员 Dave Cheney 的分享。 分享的主题是《High Performance Go: Two tools, three types of profiling in 45 minutes》 分享的内容来自 https://dave.cheney.net/high-performance-go-workshop/gopherchina-2019.html 非常有干货的分享！ 两</description>
+    </item>
+    
+    <item>
+      <title>Go 中通过组织结构体以节省内存</title>
+      <link>https://blog.axiaoxin.com/post/2018-12-11-go-%E4%B8%AD%E9%80%9A%E8%BF%87%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84%E4%BD%93%E4%BB%A5%E8%8A%82%E7%9C%81%E5%86%85%E5%AD%98/</link>
+      <pubDate>Tue, 11 Dec 2018 17:35:07 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2018-12-11-go-%E4%B8%AD%E9%80%9A%E8%BF%87%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84%E4%BD%93%E4%BB%A5%E8%8A%82%E7%9C%81%E5%86%85%E5%AD%98/</guid>
+      <description>先执行一段示例代码，有一个类似如下的结构体 myStruct： package main import ( &amp;#34;fmt&amp;#34; &amp;#34;reflect&amp;#34; &amp;#34;unsafe&amp;#34; ) type myStruct struct { myBool bool myFloat float64 myInt int32 } func main() { a := myStruct{} fmt.Println(unsafe.Sizeof(a.myBool)) // 1 fmt.Println(unsafe.Sizeof(a.myFloat)) // 8 fmt.Println(unsafe.Sizeof(a.myInt)) // 4 fmt.Println(unsafe.Sizeof(a)) // 24 fmt.Println(reflect.TypeOf(a.myBool).Align()) // 1</description>
+    </item>
+    
+    <item>
+      <title>自定义 Golang Time 类型字段的 JSON 序列化格式</title>
+      <link>https://blog.axiaoxin.com/post/2018-11-05-%E8%87%AA%E5%AE%9A%E4%B9%89-golang-time-%E7%B1%BB%E5%9E%8B%E5%AD%97%E6%AE%B5%E7%9A%84-json-%E5%BA%8F%E5%88%97%E5%8C%96%E6%A0%BC%E5%BC%8F/</link>
+      <pubDate>Mon, 05 Nov 2018 19:18:32 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2018-11-05-%E8%87%AA%E5%AE%9A%E4%B9%89-golang-time-%E7%B1%BB%E5%9E%8B%E5%AD%97%E6%AE%B5%E7%9A%84-json-%E5%BA%8F%E5%88%97%E5%8C%96%E6%A0%BC%E5%BC%8F/</guid>
+      <description>Golang 中自定义 time.Time 类型的 JSON 序列化格式 Golang 中时间格式定义： const ( ANSIC = &amp;#34;Mon Jan _2 15:04:05 2006&amp;#34; UnixDate = &amp;#34;Mon Jan _2 15:04:05 MST 2006&amp;#34; RubyDate = &amp;#34;Mon Jan 02 15:04:05 -0700 2006&amp;#34; RFC822 = &amp;#34;02 Jan 06 15:04 MST&amp;#34; RFC822Z = &amp;#34;02 Jan 06 15:04 -0700&amp;#34; // RFC822 with numeric zone RFC850 =</description>
+    </item>
+    
+    <item>
+      <title>Golang WEB 框架选型</title>
+      <link>https://blog.axiaoxin.com/post/2018-10-17-golang-web-%E6%A1%86%E6%9E%B6%E9%80%89%E5%9E%8B/</link>
+      <pubDate>Wed, 17 Oct 2018 17:22:52 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2018-10-17-golang-web-%E6%A1%86%E6%9E%B6%E9%80%89%E5%9E%8B/</guid>
+      <description>Go 本身默认就已经具备了 WEB 开发的特性，net/http 包 + httprouter 开发一个 apiserver 已经足够了， 写好包含 http.ResponseWriter 和 *http.Request 参数的业务处理函数，通过 http.HandleFunc 注册路由就可以了。 近</description>
+    </item>
+    
+    <item>
+      <title>使用 Go 定义一个可以调用任意函数的函数</title>
+      <link>https://blog.axiaoxin.com/post/2018-10-15-%E4%BD%BF%E7%94%A8-go-%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E8%B0%83%E7%94%A8%E4%BB%BB%E6%84%8F%E5%87%BD%E6%95%B0%E7%9A%84%E5%87%BD%E6%95%B0/</link>
+      <pubDate>Mon, 15 Oct 2018 17:07:44 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2018-10-15-%E4%BD%BF%E7%94%A8-go-%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%E5%8F%AF%E4%BB%A5%E8%B0%83%E7%94%A8%E4%BB%BB%E6%84%8F%E5%87%BD%E6%95%B0%E7%9A%84%E5%87%BD%E6%95%B0/</guid>
+      <description>原始需求是这样的：我需要监听一个json文件是否发生变化，一旦发生变化就重新调用函数读取文件中新的json来更新一个变量。 现在的需求是想把这</description>
+    </item>
+    
+    <item>
+      <title>搭建 Filebeat Elasticsearch Kibana V6.3.0 日志监控</title>
+      <link>https://blog.axiaoxin.com/post/2018-07-05-%E6%90%AD%E5%BB%BA-filebeat-elasticsearch-kibana-v6.3.0-%E6%97%A5%E5%BF%97%E7%9B%91%E6%8E%A7/</link>
+      <pubDate>Thu, 05 Jul 2018 16:48:56 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2018-07-05-%E6%90%AD%E5%BB%BA-filebeat-elasticsearch-kibana-v6.3.0-%E6%97%A5%E5%BF%97%E7%9B%91%E6%8E%A7/</guid>
+      <description>Filebeat+Elasticsearch+Kibana 环境搭建 上次搭建 ELK 还是两年前，现在使用当时的方法发现不行了，不得不说 ELK 的版本更新速度真的很快。 本文记录使用 ELK Stack 最新的 6.3.0 版本，使用 filebeat 进行日志</description>
+    </item>
+    
+    <item>
+      <title>模拟网络设备和 netflow</title>
+      <link>https://blog.axiaoxin.com/post/2018-03-18-%E6%A8%A1%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E5%92%8C-netflow/</link>
+      <pubDate>Sun, 18 Mar 2018 16:36:54 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2018-03-18-%E6%A8%A1%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E5%92%8C-netflow/</guid>
+      <description>使用 snmpsim 模拟网络设备 登录到对应的模拟服务器上新建 Python 虚拟环境安装 snmpsim virtualenv snmp . snmp/bin/activate pip install snmpsim 在虚拟环境目录下的 snmpsim/data/ 文件夹里配置新的 community（如果需要</description>
+    </item>
+    
+    <item>
+      <title>创建支持 SSH 登录和模拟网络设备的 Docker 镜像</title>
+      <link>https://blog.axiaoxin.com/post/2018-03-02-%E5%88%9B%E5%BB%BA%E6%94%AF%E6%8C%81-ssh-%E7%99%BB%E5%BD%95%E5%92%8C%E6%A8%A1%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E7%9A%84-docker-%E9%95%9C%E5%83%8F/</link>
+      <pubDate>Fri, 02 Mar 2018 16:24:39 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2018-03-02-%E5%88%9B%E5%BB%BA%E6%94%AF%E6%8C%81-ssh-%E7%99%BB%E5%BD%95%E5%92%8C%E6%A8%A1%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E7%9A%84-docker-%E9%95%9C%E5%83%8F/</guid>
+      <description>CentOS 主机安装 Docker 安装docker yum install docker docker version # 1.12.6 移动docker的数据目录到较大磁盘下 mv /var/lib/docker/ /data/docker ln -sb /data/docker /var/lib/docker 设置docker OPTIONS：/etc/sy</description>
+    </item>
+    
+    <item>
+      <title>Celery 4.1.0 版本定时任务执行时间 BUG</title>
+      <link>https://blog.axiaoxin.com/post/2017-12-27-celery-4.1.0-%E7%89%88%E6%9C%AC%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4-bug/</link>
+      <pubDate>Wed, 27 Dec 2017 15:44:10 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2017-12-27-celery-4.1.0-%E7%89%88%E6%9C%AC%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4-bug/</guid>
+      <description>为什么使用celery代替crontab？ 关于Celery，他是一个分布式的任务队列。http://docs.celeryproject.o</description>
+    </item>
+    
+    <item>
+      <title>使用 Nginx Lua 修改 Influxdb API 的返回结构</title>
+      <link>https://blog.axiaoxin.com/post/2017-12-13-%E4%BD%BF%E7%94%A8-nginx-lua-%E4%BF%AE%E6%94%B9-influxdb-api-%E7%9A%84%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%84/</link>
+      <pubDate>Wed, 13 Dec 2017 15:29:55 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2017-12-13-%E4%BD%BF%E7%94%A8-nginx-lua-%E4%BF%AE%E6%94%B9-influxdb-api-%E7%9A%84%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%84/</guid>
+      <description>有一个API平台服务，所有接口都通过API平台转发到实际的服务上，然后再把实际服务的结果返回给客户端，API平台的规范是所有实际服务的接口返</description>
+    </item>
+    
+    <item>
+      <title>记一次系统性能问题排查</title>
+      <link>https://blog.axiaoxin.com/post/2017-11-23-%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</link>
+      <pubDate>Thu, 23 Nov 2017 15:21:03 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2017-11-23-%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</guid>
+      <description>在客户的环境中，我们的代码表现为twisted封装的http接口处理web请求忽快忽慢。 客户反馈一个页面上有获取绘图数据的请求，一页在一个屏</description>
+    </item>
+    
+    <item>
+      <title>Flask 中日志按照日志级别分开保存到不同文件</title>
+      <link>https://blog.axiaoxin.com/post/2017-07-21-flask-%E4%B8%AD%E6%97%A5%E5%BF%97%E6%8C%89%E7%85%A7%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB%E5%88%86%E5%BC%80%E4%BF%9D%E5%AD%98%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6/</link>
+      <pubDate>Fri, 21 Jul 2017 15:15:53 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2017-07-21-flask-%E4%B8%AD%E6%97%A5%E5%BF%97%E6%8C%89%E7%85%A7%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB%E5%88%86%E5%BC%80%E4%BF%9D%E5%AD%98%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6/</guid>
+      <description>目标是想让代码中的日志按照不同的级别保存到不同的文件，即不管是框架本身的debug日志还是我们自己写的debug日志都保存到debug.lo</description>
+    </item>
+    
+    <item>
+      <title>去贵阳看五月天</title>
+      <link>https://blog.axiaoxin.com/post/2017-07-18-%E5%8E%BB%E8%B4%B5%E9%98%B3%E7%9C%8B%E4%BA%94%E6%9C%88%E5%A4%A9/</link>
+      <pubDate>Tue, 18 Jul 2017 14:56:43 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2017-07-18-%E5%8E%BB%E8%B4%B5%E9%98%B3%E7%9C%8B%E4%BA%94%E6%9C%88%E5%A4%A9/</guid>
+      <description>07-14: 购买车上要吃的午饭和晚饭。 07-15: HOME(08:00) -&amp;gt; 深圳北 -&amp;gt; (09:50-10:26) -&amp;gt; 广州南 -&amp;gt; (11:49-17:29) -&amp;gt; 贵阳北 -&amp;gt; 奥体中心五月天演唱会(19:00入场) -&amp;gt; 世纪城W组团1号楼1层4号 尚客青年</description>
+    </item>
+    
+    <item>
+      <title>五一桂林行</title>
+      <link>https://blog.axiaoxin.com/post/2017-05-02-%E4%BA%94%E4%B8%80%E6%A1%82%E6%9E%97%E8%A1%8C/</link>
+      <pubDate>Tue, 02 May 2017 14:56:43 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2017-05-02-%E4%BA%94%E4%B8%80%E6%A1%82%E6%9E%97%E8%A1%8C/</guid>
+      <description>五一节计划的桂林4日游行程+完事后的COMMENT。说走就走真的不容易。 line1-&amp;gt;line5-&amp;gt;深圳北 27d 07:30前必须出门</description>
+    </item>
+    
+    <item>
+      <title>Sentry 插件编写总结</title>
+      <link>https://blog.axiaoxin.com/post/2017-03-03-sentry-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Fri, 03 Mar 2017 11:03:07 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2017-03-03-sentry-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99%E6%80%BB%E7%BB%93/</guid>
+      <description>sentry 插件需要特定的结构才能正常工作，最简单的结构即为本插件的文件结构。 sentry-rtx * │ .gitignore │ README.md │ setup.cfg │ setup.py * │ └─ sentry_rtx * plugin.py * tof_api.py __init__.py 主要编写其中的 setup.py 和 plugin.py 在 sentry_rtx/plugin.py 中实现自</description>
+    </item>
+    
+    <item>
+      <title>Flask 通过 Nginx 代理后拿不到正确的 url_scheme</title>
+      <link>https://blog.axiaoxin.com/post/2016-04-14-flask-%E9%80%9A%E8%BF%87-nginx-%E4%BB%A3%E7%90%86%E5%90%8E%E6%8B%BF%E4%B8%8D%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84-url_scheme/</link>
+      <pubDate>Thu, 14 Apr 2016 12:06:49 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2016-04-14-flask-%E9%80%9A%E8%BF%87-nginx-%E4%BB%A3%E7%90%86%E5%90%8E%E6%8B%BF%E4%B8%8D%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84-url_scheme/</guid>
+      <description>问题：Nginx 配置了 https 请求后，Flask 中的 request 中 wsgi.url_scheme 收到的仍然是 http，而不是 https。 当用户发起 https 请求时首先和 Nginx 建立连接，完成 SSL 握手，</description>
+    </item>
+    
+    <item>
+      <title>通过浏览器实时分享终端内容</title>
+      <link>https://blog.axiaoxin.com/post/2015-09-11-%E9%80%9A%E8%BF%87%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AE%9E%E6%97%B6%E5%88%86%E4%BA%AB%E7%BB%88%E7%AB%AF%E5%86%85%E5%AE%B9/</link>
+      <pubDate>Fri, 11 Sep 2015 11:03:07 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2015-09-11-%E9%80%9A%E8%BF%87%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AE%9E%E6%97%B6%E5%88%86%E4%BA%AB%E7%BB%88%E7%AB%AF%E5%86%85%E5%AE%B9/</guid>
+      <description>比如，在开会时你需要分享自己的终端内容给别人看到，当没有投影仪，或者有投影仪但是对有像我这种近视又不戴眼睛的同学来说是很不方便的，所以急需一</description>
+    </item>
+    
+    <item>
+      <title>上海迪士尼一日游记</title>
+      <link>https://blog.axiaoxin.com/post/2016-07-18-%E4%B8%8A%E6%B5%B7%E8%BF%AA%E5%A3%AB%E5%B0%BC%E4%B8%80%E6%97%A5%E6%B8%B8%E8%AE%B0/</link>
+      <pubDate>Sat, 18 Jul 2015 11:03:07 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2016-07-18-%E4%B8%8A%E6%B5%B7%E8%BF%AA%E5%A3%AB%E5%B0%BC%E4%B8%80%E6%97%A5%E6%B8%B8%E8%AE%B0/</guid>
+      <description>本打算在2016年7月16号7点起床坐11号线8点到迪士尼的，结果睡过了，到迪士尼差不多9点过，过安检、检票完了差不多10点半左右，人太多了</description>
+    </item>
+    
+    <item>
+      <title>关于 Python 中的 None 和 is</title>
+      <link>https://blog.axiaoxin.com/post/2015-07-01-%E5%85%B3%E4%BA%8E-python-%E4%B8%AD%E7%9A%84-none-%E5%92%8C-is/</link>
+      <pubDate>Wed, 01 Jul 2015 11:46:27 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2015-07-01-%E5%85%B3%E4%BA%8E-python-%E4%B8%AD%E7%9A%84-none-%E5%92%8C-is/</guid>
+      <description>Python 中的 None x is None 比 x == None 更快。 is 是用 C 实现的, 简单的比较两个对象的 ID，不需要调用任何方法函数, is 是比较 id，== 是比较值。 创建一个 None 实例： Python</description>
+    </item>
+    
+    <item>
+      <title>看了一场舞台剧《仙剑奇侠传》</title>
+      <link>https://blog.axiaoxin.com/post/2015-04-26-%E7%9C%8B%E4%BA%86%E4%B8%80%E5%9C%BA%E8%88%9E%E5%8F%B0%E5%89%A7%E4%BB%99%E5%89%91%E5%A5%87%E4%BE%A0%E4%BC%A0/</link>
+      <pubDate>Sat, 06 Jun 2015 11:03:07 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2015-04-26-%E7%9C%8B%E4%BA%86%E4%B8%80%E5%9C%BA%E8%88%9E%E5%8F%B0%E5%89%A7%E4%BB%99%E5%89%91%E5%A5%87%E4%BE%A0%E4%BC%A0/</guid>
+      <description>一直以为舞台剧就是跟话剧差不多嘛，没想到这场把我足实震撼到了，真的，太震撼了！舞台美不说，好好的话剧被演成了一场 4 小时的 3D 电影，真的太赞了。</description>
+    </item>
+    
+    <item>
+      <title>分享几个 Python 实现的实用命令行工具</title>
+      <link>https://blog.axiaoxin.com/post/2015-05-29-%E5%88%86%E4%BA%AB%E5%87%A0%E4%B8%AA-python-%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Fri, 29 May 2015 00:00:00 +0000</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2015-05-29-%E5%88%86%E4%BA%AB%E5%87%A0%E4%B8%AA-python-%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7/</guid>
+      <description>pyenv pyenv 是一个使用简单的 Python 版本管理工具，可以让你简单的切换 Python 版本。Python2.x 在5年后将不在更新维护，所以是时候熟悉 Python3 了！ 那么如何方便的即</description>
+    </item>
+    
+    <item>
+      <title>Python 有序更新 yaml 文件</title>
+      <link>https://blog.axiaoxin.com/post/2017-05-04-python-%E6%9C%89%E5%BA%8F%E6%9B%B4%E6%96%B0-yaml-%E6%96%87%E4%BB%B6/</link>
+      <pubDate>Sun, 17 May 2015 11:03:07 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2017-05-04-python-%E6%9C%89%E5%BA%8F%E6%9B%B4%E6%96%B0-yaml-%E6%96%87%E4%BB%B6/</guid>
+      <description>在 Python 中使用 PyYAML 操作 yml 文件，yaml 默认 load 进来是个字典，所以无法保持原本的顺序，要想不改变原本的 yaml 结构，更新 yaml 文件内容需要用到以下方法 from collections import OrderedDict import</description>
+    </item>
+    
+    <item>
+      <title>上海动物园一日游</title>
+      <link>https://blog.axiaoxin.com/post/2015-05-17-%E4%B8%8A%E6%B5%B7%E5%8A%A8%E7%89%A9%E5%9B%AD%E4%B8%80%E6%97%A5%E6%B8%B8/</link>
+      <pubDate>Sun, 17 May 2015 11:03:07 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2015-05-17-%E4%B8%8A%E6%B5%B7%E5%8A%A8%E7%89%A9%E5%9B%AD%E4%B8%80%E6%97%A5%E6%B8%B8/</guid>
+      <description>有次出去办手机卡，路过上海动物园门口就想去玩的，只是当时时间不允许，既然植物园去过了，动物园当然也要去，还想去野生动物园玩。 出门坐的是双层的</description>
+    </item>
+    
+    <item>
+      <title>使用 Python 实现一个灰度策略函数</title>
+      <link>https://blog.axiaoxin.com/post/2015-05-15-%E4%BD%BF%E7%94%A8-python-%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%81%B0%E5%BA%A6%E7%AD%96%E7%95%A5%E5%87%BD%E6%95%B0/</link>
+      <pubDate>Fri, 15 May 2015 00:00:00 +0000</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2015-05-15-%E4%BD%BF%E7%94%A8-python-%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%81%B0%E5%BA%A6%E7%AD%96%E7%95%A5%E5%87%BD%E6%95%B0/</guid>
+      <description>使用 Python 实现一个灰度发布策略，传入最新的 app 发布时间和当前请求用户的设备 id，如果该用户命中灰度策略就返回 True def gray_publish_check(app_lastest_pub_time, device_id): &amp;#39;&amp;#39;&amp;#39;</description>
+    </item>
+    
+    <item>
+      <title>使用 Python 进行版本号比较</title>
+      <link>https://blog.axiaoxin.com/post/2015-05-06-%E4%BD%BF%E7%94%A8-python-%E8%BF%9B%E8%A1%8C%E7%89%88%E6%9C%AC%E5%8F%B7%E6%AF%94%E8%BE%83/</link>
+      <pubDate>Wed, 06 May 2015 00:00:00 +0000</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2015-05-06-%E4%BD%BF%E7%94%A8-python-%E8%BF%9B%E8%A1%8C%E7%89%88%E6%9C%AC%E5%8F%B7%E6%AF%94%E8%BE%83/</guid>
+      <description>使用 StrictVersion 比较版本号： StrictVersion 是由.将一串带有预发布标签的数字分隔为两个或三个部分的格式，预发布标签的字母只能是 a 或者 b 加数字版本号，而且只能在最末尾</description>
+    </item>
+    
+    <item>
+      <title>记录在上海的另一个周六</title>
+      <link>https://blog.axiaoxin.com/post/2015-04-18-%E8%AE%B0%E5%BD%95%E5%9C%A8%E4%B8%8A%E6%B5%B7%E7%9A%84%E5%8F%A6%E4%B8%80%E4%B8%AA%E5%91%A8%E5%85%AD/</link>
+      <pubDate>Sat, 18 Apr 2015 11:03:07 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2015-04-18-%E8%AE%B0%E5%BD%95%E5%9C%A8%E4%B8%8A%E6%B5%B7%E7%9A%84%E5%8F%A6%E4%B8%80%E4%B8%AA%E5%91%A8%E5%85%AD/</guid>
+      <description>中午出门吃饭，刚关上门就发现自己忘了带钥匙。 房东奶奶出去打麻将了，一狠心决定出去浪，选了个不远的植物园。 感觉去晚了，并没有那么春天了，3 月份</description>
+    </item>
+    
+    <item>
+      <title>记录在上海的一个周六</title>
+      <link>https://blog.axiaoxin.com/post/2015-04-11-%E8%AE%B0%E5%BD%95%E5%9C%A8%E4%B8%8A%E6%B5%B7%E7%9A%84%E4%B8%80%E4%B8%AA%E5%91%A8%E5%85%AD/</link>
+      <pubDate>Sat, 11 Apr 2015 11:03:07 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2015-04-11-%E8%AE%B0%E5%BD%95%E5%9C%A8%E4%B8%8A%E6%B5%B7%E7%9A%84%E4%B8%80%E4%B8%AA%E5%91%A8%E5%85%AD/</guid>
+      <description>周六，本来是早起去帮我朋友的父母咨询社保问题的，所以一大早就去了静安社保局，结果并没有咨询出个什么结果，也不想太早回家，打算浪浪再回家。 走在</description>
+    </item>
+    
+    <item>
+      <title>Vimscript 学习笔记</title>
+      <link>https://blog.axiaoxin.com/post/2014-11-06-vimscript-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Thu, 06 Nov 2014 00:00:00 +0000</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2014-11-06-vimscript-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>在 VIM 中输入:help &amp;lt;CMD&amp;gt; 可以查看该命令详细的帮助信息，比如:help echo、:help python。 VIM 脚本中的注释是以&amp;quot;进行注释的</description>
+    </item>
+    
+    <item>
+      <title>记录几个新学会的 VIM 命令</title>
+      <link>https://blog.axiaoxin.com/post/2014-03-27-%E8%AE%B0%E5%BD%95%E5%87%A0%E4%B8%AA%E6%96%B0%E5%AD%A6%E4%BC%9A%E7%9A%84-vim-%E5%91%BD%E4%BB%A4/</link>
+      <pubDate>Thu, 27 Mar 2014 00:00:00 +0000</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2014-03-27-%E8%AE%B0%E5%BD%95%E5%87%A0%E4%B8%AA%E6%96%B0%E5%AD%A6%E4%BC%9A%E7%9A%84-vim-%E5%91%BD%E4%BB%A4/</guid>
+      <description>VIM 浏览目录：:E ，移动光标到对应文件上，按 x 可执行该文件。 VIM 查看缓冲区：:ls，切换到指定编号的缓冲区：:buffer 数字编号 VIM 向下分屏：:</description>
+    </item>
+    
+    <item>
+      <title>英语四六级成绩查分软件（无需准考证号）</title>
+      <link>https://blog.axiaoxin.com/post/2012-08-23-%E8%8B%B1%E8%AF%AD%E5%9B%9B%E5%85%AD%E7%BA%A7%E6%88%90%E7%BB%A9%E6%9F%A5%E5%88%86%E8%BD%AF%E4%BB%B6%E6%97%A0%E9%9C%80%E5%87%86%E8%80%83%E8%AF%81%E5%8F%B7/</link>
+      <pubDate>Thu, 23 Aug 2012 23:39:33 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2012-08-23-%E8%8B%B1%E8%AF%AD%E5%9B%9B%E5%85%AD%E7%BA%A7%E6%88%90%E7%BB%A9%E6%9F%A5%E5%88%86%E8%BD%AF%E4%BB%B6%E6%97%A0%E9%9C%80%E5%87%86%E8%80%83%E8%AF%81%E5%8F%B7/</guid>
+      <description>四六级准考证号说明~： 准考证号 前6位是地区号~ 然后是121 (表示12年的第1次，即12年6月份的)~ 然后是1或2 (1代表四级，2代表6级)~</description>
+    </item>
+    
+    <item>
+      <title>《程序开发心理学:The Psychology of Computer Programming》无私编程十条诫律</title>
+      <link>https://blog.axiaoxin.com/post/2012-08-01-%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%BF%83%E7%90%86%E5%AD%A6the-psychology-of-computer-programming%E6%97%A0%E7%A7%81%E7%BC%96%E7%A8%8B%E5%8D%81%E6%9D%A1%E8%AF%AB%E5%BE%8B/</link>
+      <pubDate>Wed, 01 Aug 2012 23:35:43 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2012-08-01-%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%BF%83%E7%90%86%E5%AD%A6the-psychology-of-computer-programming%E6%97%A0%E7%A7%81%E7%BC%96%E7%A8%8B%E5%8D%81%E6%9D%A1%E8%AF%AB%E5%BE%8B/</guid>
+      <description>1、理解和接受自己会犯错误。 关键是要尽早发现，在错误进入到最终产品前发现它们。幸运的是，除了我们少数几个在喷气推进实验所开发火箭导航系统的人</description>
+    </item>
+    
+    <item>
+      <title>毕业后第一次回一中</title>
+      <link>https://blog.axiaoxin.com/post/2012-07-06-%E6%AF%95%E4%B8%9A%E5%90%8E%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%9B%9E%E4%B8%80%E4%B8%AD/</link>
+      <pubDate>Fri, 06 Jul 2012 23:23:28 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2012-07-06-%E6%AF%95%E4%B8%9A%E5%90%8E%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%9B%9E%E4%B8%80%E4%B8%AD/</guid>
+      <description>今天睡到11点起床，折腾了大半下午收拾东西回乐山了。 回来路上感觉路上的一切亲切又陌生。突然之间觉得自己在乐山这几年的青春都被狗吃了，对乐山竟</description>
+    </item>
+    
+    <item>
+      <title>JQuery 基础教程练习笔记</title>
+      <link>https://blog.axiaoxin.com/post/2012-05-01-jquery-%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Tue, 01 May 2012 17:25:50 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2012-05-01-jquery-%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>jQuery 基础用法示例 用 $() 函数选择元素，$ 是对标识符 jQuery 的一种简写 $(&amp;#39;div&amp;#39;) $(&amp;#39;#some-id&amp;#39;) $(&amp;#39;.some-class&amp;#39;) $(document).ready() 其中代码会在 dom 加载后立即运行 示例1： $(document).ready(function(){ $(&amp;#39;#selected-plays &amp;gt; li&amp;#39;).addClass(&amp;#39;horizontal&amp;#39;); // 查找id为#selected-</description>
+    </item>
+    
+    <item>
+      <title>JQuery 选择器用法示例</title>
+      <link>https://blog.axiaoxin.com/post/2012-03-15-jquery-%E9%80%89%E6%8B%A9%E5%99%A8%E7%94%A8%E6%B3%95%E7%A4%BA%E4%BE%8B/</link>
+      <pubDate>Thu, 15 Mar 2012 17:25:50 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2012-03-15-jquery-%E9%80%89%E6%8B%A9%E5%99%A8%E7%94%A8%E6%B3%95%E7%A4%BA%E4%BE%8B/</guid>
+      <description>jQuery 基本选择器用法示例 // 选择 id为 one 的元素 $(&amp;#39;#btn1&amp;#39;).click(function(){ $(&amp;#39;#one&amp;#39;).css(&amp;#34;background&amp;#34;,&amp;#34;#bfa&amp;#34;); }); // 选择 class 为 mini 的所有元素 $(&amp;#39;#btn2&amp;#39;).click(function(){ $(&amp;#39;.mini&amp;#39;).css(&amp;#34;background&amp;#34;,&amp;#34;#bfa&amp;#34;); }); // 选择元素名是 div 的所有元素 $(&amp;#39;#btn3&amp;#39;).click(function(){ $(&amp;#39;div&amp;#39;).css(&amp;#34;background&amp;#34;,&amp;#34;#bfa&amp;#34;); }); // 选择所有的元素 $(&amp;#39;#btn4&amp;#39;).click(function(){ $(&amp;#39;*&amp;#39;).css(&amp;#34;background&amp;#34;,&amp;#34;#bfa&amp;#34;); }); // 选择所有的</description>
+    </item>
+    
+    <item>
+      <title>Linux 终端默认编辑方法快捷键</title>
+      <link>https://blog.axiaoxin.com/post/2011-03-08-linux-%E7%BB%88%E7%AB%AF%E9%BB%98%E8%AE%A4%E7%BC%96%E8%BE%91%E6%96%B9%E6%B3%95%E5%BF%AB%E6%8D%B7%E9%94%AE/</link>
+      <pubDate>Tue, 08 Mar 2011 17:25:50 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2011-03-08-linux-%E7%BB%88%E7%AB%AF%E9%BB%98%E8%AE%A4%E7%BC%96%E8%BE%91%E6%96%B9%E6%B3%95%E5%BF%AB%E6%8D%B7%E9%94%AE/</guid>
+      <description>C-a ：移到行首（Home） C-e ：移到行尾（End） C-b ：往左移动一个字符 C-f ：往右移动一个字符 M-b ：往左移动一个单词 M-f ：往右移动一个单词 C-l ：清屏 C-h ：删</description>
+    </item>
+    
+    <item>
+      <title>Bash 学习笔记</title>
+      <link>https://blog.axiaoxin.com/post/2011-01-18-bash-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Tue, 18 Jan 2011 17:25:50 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2011-01-18-bash-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>Bash 的工作控制 %% 或 %+ 可调用 jobs 里面现在的工作，%- 调用前一个工作 %n 将工作编号为 n 的进程置于前台来执行 == fg %n %?s1 调用程序名称中含有s1的工作，? 表示</description>
+    </item>
+    
+  </channel>
+</rss>

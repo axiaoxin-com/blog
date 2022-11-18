@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mysql on 阿小信的博客</title>
+    <link>https://blog.axiaoxin.com/tags/mysql/</link>
+    <description>Recent content in mysql on 阿小信的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cmn-Hans</language>
+    <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
+    <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster>
+    <lastBuildDate>Sat, 07 May 2022 20:35:35 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>记一次由 MySQL UPDATE 语句导致锁等待后引发的服务炸裂</title>
+      <link>https://blog.axiaoxin.com/post/2022-05-07-%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%94%B1-mysql-update-%E8%AF%AD%E5%8F%A5%E5%AF%BC%E8%87%B4%E9%94%81%E7%AD%89%E5%BE%85%E5%90%8E%E5%BC%95%E5%8F%91%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%82%B8%E8%A3%82/</link>
+      <pubDate>Sat, 07 May 2022 20:35:35 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2022-05-07-%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%94%B1-mysql-update-%E8%AF%AD%E5%8F%A5%E5%AF%BC%E8%87%B4%E9%94%81%E7%AD%89%E5%BE%85%E5%90%8E%E5%BC%95%E5%8F%91%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%82%B8%E8%A3%82/</guid>
+      <description>场景描述 接收到 P99 超时告警，定位到某接口导致，接口是由同事实现的，逻辑较简单，是一个 MySQL 的 INSERT OR UPDATE 逻辑， 一个请求过来，判断某个非主键字段是否存在，</description>
+    </item>
+    
+  </channel>
+</rss>

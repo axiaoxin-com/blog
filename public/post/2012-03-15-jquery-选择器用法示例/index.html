@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+<title>JQuery 选择器用法示例 - 人言兑</title>
+  <meta name="description" content="jQuery 基本选择器用法示例 // 选择 id为 one 的元素 $(&#39;#btn1&#39;).click(function(){ $(&#39;#one&#39;).css(&#34;background&#34;,&#34;#bfa&#34;); }); // 选择 class 为 mini 的所有元素 $(&#39;#btn2&#39;).click(function(){ $(&#39;.mini&#39;).css(&#34;background&#34;,&#34;#bfa&#34;); }); // 选择元素名是 div 的所有元素 $(&#39;#btn3&#39;).click(function(){ $(&#39;div&#39;).css(&#34;background&#34;,&#34;#bfa&#34;); }); // 选择所有的元素 $(&#39;#btn4&#39;).click(function(){ $(&#39;*&#39;).css(&#34;background&#34;,&#34;#bfa&#34;); }); // 选择所有的">
+  <meta name="author" content="axiaoxin"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "阿小信的博客",
+    
+    "url": "https:\/\/blog.axiaoxin.com\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/blog.axiaoxin.com\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/post\/2012-03-15-jquery-%E9%80%89%E6%8B%A9%E5%99%A8%E7%94%A8%E6%B3%95%E7%A4%BA%E4%BE%8B\/",
+          "name": "Jquery 选择器用法示例"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "axiaoxin"
+  },
+  "headline": "JQuery 选择器用法示例",
+  "description" : "jQuery 基本选择器用法示例 \/\/ 选择 id为 one 的元素 $(\u0026#39;#btn1\u0026#39;).click(function(){ $(\u0026#39;#one\u0026#39;).css(\u0026#34;background\u0026#34;,\u0026#34;#bfa\u0026#34;); }); \/\/ 选择 class 为 mini 的所有元素 $(\u0026#39;#btn2\u0026#39;).click(function(){ $(\u0026#39;.mini\u0026#39;).css(\u0026#34;background\u0026#34;,\u0026#34;#bfa\u0026#34;); }); \/\/ 选择元素名是 div 的所有元素 $(\u0026#39;#btn3\u0026#39;).click(function(){ $(\u0026#39;div\u0026#39;).css(\u0026#34;background\u0026#34;,\u0026#34;#bfa\u0026#34;); }); \/\/ 选择所有的元素 $(\u0026#39;#btn4\u0026#39;).click(function(){ $(\u0026#39;*\u0026#39;).css(\u0026#34;background\u0026#34;,\u0026#34;#bfa\u0026#34;); }); \/\/ 选择所有的",
+  "inLanguage" : "zh-cn",
+  "wordCount":  2007 ,
+  "datePublished" : "2012-03-15T17:25:50",
+  "dateModified" : "2012-03-15T17:25:50",
+  "image" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+  "keywords" : [ "jquery" ],
+  "mainEntityOfPage" : "https:\/\/blog.axiaoxin.com\/post\/2012-03-15-jquery-%E9%80%89%E6%8B%A9%E5%99%A8%E7%94%A8%E6%B3%95%E7%A4%BA%E4%BE%8B\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/blog.axiaoxin.com\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="JQuery 选择器用法示例" />
+<meta property="og:description" content="jQuery 基本选择器用法示例 // 选择 id为 one 的元素 $(&#39;#btn1&#39;).click(function(){ $(&#39;#one&#39;).css(&#34;background&#34;,&#34;#bfa&#34;); }); // 选择 class 为 mini 的所有元素 $(&#39;#btn2&#39;).click(function(){ $(&#39;.mini&#39;).css(&#34;background&#34;,&#34;#bfa&#34;); }); // 选择元素名是 div 的所有元素 $(&#39;#btn3&#39;).click(function(){ $(&#39;div&#39;).css(&#34;background&#34;,&#34;#bfa&#34;); }); // 选择所有的元素 $(&#39;#btn4&#39;).click(function(){ $(&#39;*&#39;).css(&#34;background&#34;,&#34;#bfa&#34;); }); // 选择所有的">
+<meta property="og:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+<meta property="og:url" content="https://blog.axiaoxin.com/post/2012-03-15-jquery-%E9%80%89%E6%8B%A9%E5%99%A8%E7%94%A8%E6%B3%95%E7%A4%BA%E4%BE%8B/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="阿小信的博客" />
+
+  <meta name="twitter:title" content="JQuery 选择器用法示例" />
+  <meta name="twitter:description" content="jQuery 基本选择器用法示例 // 选择 id为 one 的元素 $(&#39;#btn1&#39;).click(function(){ $(&#39;#one&#39;).css(&#34;background&#34;,&#34;#bfa&#34;); }); // 选择 class 为 mini 的所有元素 $(&#39;#btn2&#39;).click(function(){ …">
+  <meta name="twitter:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://blog.axiaoxin.com/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.106.0">
+  <link rel="alternate" href="https://blog.axiaoxin.com/index.xml" type="application/rss+xml" title="阿小信的博客"><link href="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://blog.axiaoxin.com/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <script>
+      var head = document.getElementsByTagName('HEAD')[0];
+      var link = document.createElement("link");
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css";
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        
+        link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css";
+      }
+      head.appendChild(link);
+  </script><link rel="stylesheet" href="https://blog.axiaoxin.com/css/codeblock.css" /><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3022214826355647" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" ></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5KRFX25W8R"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-5KRFX25W8R', { 'anonymize_ip': false });
+}
+</script>
+<link href="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/css/glightbox.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://blog.axiaoxin.com/">阿小信的博客</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="主页" href="/">主页</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="归档" href="/page/archives/">归档</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/page/about/">关于</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent">网站</a>
+              <div class="navlinks-children">
+                
+                  <a href="http://mbti.axiaoxin.com" target="_blank">MBTI职业性格测试</a>
+                
+                  <a href="http://investool.axiaoxin.com" target="_blank">InvesTool</a>
+                
+                  <a href="http://m.psyctest.cn" target="_blank">赛可测试网:免费心理测试</a>
+                
+                  <a href="http://axiaoxin.com" target="_blank">个人主页</a>
+                
+                  <a href="http://dw.mcool.top" target="_blank">抖文-精选优质抖音视频文章</a>
+                
+              </div>
+            </li>
+          
+        
+
+        
+
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="阿小信的博客" href="https://blog.axiaoxin.com/">
+            <img class="avatar-img" src="https://blog.axiaoxin.com/img/avatar-icon.png" alt="阿小信的博客" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">搜索 阿小信的博客</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        
+                        <h1>JQuery 选择器用法示例</h1>
+                        
+                        
+                        
+                        
+                        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;发表于 2012-03-15
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;5&nbsp;分钟
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2007&nbsp;个字
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;axiaoxin
+    
+  
+  
+</span>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-3022214826355647"
+                 data-ad-slot="6429996269"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <article role="main" class="blog-post">
+                <h2 id="jquery-基本选择器用法示例">jQuery 基本选择器用法示例</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// 选择 id为 one 的元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn1&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#one&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bfa&#34;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选择 class 为 mini 的所有元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn2&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;.mini&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bfa&#34;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选择元素名是 div 的所有元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn3&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bfa&#34;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选择所有的元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn4&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;*&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bfa&#34;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选择所有的span元素和id为two的div元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn5&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;span,#two&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bfa&#34;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h2 id="jquery-层次选择器用法示例">jQuery 层次选择器用法示例</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// 选择 body 内的所有 div 元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn1&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;body div&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 在 body 内的选择元素名是 div 的子元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn2&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;body &gt; div&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选择所有 class 为 one 的下一个 div 元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn3&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;.one + div&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选择 id 为 two 的元素后面的所有 div 兄弟元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn4&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#two ~ div&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h2 id="jquery-基本过滤选择器用法示例">jQuery 基本过滤选择器用法示例</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// 选择第一个 div 元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn1&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div:first&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bfa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选择最后一个 div 元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn2&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div:last&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bfa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选择 class 不为 one 的所有 div 元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn3&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div:not(.one)&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bfa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选择索引值为偶数的 div 元素。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn4&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div:even&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bfa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选择索引值为奇数的 div 元素。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn5&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div:odd&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bfa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选择索引等于 3 的元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn6&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div:eq(3)&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bfa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选择索引大于 3 的元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn7&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div:gt(3)&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bfa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选择索引小于 3 的元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn8&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div:lt(3)&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bfa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选择所有的标题元素.比如 h1, h2, h3 等等...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn9&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;:header&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bfa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选择当前正在执行动画的所有元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn10&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;:animated&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bfa&#34;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h2 id="jquery-内容过滤选择器用法示例">jQuery 内容过滤选择器用法示例</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// 选取含有文本 &#34;di&#34; 的 div 元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn1&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div:contains(di)&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选取不包含子元素(或者文本元素)的 div 空元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn2&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div:empty&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选取含有 class 为 mini 元素的 div 元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn3&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div:has(.mini)&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选取含有子元素(或者文本元素)的 div 元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn4&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div:parent&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h2 id="jquery-可见性过滤选择器用法示例">jQuery 可见性过滤选择器用法示例</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#reset&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    window.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">reload</span>();
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 给 id 为 mover 的元素添加动画.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">animateIt</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#mover&#34;</span>).<span style="color:#a6e22e">slideToggle</span>(<span style="color:#e6db74">&#34;slow&#34;</span>, <span style="color:#a6e22e">animateIt</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">animateIt</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选取所有不可见的元素.包括 &lt;input type=&#34;hidden&#34;/&gt;.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn_hidden&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">alert</span>( <span style="color:#e6db74">&#34;不可见的元素有：&#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;body :hidden&#39;</span>).<span style="color:#a6e22e">length</span> <span style="color:#f92672">+</span><span style="color:#e6db74">&#34;个!\n&#34;</span><span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;其中不可见的div元素有:&#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div:hidden&#39;</span>).<span style="color:#a6e22e">length</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#34;个!\n&#34;</span><span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;其中文本隐藏域有:&#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;input:hidden&#39;</span>).<span style="color:#a6e22e">length</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#34;个!&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div:hidden&#39;</span>).<span style="color:#a6e22e">show</span>(<span style="color:#ae81ff">3000</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选取所有可见的元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn_visible&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div:visible&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#FF6500&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><h2 id="jquery-属性选择器用法示例">jQuery 属性选择器用法示例</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// 选取含有属性 title 的 div 元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn1&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div[title]&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选取属性 title 值等于 test 的 div 元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn2&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div[title=test]&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选取属性 title 值不等于 test 的 div 元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn3&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div[title!=test]&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选取属性 title 值以 te 开始的 div 元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn4&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div[title^=te]&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选取属性 title 值以 est 结束的 div 元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn5&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;div[title$=est]&#34;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选取属性 title 值含有 es 的 div 元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn6&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;div[title*=es]&#34;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 组合属性选择器,首先选取有属性 id 的 div 元素，然后在结果中选取属性title值含有 es 的元素.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn7&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;div[id][title*=es]&#34;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h2 id="jquery-子元素过滤选择器用法示例">jQuery 子元素过滤选择器用法示例</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// 选取每个父元素下的第二个子元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn1&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div.one :nth-child(2)&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选取每个父元素下的第一个子元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn2&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div.one :first-child&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 选取每个父元素下的最后一个子元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn3&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div.one :last-child&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 如果父元素下的仅仅只有一个子元素，那么选中这个子元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn4&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;div.one :only-child&#39;</span>).<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;background&#34;</span>,<span style="color:#e6db74">&#34;#bbffaa&#34;</span>);
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><h2 id="jquery-表单对象属性过滤选择器用法示例">jQuery 表单对象属性过滤选择器用法示例</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">// 重置表单元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;:reset&#34;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">setTimeout</span>(<span style="color:#66d9ef">function</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">countChecked</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;select&#34;</span>).<span style="color:#a6e22e">change</span>();
+</span></span><span style="display:flex;"><span>    },<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 对表单内可用 input 赋值操作.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn1&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 input:enabled&#34;</span>).<span style="color:#a6e22e">val</span>(<span style="color:#e6db74">&#34;这里变化了！&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 对表单内不可用 input 赋值操作.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#btn2&#39;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 input:disabled&#34;</span>).<span style="color:#a6e22e">val</span>(<span style="color:#e6db74">&#34;这里变化了！&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 使用 :checked 选择器，来操作多选框.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;:checkbox&#34;</span>).<span style="color:#a6e22e">click</span>(<span style="color:#a6e22e">countChecked</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">countChecked</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;input:checked&#34;</span>).<span style="color:#a6e22e">length</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;div&#34;</span>).<span style="color:#a6e22e">eq</span>(<span style="color:#ae81ff">0</span>).<span style="color:#a6e22e">html</span>(<span style="color:#e6db74">&#34;&lt;strong&gt;有&#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">n</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#34; 个被选中!&lt;/strong&gt;&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">countChecked</span>();  <span style="color:#75715e">// 进入页面就调用.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 使用 :selected 选择器，来操作下拉列表.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;select&#34;</span>).<span style="color:#a6e22e">change</span>(<span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">str</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;select :selected&#34;</span>).<span style="color:#a6e22e">each</span>(<span style="color:#66d9ef">function</span> () {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">str</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">$</span>(<span style="color:#66d9ef">this</span>).<span style="color:#a6e22e">text</span>() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;,&#34;</span>;
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;div&#34;</span>).<span style="color:#a6e22e">eq</span>(<span style="color:#ae81ff">1</span>).<span style="color:#a6e22e">html</span>(<span style="color:#e6db74">&#34;&lt;strong&gt;你选中的是：&#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">str</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#34;&lt;/strong&gt;&#34;</span>);
+</span></span><span style="display:flex;"><span>}).<span style="color:#a6e22e">trigger</span>(<span style="color:#e6db74">&#39;change&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// trigger(&#39;change&#39;) 在这里的意思是：
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// select 加载后，马上执行 onchange.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 也可以用 .change() 代替.
+</span></span></span></code></pre></div><h2 id="jquery-表单选择器用法示例">jQuery 表单选择器用法示例</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$alltext</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 :text&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$allpassword</span><span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 :password&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$allradio</span><span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 :radio&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$allcheckbox</span><span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 :checkbox&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$allsubmit</span><span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 :submit&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$allimage</span><span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 :image&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$allreset</span><span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 :reset&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$allbutton</span><span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 :button&#34;</span>); <span style="color:#75715e">// &lt;input type=button /&gt;  和 &lt;button &gt;&lt;/button&gt; 都可以匹配
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$allfile</span><span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 :file&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$allhidden</span><span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 :hidden&#34;</span>); <span style="color:#75715e">// &lt;input type=&#34;hidden&#34; /&gt; 和 &lt;div style=&#34;display:none&#34;&gt;test&lt;/div&gt; 都可以匹配.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$allselect</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 select&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$alltextarea</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 textarea&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$AllInputs</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 :input&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">$inputs</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;#form1 input&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;div&#34;</span>).<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; 有&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">$alltext</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; 个（ :text 元素）&lt;br/&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>   .<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; 有&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">$allpassword</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; 个（ :password 元素）&lt;br/&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>   .<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; 有&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">$allradio</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; 个（ :radio 元素）&lt;br/&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>   .<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; 有&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">$allcheckbox</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; 个（ :checkbox 元素）&lt;br/&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>   .<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; 有&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">$allsubmit</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; 个（ :submit 元素）&lt;br/&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>   .<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; 有&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">$allimage</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; 个（ :image 元素）&lt;br/&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>   .<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; 有&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">$allreset</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; 个（ :reset 元素）&lt;br/&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>   .<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; 有&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">$allbutton</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; 个（ :button 元素）&lt;br/&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>   .<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; 有&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">$allfile</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; 个（ :file 元素）&lt;br/&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>   .<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; 有&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">$allhidden</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; 个（ :hidden 元素）&lt;br/&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>   .<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; 有&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">$allselect</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; 个（ select 元素）&lt;br/&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>   .<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; 有&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">$alltextarea</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; 个（ textarea 元素）&lt;br/&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>   .<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; 表单有 &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">$inputs</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; 个（input）元素。&lt;br/&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>   .<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; 总共有 &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">$AllInputs</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; 个(:input)元素。&lt;br/&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>   .<span style="color:#a6e22e">css</span>(<span style="color:#e6db74">&#34;color&#34;</span>, <span style="color:#e6db74">&#34;red&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#34;form&#34;</span>).<span style="color:#a6e22e">submit</span>(<span style="color:#66d9ef">function</span> () { <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>; }); <span style="color:#75715e">// return false; 不能提交.
+</span></span></span></code></pre></div>
+
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-3022214826355647"
+                    data-ad-slot="3373260497"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+                
+                <div class="blog-tags">
+                    
+                    &nbsp;<a href="https://blog.axiaoxin.com//tags/jquery/">jquery</a>
+                    
+                </div>
+                
+
+                <ins id="content-ad"
+                     class="adsbygoogle"
+                     style="display:block; text-align:center;"
+                     data-ad-layout="in-article"
+                     data-ad-format="fluid"
+                     data-ad-client="ca-pub-3022214826355647"
+                     data-ad-slot="4546241981"></ins>
+
+                <script>
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        
+                        var id = "content-ad";
+                        var ins = document.getElementById(id);
+                        ins.setAttribute("data-ad-slot", "9889874488");
+                    }
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+
+                
+                <hr/>
+                <section id="social-share">
+                    <div class="list-inline footer-links">
+                        
+
+<div class="share-box" aria-hidden="true">
+    <div class="addthis_inline_share_toolbox"></div>
+</div>
+<script async src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-637606c33f0ab9be"></script>
+
+
+                    </div>
+                </section>
+                
+
+                
+                
+                
+                
+
+                
+                <h4 class="see-also">也可以看看</h4>
+                <ul>
+                    
+                    
+                    <li><a href="/post/2012-05-01-jquery-%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/">JQuery 基础教程练习笔记</a></li>
+                    
+                </ul>
+
+                
+                
+
+                <div class="_ha8w4pb61zc"></div>
+                <script type="text/javascript">
+                    (window.slotbydup = window.slotbydup || []).push({
+                        id: "u6682238",
+                        container: "_ha8w4pb61zc",
+                        async: true
+                    });
+                </script>
+            </article>
+
+
+            
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://blog.axiaoxin.com/post/2011-03-08-linux-%E7%BB%88%E7%AB%AF%E9%BB%98%E8%AE%A4%E7%BC%96%E8%BE%91%E6%96%B9%E6%B3%95%E5%BF%AB%E6%8D%B7%E9%94%AE/" data-toggle="tooltip" data-placement="top" title="Linux 终端默认编辑方法快捷键">&larr; 前一篇</a>
+                </li>
+                
+                
+                <li class="next">
+                    <a href="https://blog.axiaoxin.com/post/2012-05-01-jquery-%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-toggle="tooltip" data-placement="top" title="JQuery 基础教程练习笔记">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            
+
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-3022214826355647"
+                data-ad-slot="5644200610"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+            <div class="giscus"></div>
+            <script src="https://giscus.app/client.js"
+                    data-repo="axiaoxin-com/blog"
+                    data-repo-id="R_kgDOIdZQhA"
+                    data-category="Comments"
+                    data-category-id="DIC_kwDOIdZQhM4CSvR2"
+                    data-mapping="title"
+                    data-strict="0"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-input-position="bottom"
+                    data-theme="preferred_color_scheme"
+                    data-lang="zh-CN"
+                    data-loading="lazy"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center footer-links">
+                    
+                    <li>
+                        
+                            <a href="mailto:admin@axiaoxin.com" title="Email me">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    <li>
+                        
+                            <a href="https://github.com/axiaoxin" title="GitHub">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    
+                    <li>
+                        <a href="" title="RSS">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="credits copyright text-muted">
+                
+                
+                <a href="http://axiaoxin.com">axiaoxin</a>
+                
+                
+
+                &nbsp;&bull;&nbsp;&copy;
+                
+                2011 - 2022
+                
+
+                
+                &nbsp;&bull;&nbsp;
+                <a href="https://blog.axiaoxin.com/">人言兑</a>
+                
+                </p>
+                <p class="copyright"><a class="text-muted text-decoration-none" href="https://beian.miit.gov.cn" target="_blank">蜀ICP备20023217号</a></p>
+            </div>
+        </div>
+    </div>
+</footer><script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://blog.axiaoxin.com/js/main.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script> hljs.highlightAll(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script async src="https://blog.axiaoxin.com/js/load-photoswipe.js"></script>
+
+
+
+<script>
+    (function() {
+            var cx = '61c0d8f33c4084733';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+        })();
+</script>
+
+
+
+
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["trackPageView"]);
+    _paq.push(["enableLinkTracking"]);
+
+    (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://matomo.axiaoxin.com/";
+            _paq.push(["setTrackerUrl", u+"piwik.php"]);
+            _paq.push(["setSiteId", "5"]);
+            var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+            g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+        })();
+</script>
+<noscript>
+    
+    <img src="http://matomo.axiaoxin.com/piwik.php?idsite=5&amp;rec=1" style="border:0" alt="" />
+    
+</noscript>
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?fdfe48e67d25b3802d6139d4e629c718";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+</script><script src="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/js/glightbox.min.js"></script>
+<script type="text/javascript">
+    $('.blog-post img').each(function(idx){
+        var src = $(this).attr("src");
+        var wrap = `<a href="${src}" class="glightbox"></a>`;
+        if (!src.match(/\.(jpg|jpeg|png|gif)$/i)) {
+            wrap = `<a href="${src}" target="_blank" data-glightbox="type: image"></a>`;
+        }
+        $(this).wrap(wrap);
+    });
+  const lightbox = GLightbox({});
+</script>
+
+
+    
+  </body>
+</html>
+

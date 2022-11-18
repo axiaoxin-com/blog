@@ -1,0 +1,38 @@
+{{ define "header" }}<!-- No header on 404 pages -->{{ end }}
+{{ define "main" }}
+<div role="main" class="container main-content">
+    <div class="text-center">
+        <h1 class="error-emoji"></h1>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-3022214826355647"
+             data-ad-slot="6429996269"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+
+        <p class="error-text" style="font-weight:800;font-size:30px;margin-top:25px;margin-bottom:25px">{{ i18n "pageNotFound" }}</p>
+
+        <div class="_ha8w4pb61zc"></div>
+        <script type="text/javascript">
+            (window.slotbydup = window.slotbydup || []).push({
+                                    id: "u6682238",
+                                    container: "_ha8w4pb61zc",
+                                    async: true
+                                });
+        </script>
+
+    </div>
+</div>
+<script>
+    var errorEmojiContainer = document.getElementsByClassName('error-emoji')[0];
+var emojiArray = [
+    '\\(o_o)/', '(o^^)o', '(˚Δ˚)b', '(^-^*)', '(≥o≤)', '(^_^)b', '(·_·)',
+    '(=\'X\'=)', '(>_<)', '(;-;)', '\\(^Д^)/',
+];
+var errorEmoji = emojiArray[Math.floor(Math.random() * emojiArray.length)];
+errorEmojiContainer.appendChild(document.createTextNode(errorEmoji));
+</script>
+{{ end }}

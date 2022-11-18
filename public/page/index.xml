@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pages on 阿小信的博客</title>
+    <link>https://blog.axiaoxin.com/page/</link>
+    <description>Recent content in Pages on 阿小信的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cmn-Hans</language>
+    <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
+    <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster><atom:link href="https://blog.axiaoxin.com/page/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于</title>
+      <link>https://blog.axiaoxin.com/page/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/page/about/</guid>
+      <description>欢迎访问人言兑，本网站是 axiaoxin 的个人博客。 博客起名“人言兑”，含义为“信说”两个字的拆解与合并。 本博客主要用于记录自己所学的知识以及分享一些实践</description>
+    </item>
+    
+    <item>
+      <title>归档</title>
+      <link>https://blog.axiaoxin.com/page/archives/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/page/archives/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

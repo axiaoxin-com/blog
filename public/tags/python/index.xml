@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>python on 阿小信的博客</title>
+    <link>https://blog.axiaoxin.com/tags/python/</link>
+    <description>Recent content in python on 阿小信的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cmn-Hans</language>
+    <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
+    <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster>
+    <lastBuildDate>Fri, 21 Jul 2017 15:15:53 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Flask 中日志按照日志级别分开保存到不同文件</title>
+      <link>https://blog.axiaoxin.com/post/2017-07-21-flask-%E4%B8%AD%E6%97%A5%E5%BF%97%E6%8C%89%E7%85%A7%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB%E5%88%86%E5%BC%80%E4%BF%9D%E5%AD%98%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6/</link>
+      <pubDate>Fri, 21 Jul 2017 15:15:53 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2017-07-21-flask-%E4%B8%AD%E6%97%A5%E5%BF%97%E6%8C%89%E7%85%A7%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB%E5%88%86%E5%BC%80%E4%BF%9D%E5%AD%98%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6/</guid>
+      <description>目标是想让代码中的日志按照不同的级别保存到不同的文件，即不管是框架本身的debug日志还是我们自己写的debug日志都保存到debug.lo</description>
+    </item>
+    
+    <item>
+      <title>Sentry 插件编写总结</title>
+      <link>https://blog.axiaoxin.com/post/2017-03-03-sentry-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Fri, 03 Mar 2017 11:03:07 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2017-03-03-sentry-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99%E6%80%BB%E7%BB%93/</guid>
+      <description>sentry 插件需要特定的结构才能正常工作，最简单的结构即为本插件的文件结构。 sentry-rtx * │ .gitignore │ README.md │ setup.cfg │ setup.py * │ └─ sentry_rtx * plugin.py * tof_api.py __init__.py 主要编写其中的 setup.py 和 plugin.py 在 sentry_rtx/plugin.py 中实现自</description>
+    </item>
+    
+    <item>
+      <title>关于 Python 中的 None 和 is</title>
+      <link>https://blog.axiaoxin.com/post/2015-07-01-%E5%85%B3%E4%BA%8E-python-%E4%B8%AD%E7%9A%84-none-%E5%92%8C-is/</link>
+      <pubDate>Wed, 01 Jul 2015 11:46:27 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2015-07-01-%E5%85%B3%E4%BA%8E-python-%E4%B8%AD%E7%9A%84-none-%E5%92%8C-is/</guid>
+      <description>Python 中的 None x is None 比 x == None 更快。 is 是用 C 实现的, 简单的比较两个对象的 ID，不需要调用任何方法函数, is 是比较 id，== 是比较值。 创建一个 None 实例： Python</description>
+    </item>
+    
+    <item>
+      <title>分享几个 Python 实现的实用命令行工具</title>
+      <link>https://blog.axiaoxin.com/post/2015-05-29-%E5%88%86%E4%BA%AB%E5%87%A0%E4%B8%AA-python-%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Fri, 29 May 2015 00:00:00 +0000</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2015-05-29-%E5%88%86%E4%BA%AB%E5%87%A0%E4%B8%AA-python-%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7/</guid>
+      <description>pyenv pyenv 是一个使用简单的 Python 版本管理工具，可以让你简单的切换 Python 版本。Python2.x 在5年后将不在更新维护，所以是时候熟悉 Python3 了！ 那么如何方便的即</description>
+    </item>
+    
+    <item>
+      <title>Python 有序更新 yaml 文件</title>
+      <link>https://blog.axiaoxin.com/post/2017-05-04-python-%E6%9C%89%E5%BA%8F%E6%9B%B4%E6%96%B0-yaml-%E6%96%87%E4%BB%B6/</link>
+      <pubDate>Sun, 17 May 2015 11:03:07 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2017-05-04-python-%E6%9C%89%E5%BA%8F%E6%9B%B4%E6%96%B0-yaml-%E6%96%87%E4%BB%B6/</guid>
+      <description>在 Python 中使用 PyYAML 操作 yml 文件，yaml 默认 load 进来是个字典，所以无法保持原本的顺序，要想不改变原本的 yaml 结构，更新 yaml 文件内容需要用到以下方法 from collections import OrderedDict import</description>
+    </item>
+    
+    <item>
+      <title>使用 Python 实现一个灰度策略函数</title>
+      <link>https://blog.axiaoxin.com/post/2015-05-15-%E4%BD%BF%E7%94%A8-python-%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%81%B0%E5%BA%A6%E7%AD%96%E7%95%A5%E5%87%BD%E6%95%B0/</link>
+      <pubDate>Fri, 15 May 2015 00:00:00 +0000</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2015-05-15-%E4%BD%BF%E7%94%A8-python-%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%81%B0%E5%BA%A6%E7%AD%96%E7%95%A5%E5%87%BD%E6%95%B0/</guid>
+      <description>使用 Python 实现一个灰度发布策略，传入最新的 app 发布时间和当前请求用户的设备 id，如果该用户命中灰度策略就返回 True def gray_publish_check(app_lastest_pub_time, device_id): &amp;#39;&amp;#39;&amp;#39;</description>
+    </item>
+    
+    <item>
+      <title>使用 Python 进行版本号比较</title>
+      <link>https://blog.axiaoxin.com/post/2015-05-06-%E4%BD%BF%E7%94%A8-python-%E8%BF%9B%E8%A1%8C%E7%89%88%E6%9C%AC%E5%8F%B7%E6%AF%94%E8%BE%83/</link>
+      <pubDate>Wed, 06 May 2015 00:00:00 +0000</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2015-05-06-%E4%BD%BF%E7%94%A8-python-%E8%BF%9B%E8%A1%8C%E7%89%88%E6%9C%AC%E5%8F%B7%E6%AF%94%E8%BE%83/</guid>
+      <description>使用 StrictVersion 比较版本号： StrictVersion 是由.将一串带有预发布标签的数字分隔为两个或三个部分的格式，预发布标签的字母只能是 a 或者 b 加数字版本号，而且只能在最末尾</description>
+    </item>
+    
+    <item>
+      <title>英语四六级成绩查分软件（无需准考证号）</title>
+      <link>https://blog.axiaoxin.com/post/2012-08-23-%E8%8B%B1%E8%AF%AD%E5%9B%9B%E5%85%AD%E7%BA%A7%E6%88%90%E7%BB%A9%E6%9F%A5%E5%88%86%E8%BD%AF%E4%BB%B6%E6%97%A0%E9%9C%80%E5%87%86%E8%80%83%E8%AF%81%E5%8F%B7/</link>
+      <pubDate>Thu, 23 Aug 2012 23:39:33 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2012-08-23-%E8%8B%B1%E8%AF%AD%E5%9B%9B%E5%85%AD%E7%BA%A7%E6%88%90%E7%BB%A9%E6%9F%A5%E5%88%86%E8%BD%AF%E4%BB%B6%E6%97%A0%E9%9C%80%E5%87%86%E8%80%83%E8%AF%81%E5%8F%B7/</guid>
+      <description>四六级准考证号说明~： 准考证号 前6位是地区号~ 然后是121 (表示12年的第1次，即12年6月份的)~ 然后是1或2 (1代表四级，2代表6级)~</description>
+    </item>
+    
+  </channel>
+</rss>

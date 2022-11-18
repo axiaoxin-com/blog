@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+<title>Bash 学习笔记 - 人言兑</title>
+  <meta name="description" content="Bash 的工作控制 %% 或 %&#43; 可调用 jobs 里面现在的工作，%- 调用前一个工作 %n 将工作编号为 n 的进程置于前台来执行 == fg %n %?s1 调用程序名称中含有s1的工作，? 表示">
+  <meta name="author" content="axiaoxin"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "阿小信的博客",
+    
+    "url": "https:\/\/blog.axiaoxin.com\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/blog.axiaoxin.com\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/post\/2011-01-18-bash-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\/",
+          "name": "Bash 学习笔记"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "axiaoxin"
+  },
+  "headline": "Bash 学习笔记",
+  "description" : "Bash 的工作控制 %% 或 %\u002b 可调用 jobs 里面现在的工作，%- 调用前一个工作 %n 将工作编号为 n 的进程置于前台来执行 == fg %n %?s1 调用程序名称中含有s1的工作，? 表示",
+  "inLanguage" : "zh-cn",
+  "wordCount":  1340 ,
+  "datePublished" : "2011-01-18T17:25:50",
+  "dateModified" : "2011-01-18T17:25:50",
+  "image" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+  "keywords" : [ "linux" ],
+  "mainEntityOfPage" : "https:\/\/blog.axiaoxin.com\/post\/2011-01-18-bash-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/blog.axiaoxin.com\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Bash 学习笔记" />
+<meta property="og:description" content="Bash 的工作控制 %% 或 %&#43; 可调用 jobs 里面现在的工作，%- 调用前一个工作 %n 将工作编号为 n 的进程置于前台来执行 == fg %n %?s1 调用程序名称中含有s1的工作，? 表示">
+<meta property="og:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+<meta property="og:url" content="https://blog.axiaoxin.com/post/2011-01-18-bash-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="阿小信的博客" />
+
+  <meta name="twitter:title" content="Bash 学习笔记" />
+  <meta name="twitter:description" content="Bash 的工作控制 %% 或 %&#43; 可调用 jobs 里面现在的工作，%- 调用前一个工作 %n 将工作编号为 n 的进程置于前台来执行 == fg %n %?s1 调用程序名称中含有s1的工作，? 表示">
+  <meta name="twitter:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://blog.axiaoxin.com/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.106.0">
+  <link rel="alternate" href="https://blog.axiaoxin.com/index.xml" type="application/rss+xml" title="阿小信的博客"><link href="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://blog.axiaoxin.com/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <script>
+      var head = document.getElementsByTagName('HEAD')[0];
+      var link = document.createElement("link");
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css";
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        
+        link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css";
+      }
+      head.appendChild(link);
+  </script><link rel="stylesheet" href="https://blog.axiaoxin.com/css/codeblock.css" /><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3022214826355647" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" ></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5KRFX25W8R"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-5KRFX25W8R', { 'anonymize_ip': false });
+}
+</script>
+<link href="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/css/glightbox.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://blog.axiaoxin.com/">阿小信的博客</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="主页" href="/">主页</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="归档" href="/page/archives/">归档</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/page/about/">关于</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent">网站</a>
+              <div class="navlinks-children">
+                
+                  <a href="http://mbti.axiaoxin.com" target="_blank">MBTI职业性格测试</a>
+                
+                  <a href="http://investool.axiaoxin.com" target="_blank">InvesTool</a>
+                
+                  <a href="http://m.psyctest.cn" target="_blank">赛可测试网:免费心理测试</a>
+                
+                  <a href="http://axiaoxin.com" target="_blank">个人主页</a>
+                
+                  <a href="http://dw.mcool.top" target="_blank">抖文-精选优质抖音视频文章</a>
+                
+              </div>
+            </li>
+          
+        
+
+        
+
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="阿小信的博客" href="https://blog.axiaoxin.com/">
+            <img class="avatar-img" src="https://blog.axiaoxin.com/img/avatar-icon.png" alt="阿小信的博客" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">搜索 阿小信的博客</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        
+                        <h1>Bash 学习笔记</h1>
+                        
+                        
+                        
+                        
+                        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;发表于 2011-01-18
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;3&nbsp;分钟
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1340&nbsp;个字
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;axiaoxin
+    
+  
+  
+</span>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-3022214826355647"
+                 data-ad-slot="6429996269"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <article role="main" class="blog-post">
+                <h2 id="bash-的工作控制">Bash 的工作控制</h2>
+<p><code>%%</code> 或 <code>%+</code> 可调用 jobs 里面现在的工作，<code>%-</code> 调用前一个工作</p>
+<p><code>%n</code> 将工作编号为 n 的进程置于前台来执行 == <code>fg %n</code></p>
+<p><code>%?s1</code> 调用程序名称中含有s1的工作，? 表示搜寻</p>
+<p><code>%./s1</code> 找出进程名开头是 ./s1 的工作</p>
+<p><code>C-z</code> 暂停进程，然后 bg 丢到后台 == 指令 <code>&amp;</code></p>
+<p><code>disown %n</code>：移除工作</p>
+<h2 id="bash-的历史指令">Bash 的历史指令</h2>
+<p><code>!-n</code> ：执行倒数第n个命令</p>
+<p><code>!!</code> ：执行前一个你是指令</p>
+<p><code>!</code> 字符串：执行最近一个含有以‘字符串’开头的历史命令</p>
+<p><code>!?字符串?</code> ：执行最近一个含有‘字符串’的历史指令</p>
+<p><code>!#</code> ：目前所键入的字符串</p>
+<p><code>!!:$</code> ：取得前一个命令的最后一个参数</p>
+<p><code>!ls:1</code> ：找出最近一个以ls开头的指令的第一个参数，^第一个，*所有参数，</p>
+<p><code>!!:3-5</code> ：找出前一个指令中，介于字符串3到5的参数</p>
+<p><code>!!:s/字符串1/字符串2/</code> ：将前一个指令中的字符串1替换为字符串2</p>
+<p><code>!!:h</code> ：删除后面的文件名</p>
+<p><code>!!:t</code> ：删除前面的目录</p>
+<p><code>!!:p</code> ：显示前面的指令，但不执行。</p>
+<h2 id="bash-数组用法">Bash 数组用法</h2>
+<p>定义数组：<code>a=(1 2 3 4 5)</code> , <code>a=(1 [4]=4 5 )</code> 可以不连续，不连续的地方为空。</p>
+<p>获取值：<code>${a[index]}</code></p>
+<p>获取所有元素：<code>${a[@]}</code> 返回数字<code>1 2 3 4 5</code>，<code>${a[*]}</code>返回<code>&quot;1 2 3 4 5&quot;</code></p>
+<p>获取元素个数：<code>${#a[@]}</code>, <code>${#a[*]}</code></p>
+<h2 id="调整-bash-变量的属性为-readonly">调整 Bash 变量的属性为 readonly</h2>
+<p><code>readonly 变量名</code></p>
+<p><code>readonly、readonly -p</code>  ：显示只读属性的变量列表</p>
+<p><code>readonly -f 函数名</code></p>
+<p><code>readonly -a 数组名</code>：<code>readonly -a s; s[3]=10</code></p>
+<p><code>declare -r 变量名</code></p>
+<p><strong>declare用法</strong> ：</p>
+<ul>
+<li><code>-p</code> 显示变量属性</li>
+<li><code>-a</code> 变量是数组</li>
+<li><code>-f</code> 搜寻命令只找函数</li>
+<li><code>-i</code> 变量是一个整数</li>
+<li><code>-F</code> 显示所有函数式名称及其属性</li>
+<li><code>-r</code> 设定只读变量</li>
+<li><code>-t</code> 设立变量具有trace属性</li>
+<li><code>-x</code> 设为环境变量</li>
+</ul>
+<h2 id="bash-高级变量用法">Bash 高级变量用法</h2>
+<p><strong>变量</strong></p>
+<ul>
+<li><code>${变量名}</code></li>
+<li><code>$(命令)</code></li>
+<li><code>${待测变量:-替换值}</code> ：判断变量是否不存在或者为空（冒号），成立则返回替换值</li>
+<li><code>${待测变量:=替换值}</code> ：判断变量是否不存在或者为空（冒号），成立则赋值为替换值</li>
+<li><code>${待测变量:?错误信息}</code> ：判断变量是否不存在或者为空（冒号），成立则赋值为替换值</li>
+<li><code>${待测变量:+替换值}</code> ：判断变量是否存在或者非空（冒号），成立则返回替换值</li>
+</ul>
+<p><strong>切片</strong></p>
+<ul>
+<li><code>${变量:位置起始点}</code></li>
+<li><code>${变量:位置起始点:长度}</code></li>
+</ul>
+<p><strong>取部分位置参数</strong></p>
+<ul>
+<li><code>${@:1}</code></li>
+</ul>
+<p><strong>计算字符串长度</strong></p>
+<ul>
+<li><code>${#str}</code></li>
+<li><code>expr length &quot;字符串&quot;</code></li>
+</ul>
+<p><strong>对比样式，删除相符的</strong></p>
+<ul>
+<li><code>${变量#样式}</code>：由前面开始，最短删除</li>
+<li><code>${变量##样式}</code>：由前面开始，最长删除</li>
+<li><code>${变量%样式}</code>：由后面开始，最短删除</li>
+<li><code>${变量%%样式}</code>：由后面开始，最长删除</li>
+</ul>
+<p><strong>取代或删除部分字符串</strong></p>
+<ul>
+<li>只替换第一个符合的：<code>${变量/样式/替换字符串}</code></li>
+<li>替换全部符合的：<code>${变量//样式/替换字符串}</code></li>
+<li>只匹配行首：<code>${变量/#样式/替换字符串}</code></li>
+<li>只匹配行末：<code>${变量/%样式/替换字符串}</code></li>
+<li>删除：<code>不加替换字符串表示删除</code></li>
+</ul>
+<p><strong>列出指定字符串开头的变量名列表</strong></p>
+<p><code>${!开头字符串@}</code>, <code>${!开头字符串*}</code></p>
+<p><strong>数组索引列表</strong></p>
+<p><code>${!数组变量[@]}</code>, <code>${!数组变量[*]}</code></p>
+<p><strong>算术拓展</strong></p>
+<ul>
+<li><code>$((算术式))</code></li>
+<li><code>expr 算术式</code></li>
+<li><code>$[算术式]</code></li>
+<li><code>declare -i 变量=算术式</code></li>
+<li><code>let 算术式</code></li>
+</ul>
+<p>算术式中如果值不存在或者为空，则默认为0</p>
+<p>不同进制的数字可使用“<code>基底#数字</code>”表示</p>
+<p><code>let</code> 表达式加空格必须为表达式加引号</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>let <span style="color:#e6db74">&#34;i = i + 5&#34;</span>
+</span></span></code></pre></div><p><strong>查找文件中的关键字</strong>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>grep -q <span style="color:#e6db74">&#34;keyword&#34;</span> filename
+</span></span></code></pre></div><p><strong>返回命令结果的相反值</strong>：</p>
+<p><code>! 空格 命令</code></p>
+<p><code>[  判断式  ] &amp;&amp; 指令1 || 指令2  等价于  A?B:C</code></p>
+<p>在 <code>[[  ]]</code> 和 <code>(())</code> 中表达式不用转义符</p>
+<p><strong>高级样式</strong></p>
+<ul>
+<li><code>@(样式串行)</code> ：如果符合括号里样式串行的其中一个就算对比符合</li>
+<li><code>!(样式串行)</code> ：只要不出现在括号中就算对比符合</li>
+</ul>
+<p>eg：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>    read name
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> $name in
+</span></span><span style="display:flex;"><span>          j@<span style="color:#f92672">(</span>ay|oin|uly|oe<span style="color:#f92672">)</span> echo <span style="color:#e6db74">&#34;good&#34;</span>;;
+</span></span><span style="display:flex;"><span>          *<span style="color:#f92672">)</span> echo <span style="color:#e6db74">&#34;nice&#34;</span>;;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">esac</span>
+</span></span></code></pre></div>
+
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-3022214826355647"
+                    data-ad-slot="3373260497"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+                
+                <div class="blog-tags">
+                    
+                    &nbsp;<a href="https://blog.axiaoxin.com//tags/linux/">linux</a>
+                    
+                </div>
+                
+
+                <ins id="content-ad"
+                     class="adsbygoogle"
+                     style="display:block; text-align:center;"
+                     data-ad-layout="in-article"
+                     data-ad-format="fluid"
+                     data-ad-client="ca-pub-3022214826355647"
+                     data-ad-slot="4546241981"></ins>
+
+                <script>
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        
+                        var id = "content-ad";
+                        var ins = document.getElementById(id);
+                        ins.setAttribute("data-ad-slot", "9889874488");
+                    }
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+
+                
+                <hr/>
+                <section id="social-share">
+                    <div class="list-inline footer-links">
+                        
+
+<div class="share-box" aria-hidden="true">
+    <div class="addthis_inline_share_toolbox"></div>
+</div>
+<script async src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-637606c33f0ab9be"></script>
+
+
+                    </div>
+                </section>
+                
+
+                
+                
+                
+                
+
+                
+                <h4 class="see-also">也可以看看</h4>
+                <ul>
+                    
+                    
+                    <li><a href="/post/2022-12-22-%E5%9C%A8-ubuntu-%E4%B8%8A%E5%AE%89%E8%A3%85-.net-sdk-%E6%88%96-.net-runtime/">在 Ubuntu 上安装 .NET SDK 或 .NET Runtime</a></li>
+                    
+                    <li><a href="/post/2018-03-18-%E6%A8%A1%E6%8B%9F%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E5%92%8C-netflow/">模拟网络设备和 netflow</a></li>
+                    
+                    <li><a href="/post/2011-03-08-linux-%E7%BB%88%E7%AB%AF%E9%BB%98%E8%AE%A4%E7%BC%96%E8%BE%91%E6%96%B9%E6%B3%95%E5%BF%AB%E6%8D%B7%E9%94%AE/">Linux 终端默认编辑方法快捷键</a></li>
+                    
+                </ul>
+
+                
+                
+
+                <div class="_ha8w4pb61zc"></div>
+                <script type="text/javascript">
+                    (window.slotbydup = window.slotbydup || []).push({
+                        id: "u6682238",
+                        container: "_ha8w4pb61zc",
+                        async: true
+                    });
+                </script>
+            </article>
+
+
+            
+            <ul class="pager blog-pager">
+                
+                
+                <li class="next">
+                    <a href="https://blog.axiaoxin.com/post/2011-03-08-linux-%E7%BB%88%E7%AB%AF%E9%BB%98%E8%AE%A4%E7%BC%96%E8%BE%91%E6%96%B9%E6%B3%95%E5%BF%AB%E6%8D%B7%E9%94%AE/" data-toggle="tooltip" data-placement="top" title="Linux 终端默认编辑方法快捷键">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            
+
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-3022214826355647"
+                data-ad-slot="5644200610"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+            <div class="giscus"></div>
+            <script src="https://giscus.app/client.js"
+                    data-repo="axiaoxin-com/blog"
+                    data-repo-id="R_kgDOIdZQhA"
+                    data-category="Comments"
+                    data-category-id="DIC_kwDOIdZQhM4CSvR2"
+                    data-mapping="title"
+                    data-strict="0"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-input-position="bottom"
+                    data-theme="preferred_color_scheme"
+                    data-lang="zh-CN"
+                    data-loading="lazy"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center footer-links">
+                    
+                    <li>
+                        
+                            <a href="mailto:admin@axiaoxin.com" title="Email me">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    <li>
+                        
+                            <a href="https://github.com/axiaoxin" title="GitHub">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    
+                    <li>
+                        <a href="" title="RSS">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="credits copyright text-muted">
+                
+                
+                <a href="http://axiaoxin.com">axiaoxin</a>
+                
+                
+
+                &nbsp;&bull;&nbsp;&copy;
+                
+                2011 - 2022
+                
+
+                
+                &nbsp;&bull;&nbsp;
+                <a href="https://blog.axiaoxin.com/">人言兑</a>
+                
+                </p>
+                <p class="copyright"><a class="text-muted text-decoration-none" href="https://beian.miit.gov.cn" target="_blank">蜀ICP备20023217号</a></p>
+            </div>
+        </div>
+    </div>
+</footer><script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://blog.axiaoxin.com/js/main.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script> hljs.highlightAll(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script async src="https://blog.axiaoxin.com/js/load-photoswipe.js"></script>
+
+
+
+<script>
+    (function() {
+            var cx = '61c0d8f33c4084733';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+        })();
+</script>
+
+
+
+
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["trackPageView"]);
+    _paq.push(["enableLinkTracking"]);
+
+    (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://matomo.axiaoxin.com/";
+            _paq.push(["setTrackerUrl", u+"piwik.php"]);
+            _paq.push(["setSiteId", "5"]);
+            var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+            g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+        })();
+</script>
+<noscript>
+    
+    <img src="http://matomo.axiaoxin.com/piwik.php?idsite=5&amp;rec=1" style="border:0" alt="" />
+    
+</noscript>
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?fdfe48e67d25b3802d6139d4e629c718";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+</script><script src="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/js/glightbox.min.js"></script>
+<script type="text/javascript">
+    $('.blog-post img').each(function(idx){
+        var src = $(this).attr("src");
+        var wrap = `<a href="${src}" class="glightbox"></a>`;
+        if (!src.match(/\.(jpg|jpeg|png|gif)$/i)) {
+            wrap = `<a href="${src}" target="_blank" data-glightbox="type: image"></a>`;
+        }
+        $(this).wrap(wrap);
+    });
+  const lightbox = GLightbox({});
+</script>
+
+
+    
+  </body>
+</html>
+

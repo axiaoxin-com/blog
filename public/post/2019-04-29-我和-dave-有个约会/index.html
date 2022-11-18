@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+<title>我和 Dave 有个约会 - 人言兑</title>
+  <meta name="description" content="Start 今天上午参加了 Go 语言项目开发成员 Dave Cheney 的分享。 分享的主题是《High Performance Go: Two tools, three types of profiling in 45 minutes》 分享的内容来自 https://dave.cheney.net/high-performance-go-workshop/gopherchina-2019.html 非常有干货的分享！ 两">
+  <meta name="author" content="axiaoxin"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "阿小信的博客",
+    
+    "url": "https:\/\/blog.axiaoxin.com\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/blog.axiaoxin.com\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/blog.axiaoxin.com\/post\/2019-04-29-%E6%88%91%E5%92%8C-dave-%E6%9C%89%E4%B8%AA%E7%BA%A6%E4%BC%9A\/",
+          "name": "我和 dave 有个约会"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "axiaoxin"
+  },
+  "headline": "我和 Dave 有个约会",
+  "description" : "Start 今天上午参加了 Go 语言项目开发成员 Dave Cheney 的分享。 分享的主题是《High Performance Go: Two tools, three types of profiling in 45 minutes》 分享的内容来自 https:\/\/dave.cheney.net\/high-performance-go-workshop\/gopherchina-2019.html 非常有干货的分享！ 两",
+  "inLanguage" : "zh-cn",
+  "wordCount":  1734 ,
+  "datePublished" : "2019-04-29T17:50:57",
+  "dateModified" : "2019-04-29T17:50:57",
+  "image" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+  "keywords" : [ "golang" ],
+  "mainEntityOfPage" : "https:\/\/blog.axiaoxin.com\/post\/2019-04-29-%E6%88%91%E5%92%8C-dave-%E6%9C%89%E4%B8%AA%E7%BA%A6%E4%BC%9A\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/blog.axiaoxin.com\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="我和 Dave 有个约会" />
+<meta property="og:description" content="Start 今天上午参加了 Go 语言项目开发成员 Dave Cheney 的分享。 分享的主题是《High Performance Go: Two tools, three types of profiling in 45 minutes》 分享的内容来自 https://dave.cheney.net/high-performance-go-workshop/gopherchina-2019.html 非常有干货的分享！ 两">
+<meta property="og:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+<meta property="og:url" content="https://blog.axiaoxin.com/post/2019-04-29-%E6%88%91%E5%92%8C-dave-%E6%9C%89%E4%B8%AA%E7%BA%A6%E4%BC%9A/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="阿小信的博客" />
+
+  <meta name="twitter:title" content="我和 Dave 有个约会" />
+  <meta name="twitter:description" content="Start 今天上午参加了 Go 语言项目开发成员 Dave Cheney 的分享。 分享的主题是《High Performance Go: Two tools, three types of profiling in 45 minutes》 …">
+  <meta name="twitter:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://blog.axiaoxin.com/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.106.0">
+  <link rel="alternate" href="https://blog.axiaoxin.com/index.xml" type="application/rss+xml" title="阿小信的博客"><link href="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://blog.axiaoxin.com/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <script>
+      var head = document.getElementsByTagName('HEAD')[0];
+      var link = document.createElement("link");
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-light.min.css";
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        
+        link.href = "https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/styles/atom-one-dark.min.css";
+      }
+      head.appendChild(link);
+  </script><link rel="stylesheet" href="https://blog.axiaoxin.com/css/codeblock.css" /><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3022214826355647" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" ></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5KRFX25W8R"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-5KRFX25W8R', { 'anonymize_ip': false });
+}
+</script>
+<link href="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/css/glightbox.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://blog.axiaoxin.com/">阿小信的博客</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="主页" href="/">主页</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="归档" href="/page/archives/">归档</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/page/about/">关于</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent">网站</a>
+              <div class="navlinks-children">
+                
+                  <a href="http://mbti.axiaoxin.com" target="_blank">MBTI职业性格测试</a>
+                
+                  <a href="http://investool.axiaoxin.com" target="_blank">InvesTool</a>
+                
+                  <a href="http://m.psyctest.cn" target="_blank">赛可测试网:免费心理测试</a>
+                
+                  <a href="http://axiaoxin.com" target="_blank">个人主页</a>
+                
+                  <a href="http://dw.mcool.top" target="_blank">抖文-精选优质抖音视频文章</a>
+                
+              </div>
+            </li>
+          
+        
+
+        
+
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="阿小信的博客" href="https://blog.axiaoxin.com/">
+            <img class="avatar-img" src="https://blog.axiaoxin.com/img/avatar-icon.png" alt="阿小信的博客" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">搜索 阿小信的博客</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        
+                        <h1>我和 Dave 有个约会</h1>
+                        
+                        
+                        
+                        
+                        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;发表于 2019-04-29
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;4&nbsp;分钟
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1734&nbsp;个字
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;axiaoxin
+    
+  
+  
+</span>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-3022214826355647"
+                 data-ad-slot="6429996269"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <article role="main" class="blog-post">
+                <h2 id="start">Start</h2>
+<p>今天上午参加了 Go 语言项目开发成员 Dave Cheney 的分享。</p>
+<p><img src="https://camo.githubusercontent.com/9bbbbf85716a970fcc020b5ef3afff10a8e0f3e079a4194ccc460a45dce7b2e5/68747470733a2f2f7778312e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f67636c7973326a32307467306e716166362e6a7067" alt="签到"></p>
+<p>分享的主题是《High Performance Go: Two tools, three types of profiling in 45 minutes》</p>
+<p><img src="https://camo.githubusercontent.com/14d6409fd5b142baf6cbd7b5f51998ed0b069d7fac55af8a1061478d3810662b/68747470733a2f2f7778312e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f69686276717a6a32307a6b30716e3777682e6a7067" alt="High Performance Go"></p>
+<p>分享的内容来自 <a href="https://dave.cheney.net/high-performance-go-workshop/gopherchina-2019.html">https://dave.cheney.net/high-performance-go-workshop/gopherchina-2019.html</a> 非常有干货的分享！</p>
+<p>两个工具分别是 pprof 和 trace，三种类型的分析例子 cpu 性能分析，内存性能分析，trace 性能分析</p>
+<p>Dave 首先感谢了 Tencent Tarscloud，估计是 Tars 项目的同事邀请他来的。</p>
+<h2 id="第一个例子cpu-性能分析">第一个例子：CPU 性能分析</h2>
+<p>通过一个统计文件内容中单词的个数的 go 程序和 linux 自带的 wc 的性能对比来展示 go 的性能分析工具 pprof 的用法。</p>
+<p>原始程序代码如下：</p>
+<p><img src="https://camo.githubusercontent.com/5a1107a5dc730ecce61ed211b801130169854e127074828b978cde2b79f5502d/68747470733a2f2f7778322e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6a31376c6a6e6a323071303071346b30312e6a7067" alt="Golang 统计文件内容中单词的个数"></p>
+<p>编译运行后统计《Moby Dick》白鲸记这篇小说的单词个数。（moby dick直译是大雕？？？《白鲸记》为赫尔曼·梅尔维尔发表于1851年的小说，被认为是美国最伟大的长篇小说之一。是一部以海上捕鲸业为题材的小说，一位名叫亚哈的“裴廓德号”捕鲸船船长带领全体船员，追捕一条叫做“莫比·迪克”的大白鲸的历险过程。<a href="https://www.gutenberg.org/files/2701/2701-h/2701-h.htm">https://www.gutenberg.org/files/2701/2701-h/2701-h.htm</a>）</p>
+<p>该程序大约 2 秒统计完成，而 wc 只要 0.012 秒，性能差距太大，经过分析优化后，性能接近 wc。</p>
+<p>于是在代码中开始 CPU 性能分析，添加 profile 代码：</p>
+<p><img src="https://camo.githubusercontent.com/c4169cccccba7700e7b91078c7b81df3b6dac5b134b76c365b054c0d5a345112/68747470733a2f2f7778312e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6a64633363726a3230616c3035613074772e6a7067" alt="profile CPU 性能分析"></p>
+<p>go 默认的 pprof 有两个包: <code>net/http/pprof</code> 和 <code>runtime/pprof</code>，前者是通过后者实现的。这里的 <code>pkg/profile</code> 是第三方包，也是通过 <code>runtime/pprof</code> 实现的，更加好用。</p>
+<p>使用 <code>go run</code> 运行后会生成 <code>cpu.pprof</code> 文件，接下来就可以通过执行命令 <code>go tool pprof /path/to/cpu.pprof</code> 来展示分析结果，执行 top 命令：</p>
+<p><img src="https://camo.githubusercontent.com/1c39908aa265d238e74f55043643cf2d296c4921f7517ec5c46d296f7291525f/68747470733a2f2f7778342e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6a6a393564686a32307064306266646f782e6a7067" alt="pprof 分析结果"></p>
+<p>可以通过在上面的命令中添加 <code>-http=:PORT</code> 参数来启动 http 服务，就会自动打开浏览器在里面展示 dot 图，里面可以交互可视化的查看 top，火焰图，调用图，源码信息，很强大，需要先安装 Graphviz，注意添加 bin 目录到 Path 中才行。</p>
+<p>我这里测试是 windows 本地创建了一个有 320 万个英文字符文件，字符数量太少效果不太明显，调用图如下（和*nix上的输出有所不同）：</p>
+<p><img src="https://camo.githubusercontent.com/f413692b23c51234bda155c8a9f54ec2ba487c172c3719dca3c094de17bdedb7/68747470733a2f2f7778322e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6a756761326b6a3230716830656c677a7a2e6a7067" alt="pprof 分析结果"></p>
+<p><img src="https://camo.githubusercontent.com/ff54d0470c57c970d5a61821c01bed4dd6610fa2c8461f03826173d000f78028/68747470733a2f2f7778312e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6b30336e6d6e6a32306c6c307a6b6a7a6c2e6a7067" alt="pprof 分析结果"></p>
+<p>上面的 graph 可以看到 cpu 90+% 是在做 <code>syscall.Syscall</code>，因为 readbyte 直接对文件对象进行读取操作，每次读一个单词，于是这个程序有多少个单词就会调用多少次syscall，系统调用通常都是比较昂贵的操作，大量的 syscall 就占用了 cpu，导致程序性能下降。</p>
+<p>优化：因为 readbyte 接收的是 io.Reader 的 interface，所以可以把文件对象 f 通过 bufio 缓存起来就不用每次去读取文件导致 syscall 了。bufio 实现了 io.Reader和 io.Writer。</p>
+<p><img src="https://camo.githubusercontent.com/12be82e5642160ce1c9b5d659afcbac2fde8089cb3c7a705bd168e2a9bb121e9/68747470733a2f2f7778342e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6b636f3236676a32306778306b726e35762e6a7067" alt="bufio"></p>
+<p>性能分析数据</p>
+<p><img src="https://camo.githubusercontent.com/f5079af6c550a358302ed4451040fdcf6a2f05991d8871d36108778742cd7459/68747470733a2f2f7778342e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6b6c7a3767726a323071633063667770692e6a7067" alt="Go 性能分析数据"></p>
+<p><img src="https://camo.githubusercontent.com/cffc3814a2ee84f70b017264253913b02373743ae31a0bc0b5a95f5200b68aef/68747470733a2f2f7778322e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6b766a78616d6a32306469306d3874646d2e6a7067" alt="Go 性能分析数据"></p>
+<p>本地测试文件优化以前有大量 syscall 大概要 62 秒，优化后没有产生 syscall，只需要 860 毫秒左右，主要耗时在 readbyte 里创建 buf 对象。</p>
+<p>总结：通过 pprof 工具可以分析出 cpu 瓶颈所在。频繁的文件操作会是 syscall 大量占用 cpu，可以使用 bufio 避免 syscall 大幅优化性能。</p>
+<h2 id="接下来就是第二个例子内存性能分析">接下来就是第二个例子：内存性能分析</h2>
+<p>profile.Start默认分析cpu，其他指标需要显示指定参数，内存分析rate设置为1表示搜集所有的内存分配信息</p>
+<p><img src="https://camo.githubusercontent.com/87520b75205108107d08df8f0de4e8343cd45a2d868889fd7cea0e247588908c/68747470733a2f2f7778342e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6c3377306a636a3230696f306c327163312e6a7067" alt="Go 内存性能分析"></p>
+<p><img src="https://camo.githubusercontent.com/1f86fca713d7416565c58895fd27c30523c4b8b65b11f89f546bb187d66f3923/68747470733a2f2f7778332e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6c65686e73306a32306d383061766e316d2e6a7067" alt="Go 内存性能分析"></p>
+<p>可以看到程序内存主要分配在 readbyte 这里，这里 windows 上的测试结果和 dave 分享的结果不太一样。</p>
+<h2 id="最后trace-一个生成图片的程序-mandelbrot">最后：trace 一个生成图片的程序 mandelbrot</h2>
+<p>项目地址： <a href="https://github.com/campoy/mandelbro">https://github.com/campoy/mandelbro</a></p>
+<p>运行这个程序会生成一张图片，大约花了 1.6 秒。如何评估它的性能好坏？是否可能让它更快？</p>
+<p>首先还是通过 pprof 分析 cpu 性能</p>
+<p><img src="https://camo.githubusercontent.com/c6f915e4078d87956e17e2c4ddeb8391335f42e352b2ccb4e09a3993d8b0b4e0/68747470733a2f2f7778342e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6c6f6c7167686a32306f7530636f6777732e6a7067" alt="pprof 分析 cpu 性能"></p>
+<p><img src="https://camo.githubusercontent.com/4d1e11aabbc35296ec1d288497a0001663c88ed92d5a95b0dd19078b7da3e8ef/68747470733a2f2f7778322e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6c7a39327a736a32307430306f796777302e6a7067" alt="pprof 分析 cpu 性能"></p>
+<p>可以看到 cpu 消耗在 seqFillg 中调用 fillPixel 函数上</p>
+<p><img src="https://camo.githubusercontent.com/a858010c9a10db068c3c8046a5f552483a09f3159b8c792cb4634dd54bc26043/68747470733a2f2f7778342e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6d396f716f336a323063393036306469322e6a7067" alt="pprof 分析 cpu 性能"></p>
+<p>在代码中加入trace分析</p>
+<p><img src="https://camo.githubusercontent.com/54b5e7867bb22995e7100631edcacbc7f13804623e5068aad082b2e9d5267af8/68747470733a2f2f7778342e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6d6a676f777a6a32306c7830337174616a2e6a7067" alt="Go代码中加入trace分析"></p>
+<p>编译成可执行文件，然后执行，会生成 trace.out 文件，现在可以使用 trace 工具分析该文件 <code>go tool trace trace.out</code> 会自动打开浏览器，页面上有查看 trace，gorutine 分析，网络阻塞分析，同步阻塞分析，系统调用阻塞分析，调度耗时分析等</p>
+<p><img src="https://camo.githubusercontent.com/d43a14f15ac723247133404b0bf9435faafaed48afcf07e335a71499b781f9bf/68747470733a2f2f7778322e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6d75637475636a32307a6b3068656770722e6a7067" alt="Go代码中加入trace分析"></p>
+<p>页面显示只利用了一个cpu</p>
+<p>使用gorutine来利用多个cpu</p>
+<p>oneToOne方法</p>
+<p><img src="https://camo.githubusercontent.com/e21cff7ede90a7883630ada4468eeb75adbe7c02813bf576fb307e9d609a1a3e/68747470733a2f2f7778342e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6e34776c7a7a6a323063723039716770362e6a7067" alt="使用gorutine来利用多个cpu"></p>
+<p>每一次的 fillpixel 都开一个 gorutine，运行时间并没有缩短，在 trace 页面放大看，虽然使用了多个 cpu，到 cpu 并不是连续的，全部是断开的，因为 fillpixel 做的事太少，花费了大量的时间在 gorutine 的调度上。</p>
+<p>onePerRow方法</p>
+<p><img src="https://camo.githubusercontent.com/c34025a1c9cd52770b2eb6feb1018703cf539d5ca791e48350a89b9258251000/68747470733a2f2f7778342e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6e6b63726b666a32306333303970646a352e6a7067" alt="使用gorutine来利用多个cpu"></p>
+<p>将一行像素的填充作为一个 gorutine，运行耗时大幅减少，再看 trace 页面，cpu 也利用的不错，gorutine 数量也不多。</p>
+<p><img src="https://camo.githubusercontent.com/c9a2808b343203ad32e08183af6b627594536464c2b9ecf50b2a0bc7b52d5aca/68747470733a2f2f7778312e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6e74306d76726a32307a6b30716f6538312e6a7067" alt="使用gorutine来利用多个cpu"></p>
+<p>最后还有一个nworker方法</p>
+<p><img src="https://camo.githubusercontent.com/72c1ec7ef155b7c13575aeb99d5d7a0014980fec00313d8d192dfc7984bceba5/68747470733a2f2f7778322e73696e61696d672e636e2f6c617267652f363761633738636667793167326a6f6f317a6e73676a32306336306530776a312e6a7067" alt="使用gorutine来利用多个cpu"></p>
+<p>执行耗时会最慢，因为它使用的是无缓冲channel，每一次都得等。修改为有缓冲的channel就会大幅提升性能。</p>
+<p>trace信息也可以通过http接口获取 <code>curl -o trace.out http://127.0.0.1:8080/debug/pprof/trace?seconds=5</code></p>
+<h2 id="end">End</h2>
+<p>接下来是 QA 环节，同学们纷纷用流利的英语和Dave交流 ：）</p>
+<p>最后是 Tars 团队和 Dave 一起坐上讲台开始交流，我就先溜了。</p>
+
+
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-3022214826355647"
+                    data-ad-slot="3373260497"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+                
+                <div class="blog-tags">
+                    
+                    &nbsp;<a href="https://blog.axiaoxin.com//tags/golang/">golang</a>
+                    
+                </div>
+                
+
+                <ins id="content-ad"
+                     class="adsbygoogle"
+                     style="display:block; text-align:center;"
+                     data-ad-layout="in-article"
+                     data-ad-format="fluid"
+                     data-ad-client="ca-pub-3022214826355647"
+                     data-ad-slot="4546241981"></ins>
+
+                <script>
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        
+                        var id = "content-ad";
+                        var ins = document.getElementById(id);
+                        ins.setAttribute("data-ad-slot", "9889874488");
+                    }
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+
+
+                
+                <hr/>
+                <section id="social-share">
+                    <div class="list-inline footer-links">
+                        
+
+<div class="share-box" aria-hidden="true">
+    <div class="addthis_inline_share_toolbox"></div>
+</div>
+<script async src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-637606c33f0ab9be"></script>
+
+
+                    </div>
+                </section>
+                
+
+                
+                
+                
+                
+
+                
+                <h4 class="see-also">也可以看看</h4>
+                <ul>
+                    
+                    
+                    <li><a href="/post/2022-11-26-golang-%E4%BD%BF%E7%94%A8-redis-zset-%E5%AE%9E%E7%8E%B0%E6%8E%92%E8%A1%8C%E6%A6%9C/">Golang 使用 Redis ZSET 实现排行榜</a></li>
+                    
+                    <li><a href="/post/2022-06-23-gin-%E4%BD%BF%E7%94%A8-gnu-gettext-%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0-i18n-%E5%9B%BD%E9%99%85%E5%8C%96%E5%A4%9A%E8%AF%AD%E8%A8%80/">Gin 使用 GNU gettext 方式实现 i18n 国际化多语言</a></li>
+                    
+                    <li><a href="/post/2021-11-21-golang-json-%E5%BA%8F%E5%88%97%E5%8C%96%E6%97%B6-html-%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6%E8%BD%AC%E4%B9%89%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/">Golang JSON 序列化时 HTML 特殊字符转义问题分析</a></li>
+                    
+                    <li><a href="/post/2021-11-21-golang-%E8%BF%90%E8%A1%8C%E6%97%B6%E9%99%A4%E6%95%B0%E4%B8%BA-0-%E8%BF%94%E5%9B%9E-inf/">Golang 运行时除数为 0 返回 Inf</a></li>
+                    
+                    <li><a href="/post/2021-10-11-traefik-%E7%AE%80%E4%BB%8B%E4%BB%A5%E5%8F%8A%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/">Traefik 简介以及中间件插件开发</a></li>
+                    
+                </ul>
+
+                
+                
+
+                <div class="_ha8w4pb61zc"></div>
+                <script type="text/javascript">
+                    (window.slotbydup = window.slotbydup || []).push({
+                        id: "u6682238",
+                        container: "_ha8w4pb61zc",
+                        async: true
+                    });
+                </script>
+            </article>
+
+
+            
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://blog.axiaoxin.com/post/2018-12-11-go-%E4%B8%AD%E9%80%9A%E8%BF%87%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84%E4%BD%93%E4%BB%A5%E8%8A%82%E7%9C%81%E5%86%85%E5%AD%98/" data-toggle="tooltip" data-placement="top" title="Go 中通过组织结构体以节省内存">&larr; 前一篇</a>
+                </li>
+                
+                
+                <li class="next">
+                    <a href="https://blog.axiaoxin.com/post/2020-01-16-zap-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" data-toggle="tooltip" data-placement="top" title="Zap 源码阅读笔记">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            
+
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-3022214826355647"
+                data-ad-slot="5644200610"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+
+            <div class="giscus"></div>
+            <script src="https://giscus.app/client.js"
+                    data-repo="axiaoxin-com/blog"
+                    data-repo-id="R_kgDOIdZQhA"
+                    data-category="Comments"
+                    data-category-id="DIC_kwDOIdZQhM4CSvR2"
+                    data-mapping="title"
+                    data-strict="0"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-input-position="bottom"
+                    data-theme="preferred_color_scheme"
+                    data-lang="zh-CN"
+                    data-loading="lazy"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+        </div>
+    </div>
+</div>
+
+    
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center footer-links">
+                    
+                    <li>
+                        
+                            <a href="mailto:admin@axiaoxin.com" title="Email me">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    <li>
+                        
+                            <a href="https://github.com/axiaoxin" title="GitHub">
+                                
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                    </li>
+                    
+                    <li>
+                        <a href="" title="RSS">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="credits copyright text-muted">
+                
+                
+                <a href="http://axiaoxin.com">axiaoxin</a>
+                
+                
+
+                &nbsp;&bull;&nbsp;&copy;
+                
+                2011 - 2022
+                
+
+                
+                &nbsp;&bull;&nbsp;
+                <a href="https://blog.axiaoxin.com/">人言兑</a>
+                
+                </p>
+                <p class="copyright"><a class="text-muted text-decoration-none" href="https://beian.miit.gov.cn" target="_blank">蜀ICP备20023217号</a></p>
+            </div>
+        </div>
+    </div>
+</footer><script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/katex.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://blog.axiaoxin.com/js/main.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+<script> hljs.highlightAll(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script async src="https://blog.axiaoxin.com/js/load-photoswipe.js"></script>
+
+
+
+<script>
+    (function() {
+            var cx = '61c0d8f33c4084733';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+        })();
+</script>
+
+
+
+
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["trackPageView"]);
+    _paq.push(["enableLinkTracking"]);
+
+    (function() {
+            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://matomo.axiaoxin.com/";
+            _paq.push(["setTrackerUrl", u+"piwik.php"]);
+            _paq.push(["setSiteId", "5"]);
+            var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+            g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+        })();
+</script>
+<noscript>
+    
+    <img src="http://matomo.axiaoxin.com/piwik.php?idsite=5&amp;rec=1" style="border:0" alt="" />
+    
+</noscript>
+
+
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?fdfe48e67d25b3802d6139d4e629c718";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+</script><script src="https://cdn.bootcdn.net/ajax/libs/glightbox/3.2.0/js/glightbox.min.js"></script>
+<script type="text/javascript">
+    $('.blog-post img').each(function(idx){
+        var src = $(this).attr("src");
+        var wrap = `<a href="${src}" class="glightbox"></a>`;
+        if (!src.match(/\.(jpg|jpeg|png|gif)$/i)) {
+            wrap = `<a href="${src}" target="_blank" data-glightbox="type: image"></a>`;
+        }
+        $(this).wrap(wrap);
+    });
+  const lightbox = GLightbox({});
+</script>
+
+
+    
+  </body>
+</html>
+
