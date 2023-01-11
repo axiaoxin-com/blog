@@ -8,8 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
 
-<title>Sentry 插件编写总结 - 人言兑</title>
-  <meta name="description" content="sentry 插件需要特定的结构才能正常工作，最简单的结构即为本插件的文件结构。 sentry-rtx * │ .gitignore │ README.md │ setup.cfg │ setup.py * │ └─ sentry_rtx * plugin.py * tof_api.py __init__.py 主要编写其中的 setup.py 和 plugin.py 在 sentry_rtx/plugin.py 中实现自">
+<title>在 Python 中加载 JSON 文件——如何读取和解析 JSON - 人言兑</title>
+  <meta name="description" content="在本文中，您将学习如何在 Python 中读取和解析 JSON。 什么是 JSON？ JSON 是 JavaScript Object Notation 的缩写。这是一种将数据存储在“名称-值”对中的简单语法。只要值有效">
   <meta name="author" content="axiaoxin"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
@@ -45,8 +45,8 @@
         "@type": "ListItem",
         "position": 3,
         "item": {
-          "@id": "https:\/\/blog.axiaoxin.com\/post\/2017-03-03-sentry-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99%E6%80%BB%E7%BB%93\/",
-          "name": "Sentry 插件编写总结"
+          "@id": "https:\/\/blog.axiaoxin.com\/post\/2023-01-11-%E5%9C%A8-python-%E4%B8%AD%E5%8A%A0%E8%BD%BD-json-%E6%96%87%E4%BB%B6%E5%A6%82%E4%BD%95%E8%AF%BB%E5%8F%96%E5%92%8C%E8%A7%A3%E6%9E%90-json\/",
+          "name": "在 python 中加载 JSON 文件——如何读取和解析 JSON"
         }
     }]
 }
@@ -57,15 +57,15 @@
   "author": {
     "name" : "axiaoxin"
   },
-  "headline": "Sentry 插件编写总结",
-  "description" : "sentry 插件需要特定的结构才能正常工作，最简单的结构即为本插件的文件结构。 sentry-rtx * │ .gitignore │ README.md │ setup.cfg │ setup.py * │ └─ sentry_rtx * plugin.py * tof_api.py __init__.py 主要编写其中的 setup.py 和 plugin.py 在 sentry_rtx\/plugin.py 中实现自",
+  "headline": "在 Python 中加载 JSON 文件——如何读取和解析 JSON",
+  "description" : "在本文中，您将学习如何在 Python 中读取和解析 JSON。 什么是 JSON？ JSON 是 JavaScript Object Notation 的缩写。这是一种将数据存储在“名称-值”对中的简单语法。只要值有效",
   "inLanguage" : "zh-cn",
-  "wordCount":  392 ,
-  "datePublished" : "2017-03-03T11:03:07",
-  "dateModified" : "2017-03-03T11:03:07",
+  "wordCount":  913 ,
+  "datePublished" : "2023-01-11T16:41:55",
+  "dateModified" : "2023-01-11T16:41:55",
   "image" : "https:\/\/blog.axiaoxin.com\/img\/avatar-icon.png",
   "keywords" : [ "python" ],
-  "mainEntityOfPage" : "https:\/\/blog.axiaoxin.com\/post\/2017-03-03-sentry-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99%E6%80%BB%E7%BB%93\/",
+  "mainEntityOfPage" : "https:\/\/blog.axiaoxin.com\/post\/2023-01-11-%E5%9C%A8-python-%E4%B8%AD%E5%8A%A0%E8%BD%BD-json-%E6%96%87%E4%BB%B6%E5%A6%82%E4%BD%95%E8%AF%BB%E5%8F%96%E5%92%8C%E8%A7%A3%E6%9E%90-json\/",
   "publisher" : {
     "@type": "Organization",
     "name" : "https:\/\/blog.axiaoxin.com\/",
@@ -79,15 +79,15 @@
 }
 </script>
 
-<meta property="og:title" content="Sentry 插件编写总结" />
-<meta property="og:description" content="sentry 插件需要特定的结构才能正常工作，最简单的结构即为本插件的文件结构。 sentry-rtx * │ .gitignore │ README.md │ setup.cfg │ setup.py * │ └─ sentry_rtx * plugin.py * tof_api.py __init__.py 主要编写其中的 setup.py 和 plugin.py 在 sentry_rtx/plugin.py 中实现自">
+<meta property="og:title" content="在 Python 中加载 JSON 文件——如何读取和解析 JSON" />
+<meta property="og:description" content="在本文中，您将学习如何在 Python 中读取和解析 JSON。 什么是 JSON？ JSON 是 JavaScript Object Notation 的缩写。这是一种将数据存储在“名称-值”对中的简单语法。只要值有效">
 <meta property="og:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
-<meta property="og:url" content="https://blog.axiaoxin.com/post/2017-03-03-sentry-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99%E6%80%BB%E7%BB%93/" />
+<meta property="og:url" content="https://blog.axiaoxin.com/post/2023-01-11-%E5%9C%A8-python-%E4%B8%AD%E5%8A%A0%E8%BD%BD-json-%E6%96%87%E4%BB%B6%E5%A6%82%E4%BD%95%E8%AF%BB%E5%8F%96%E5%92%8C%E8%A7%A3%E6%9E%90-json/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="阿小信的博客" />
 
-  <meta name="twitter:title" content="Sentry 插件编写总结" />
-  <meta name="twitter:description" content="sentry 插件需要特定的结构才能正常工作，最简单的结构即为本插件的文件结构。 sentry-rtx * │ .gitignore │ README.md │ setup.cfg │ setup.py * │ └─ sentry_rtx * plugin.py * tof_api.py __init__.py 主要编写其中的 setup.py 和 plugin.py …">
+  <meta name="twitter:title" content="在 Python 中加载 JSON 文件——如何读取和解析 JSON" />
+  <meta name="twitter:description" content="在本文中，您将学习如何在 Python 中读取和解析 JSON。 什么是 JSON？ JSON 是 JavaScript Object Notation 的缩写。这是一种将数据存储在“名称-值”对中的简单语法。只要值有效">
   <meta name="twitter:image" content="https://blog.axiaoxin.com/img/avatar-icon.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <link href='https://blog.axiaoxin.com/img/favicon.ico' rel='icon' type='image/x-icon'/>
@@ -297,7 +297,7 @@ if (!doNotTrack) {
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
                         
-                        <h1>Sentry 插件编写总结</h1>
+                        <h1>在 Python 中加载 JSON 文件——如何读取和解析 JSON</h1>
                         
                         
                         
@@ -305,13 +305,13 @@ if (!doNotTrack) {
                         <span class="post-meta">
   
   
-  <i class="fas fa-calendar"></i>&nbsp;发表于 2017-03-03
+  <i class="fas fa-calendar"></i>&nbsp;发表于 2023-01-11
   
   
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;1&nbsp;分钟
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;分钟
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;392&nbsp;个字
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;913&nbsp;个字
   
   
     
@@ -353,31 +353,75 @@ if (!doNotTrack) {
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <article role="main" class="blog-post">
-                <p>sentry 插件需要特定的结构才能正常工作，最简单的结构即为本插件的文件结构。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>sentry-rtx   *
-</span></span><span style="display:flex;"><span>│  .gitignore
-</span></span><span style="display:flex;"><span>│  README.md
-</span></span><span style="display:flex;"><span>│  setup.cfg
-</span></span><span style="display:flex;"><span>│  setup.py    *
-</span></span><span style="display:flex;"><span>│
-</span></span><span style="display:flex;"><span>└─ sentry_rtx    *
-</span></span><span style="display:flex;"><span>        plugin.py    *
-</span></span><span style="display:flex;"><span>        tof_api.py
-</span></span><span style="display:flex;"><span>        __init__.py
-</span></span></code></pre></div><p>主要编写其中的 setup.py 和 plugin.py</p>
-<p>在 <code>sentry_rtx/plugin.py</code> 中实现自己的通知插件类，通知类型的插件 <code>is_configured</code> 和 <code>notify_users</code> 是需要自己实现的。</p>
-<p>在 <code>sentry-rtx/setup.py</code> 中，插件通过 <code>entry_points</code> 来自动注册。</p>
-<p>编写完成后在 setup.py 目录运行安装命令</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python setup.py install
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 或者pip install -e .</span>
-</span></span></code></pre></div><p>安装时如果需要指定 pypi 源可以在 setup.cfg 中设置</p>
-<p>完成后，重启 Sentry 服务，进入 sentry web 界面，在需要使用该插件的项目下点击【项目设置】，配置处选择【警报】（/settings/alerts/），在设置tab最下方可以看到一个【无效集成】中有你新安装的插件，点击它开启插件。</p>
-<p><strong>dev tips</strong>:</p>
-<ul>
-<li>安装完自己写的插件后，使用<code>SENTRY_CONF=/etc/sentry sentry upgrade</code>可以检查插件是否报错。</li>
-<li>查看已安装的插件：<code>SENTRY_CONF=/etc/sentry sentry plugins list</code></li>
-<li>在<code>/manage/status/packages/</code>页面可以看到已安装的插件</li>
-</ul>
+                <p>在本文中，您将学习如何在 Python 中读取和解析 JSON。</p>
+<h2 id="什么是-json">什么是 JSON？</h2>
+<p>JSON 是 JavaScript Object Notation 的缩写。这是一种将数据存储在“名称-值”对中的简单语法。只要值有效，它们可以是不同的数据类型。</p>
+<p>JSON不可接受的类型包括函数、日期和 <code>undefined</code> 。</p>
+<p>JSON 文件是以 <code>.json</code> 作为后缀名，存储了有效的 JSON 结构的文件。</p>
+<p>JSON 文件的结构如下所示：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;axiaoxin&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;age&#34;</span>: <span style="color:#ae81ff">16</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;is_married&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;profession&#34;</span>: <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;hobbies&#34;</span>: [<span style="color:#e6db74">&#34;traveling&#34;</span>, <span style="color:#e6db74">&#34;coding&#34;</span>]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>在 web 应用程序中，您经常使用 JSON 发送和接收来自服务器的数据。当接收到数据时，程序读取并解析JSON以提取特定数据。不同的语言有自己的方法。我们将在这里看看如何在 Python 中完成这些操作。</p>
+<h2 id="如何读取-json-文件">如何读取 JSON 文件</h2>
+<p>假设上面代码块中的 JSON 存储在 <code>user.json</code> 文件中。使用 Python 中的 <code>open()</code> 内置函数，我们可以读取该文件并将内容赋值给变量。方法如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;user.json&#39;</span>) <span style="color:#66d9ef">as</span> user_file:
+</span></span><span style="display:flex;"><span>    file_contents <span style="color:#f92672">=</span> user_file<span style="color:#f92672">.</span>read()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(file_contents)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># {</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;name&#34;: &#34;axiaoxin&#34;,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;age&#34;: 16,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;is_married&#34;: false,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;profession&#34;: null,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;hobbies&#34;: [&#34;travelling&#34;, &#34;coding&#34;]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># }</span>
+</span></span></code></pre></div><p>将文件路径传递给打开文件的 <code>open</code> 方法，并将文件中的流数据赋值给 <code>user_file</code> 变量。使用 <code>read</code> 方法，可以将文件的文本内容传给 <code>file_contents</code> 变量。</p>
+<p>上面代码块的开头使用了 <code>with</code> ，这样在读取文件内容后，Python 就可以关闭该文件。</p>
+<p><code>file_contents</code> 现在是字符串形式的 JSON。下一步，您就可以开始解析 JSON 了。</p>
+<h2 id="如何解析-json">如何解析 JSON</h2>
+<p>Python 拥有用于各种操作的内置模块。为了管理 JSON 文件，Python 有一个 json 模块。</p>
+<p>这个模块有很多方法。其中之一是用于解析 JSON 字符串的 <code>loads()</code> 方法。可以将解析后的数据赋值给如下这样的变量：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;user.json&#39;</span>) <span style="color:#66d9ef">as</span> user_file:
+</span></span><span style="display:flex;"><span>    file_contents <span style="color:#f92672">=</span> user_file<span style="color:#f92672">.</span>read()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(file_contents)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>parsed_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(file_contents)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># {</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#39;name&#39;: &#39;axiaoxin&#39;,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#39;age&#39;: 16,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#39;is_married&#39;: False,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#39;profession&#39;: None,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#39;hobbies&#39;: [&#39;travelling&#39;, &#39;coding&#39;]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># }</span>
+</span></span></code></pre></div><p>使用 <code>loads()</code> 方法，可以看到 <code>parsed_json</code> 变量现在有一个有效的字典。从这个字典中，可以访问其中的键和值。</p>
+<p>还要注意 JSON 中的 <code>null</code> 在 python 中转换为了 <code>None</code> 。这是因为 <code>null</code> 在 <code>Python</code> 中无效。</p>
+<h2 id="如何使用-jsonload-读取和解析-json-文件">如何使用 <code>json.load()</code> 读取和解析 JSON 文件</h2>
+<p><code>json</code> 模块还有 <code>load</code> 方法，你可以使用它来读取文件对象并同时解析它。使用此方法可以将前面的代码更新为：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;user.json&#39;</span>) <span style="color:#66d9ef">as</span> user_file:
+</span></span><span style="display:flex;"><span>    parsed_json <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>load(user_file)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(parsed_json)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># {</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#39;name&#39;: &#39;axiaoxin&#39;,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#39;age&#39;: 16,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#39;is_married&#39;: False,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#39;profession&#39;: None,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#39;hobbies&#39;: [&#39;travelling&#39;, &#39;coding&#39;]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># }</span>
+</span></span></code></pre></div><p>可以直接使用 <code>load</code> 方法进行读取文件对象的同时进行 JSON 解析来代替先使用文件对象的 <code>read</code> 方法然后再使用 <code>json</code> 模块的 <code>loads</code> 方法。</p>
+<h2 id="总结">总结</h2>
+<p>JSON 数据通常以其简单的结构而闻名，并且在服务器和客户端之间的信息交换中非常流行（在大多数情况下是一种标准）。</p>
+<p>不同的语言和技术可以以不同的方式读取和解析 JSON 文件。在本文中，我们学习了如何使用文件对象的 <code>read</code> 方法以及 <code>json</code> 模块的 <code>loads</code> 和 <code>load</code> 方法来读取 JSON 文件并解析此类文件。</p>
 
 
                 <ins class="adsbygoogle"
@@ -443,9 +487,9 @@ if (!doNotTrack) {
                 <ul>
                     
                     
-                    <li><a href="/post/2023-01-11-%E5%9C%A8-python-%E4%B8%AD%E5%8A%A0%E8%BD%BD-json-%E6%96%87%E4%BB%B6%E5%A6%82%E4%BD%95%E8%AF%BB%E5%8F%96%E5%92%8C%E8%A7%A3%E6%9E%90-json/">在 Python 中加载 JSON 文件——如何读取和解析 JSON</a></li>
-                    
                     <li><a href="/post/2017-07-21-flask-%E4%B8%AD%E6%97%A5%E5%BF%97%E6%8C%89%E7%85%A7%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB%E5%88%86%E5%BC%80%E4%BF%9D%E5%AD%98%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6/">Flask 中日志按照日志级别分开保存到不同文件</a></li>
+                    
+                    <li><a href="/post/2017-03-03-sentry-%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99%E6%80%BB%E7%BB%93/">Sentry 插件编写总结</a></li>
                     
                     <li><a href="/post/2015-07-01-%E5%85%B3%E4%BA%8E-python-%E4%B8%AD%E7%9A%84-none-%E5%92%8C-is/">关于 Python 中的 None 和 is</a></li>
                     
@@ -473,13 +517,9 @@ if (!doNotTrack) {
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://blog.axiaoxin.com/post/2016-04-14-flask-%E9%80%9A%E8%BF%87-nginx-%E4%BB%A3%E7%90%86%E5%90%8E%E6%8B%BF%E4%B8%8D%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84-url_scheme/" data-toggle="tooltip" data-placement="top" title="Flask 通过 Nginx 代理后拿不到正确的 url_scheme">&larr; 前一篇</a>
+                    <a href="https://blog.axiaoxin.com/post/2022-12-23-2022-%E5%BE%AE%E4%BF%A1%E8%AF%BB%E4%B9%A6%E5%B9%B4%E5%BA%A6%E6%A6%9C%E5%8D%95/" data-toggle="tooltip" data-placement="top" title="2022 微信读书年度榜单">&larr; 前一篇</a>
                 </li>
                 
-                
-                <li class="next">
-                    <a href="https://blog.axiaoxin.com/post/2017-05-02-%E4%BA%94%E4%B8%80%E6%A1%82%E6%9E%97%E8%A1%8C/" data-toggle="tooltip" data-placement="top" title="五一桂林行">后一篇 &rarr;</a>
-                </li>
                 
             </ul>
             

@@ -8,7 +8,16 @@
     <language>zh-cmn-Hans</language>
     <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
     <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster>
-    <lastBuildDate>Fri, 23 Dec 2022 14:59:08 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 11 Jan 2023 16:41:55 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>python</title>
+      <link>https://blog.axiaoxin.com/tags/python/</link>
+      <pubDate>Wed, 11 Jan 2023 16:41:55 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/tags/python/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>年度报告</title>
       <link>https://blog.axiaoxin.com/tags/%E5%B9%B4%E5%BA%A6%E6%8A%A5%E5%91%8A/</link>
@@ -168,15 +177,6 @@
       <pubDate>Fri, 02 Mar 2018 16:24:39 +0800</pubDate>
       <author>admin@axiaoxin.com (axiaoxin)</author>
       <guid>https://blog.axiaoxin.com/tags/docker/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>python</title>
-      <link>https://blog.axiaoxin.com/tags/python/</link>
-      <pubDate>Fri, 21 Jul 2017 15:15:53 +0800</pubDate>
-      <author>admin@axiaoxin.com (axiaoxin)</author>
-      <guid>https://blog.axiaoxin.com/tags/python/</guid>
       <description></description>
     </item>
     

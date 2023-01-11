@@ -8,7 +8,16 @@
     <language>zh-cmn-Hans</language>
     <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
     <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster>
-    <lastBuildDate>Fri, 23 Dec 2022 14:59:08 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 11 Jan 2023 16:41:55 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在 Python 中加载 JSON 文件——如何读取和解析 JSON</title>
+      <link>https://blog.axiaoxin.com/post/2023-01-11-%E5%9C%A8-python-%E4%B8%AD%E5%8A%A0%E8%BD%BD-json-%E6%96%87%E4%BB%B6%E5%A6%82%E4%BD%95%E8%AF%BB%E5%8F%96%E5%92%8C%E8%A7%A3%E6%9E%90-json/</link>
+      <pubDate>Wed, 11 Jan 2023 16:41:55 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2023-01-11-%E5%9C%A8-python-%E4%B8%AD%E5%8A%A0%E8%BD%BD-json-%E6%96%87%E4%BB%B6%E5%A6%82%E4%BD%95%E8%AF%BB%E5%8F%96%E5%92%8C%E8%A7%A3%E6%9E%90-json/</guid>
+      <description>在本文中，您将学习如何在 Python 中读取和解析 JSON。 什么是 JSON？ JSON 是 JavaScript Object Notation 的缩写。这是一种将数据存储在“名称-值”对中的简单语法。只要值有效</description>
+    </item>
+    
     <item>
       <title>2022 微信读书年度榜单</title>
       <link>https://blog.axiaoxin.com/post/2022-12-23-2022-%E5%BE%AE%E4%BF%A1%E8%AF%BB%E4%B9%A6%E5%B9%B4%E5%BA%A6%E6%A6%9C%E5%8D%95/</link>
