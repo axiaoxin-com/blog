@@ -305,6 +305,53 @@ if (!doNotTrack) {
         <div class="posts-list">
           
             <article class="post-preview">
+    <a href="https://blog.axiaoxin.com/post/2018-12-11-go-%E4%B8%AD%E9%80%9A%E8%BF%87%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84%E4%BD%93%E4%BB%A5%E8%8A%82%E7%9C%81%E5%86%85%E5%AD%98/">
+        <h2 class="post-title">Go 中通过组织结构体以节省内存</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;发表于 2018-12-11
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;分钟
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;722&nbsp;个字
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;axiaoxin
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        先执行一段示例代码，有一个类似如下的结构体 myStruct： package main import ( &#34;fmt&#34; &#34;reflect&#34; &#34;unsafe&#34; ) type myStruct struct { myBool bool myFloat float64 myInt int32 } func main() { a := myStruct{} fmt.Println(unsafe.Sizeof(a.myBool)) // 1 fmt.Println(unsafe.Sizeof(a.myFloat)) // 8 fmt.Println(unsafe.Sizeof(a.myInt)) // 4 fmt.Println(unsafe.Sizeof(a)) // 24 fmt.Println(reflect.TypeOf(a.myBool).Align()) // 1
+        <a href="https://blog.axiaoxin.com/post/2018-12-11-go-%E4%B8%AD%E9%80%9A%E8%BF%87%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84%E4%BD%93%E4%BB%A5%E8%8A%82%E7%9C%81%E5%86%85%E5%AD%98/" class="post-read-more">[阅读全文]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://blog.axiaoxin.com//tags/golang/">golang</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
     <a href="https://blog.axiaoxin.com/post/2018-11-05-%E8%87%AA%E5%AE%9A%E4%B9%89-golang-time-%E7%B1%BB%E5%9E%8B%E5%AD%97%E6%AE%B5%E7%9A%84-json-%E5%BA%8F%E5%88%97%E5%8C%96%E6%A0%BC%E5%BC%8F/">
         <h2 class="post-title">自定义 Golang Time 类型字段的 JSON 序列化格式</h2>
         
@@ -723,53 +770,6 @@ if (!doNotTrack) {
     <div class="blog-tags">
         
         <a href="https://blog.axiaoxin.com//tags/debug/">debug</a>&nbsp;
-        
-    </div>
-    
-
-</article>
-          
-            <article class="post-preview">
-    <a href="https://blog.axiaoxin.com/post/2017-07-21-flask-%E4%B8%AD%E6%97%A5%E5%BF%97%E6%8C%89%E7%85%A7%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB%E5%88%86%E5%BC%80%E4%BF%9D%E5%AD%98%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6/">
-        <h2 class="post-title">Flask 中日志按照日志级别分开保存到不同文件</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;发表于 2017-07-21
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;3&nbsp;分钟
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1496&nbsp;个字
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;axiaoxin
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        目标是想让代码中的日志按照不同的级别保存到不同的文件，即不管是框架本身的debug日志还是我们自己写的debug日志都保存到debug.lo
-        <a href="https://blog.axiaoxin.com/post/2017-07-21-flask-%E4%B8%AD%E6%97%A5%E5%BF%97%E6%8C%89%E7%85%A7%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB%E5%88%86%E5%BC%80%E4%BF%9D%E5%AD%98%E5%88%B0%E4%B8%8D%E5%90%8C%E6%96%87%E4%BB%B6/" class="post-read-more">[阅读全文]</a>
-        
-    </div>
-
-    
-    <div class="blog-tags">
-        
-        <a href="https://blog.axiaoxin.com//tags/python/">python</a>&nbsp;
         
     </div>
     
