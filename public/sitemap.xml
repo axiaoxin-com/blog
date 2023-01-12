@@ -2,19 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://blog.axiaoxin.com/tags/javascript/</loc>
+    <lastmod>2023-01-12T14:20:07+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.axiaoxin.com/post/</loc>
+    <lastmod>2023-01-12T14:20:07+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.axiaoxin.com/tags/</loc>
+    <lastmod>2023-01-12T14:20:07+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.axiaoxin.com/</loc>
+    <lastmod>2023-01-12T14:20:07+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.axiaoxin.com/post/2023-01-12-%E5%9C%A8-javascript-%E4%B8%AD%E5%BE%AA%E7%8E%AF%E8%AE%BF%E9%97%AE%E5%AF%B9%E8%B1%A1%E5%A6%82%E4%BD%95%E5%9C%A8-js-%E4%B8%AD%E9%81%8D%E5%8E%86%E5%AF%B9%E8%B1%A1/</loc>
+    <lastmod>2023-01-12T14:20:07+08:00</lastmod>
+  </url><url>
     <loc>https://blog.axiaoxin.com/tags/java/</loc>
     <lastmod>2023-01-12T12:04:31+08:00</lastmod>
   </url><url>
     <loc>https://blog.axiaoxin.com/post/2023-01-12-java-%E4%B8%AD%E7%9A%84-charat%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-java-charat-%E6%96%B9%E6%B3%95/</loc>
-    <lastmod>2023-01-12T12:04:31+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.axiaoxin.com/post/</loc>
-    <lastmod>2023-01-12T12:04:31+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.axiaoxin.com/tags/</loc>
-    <lastmod>2023-01-12T12:04:31+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.axiaoxin.com/</loc>
     <lastmod>2023-01-12T12:04:31+08:00</lastmod>
   </url><url>
     <loc>https://blog.axiaoxin.com/tags/css/</loc>
