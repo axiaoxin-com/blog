@@ -16,6 +16,7 @@
                 </script>
 
                 {{ if .Params.tags }}
+                <hr>
                 <div class="blog-tags">
                     {{ range .Params.tags }}
                     &nbsp;<a href="{{ $.Site.LanguagePrefix | absURL }}/tags/{{ . | urlize }}/">{{ . }}</a>

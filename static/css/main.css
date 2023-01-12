@@ -529,8 +529,7 @@ footer .theme-by {
 .blog-post .blog-tags {
     font-size: 100%;
     font-weight: bolder;
-    padding-top: 15px;
-    border-top: 1px solid #797979;
+    padding-top: 10px;
 }
 
 .post-preview .blog-tags {
@@ -772,9 +771,9 @@ table tr {
   padding: 0;
 }
 @media (prefers-color-scheme: dark) {
-}
-table tr:nth-child(2n) {
-  background-color: #f8f8f8;
+  table tr:nth-child(2n) {
+    background-color: #f8f8f8;
+  }
 }
 @media (prefers-color-scheme: dark) {
   table tr {
