@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>java on 阿小信的博客</title>
+    <link>https://blog.axiaoxin.com/tags/java/</link>
+    <description>Recent content in java on 阿小信的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cmn-Hans</language>
+    <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
+    <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster>
+    <lastBuildDate>Thu, 12 Jan 2023 12:04:31 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java 中的 charAt()–如何使用 Java charAt() 方法</title>
+      <link>https://blog.axiaoxin.com/post/2023-01-12-java-%E4%B8%AD%E7%9A%84-charat%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-java-charat-%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Thu, 12 Jan 2023 12:04:31 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2023-01-12-java-%E4%B8%AD%E7%9A%84-charat%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-java-charat-%E6%96%B9%E6%B3%95/</guid>
+      <description>Java 中的 charAt() 方法返回字符串中给定或指定索引处字符的 char 值。 在本文中，我们将从 charAt() 方法的语法开始，然后通过几个示例来了解如何使用它。 如何使用 Java 的 charAt() 方法</description>
+    </item>
+    
+  </channel>
+</rss>
