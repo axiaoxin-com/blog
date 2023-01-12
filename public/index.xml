@@ -8,7 +8,16 @@
     <language>zh-cmn-Hans</language>
     <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
     <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster>
-    <lastBuildDate>Thu, 12 Jan 2023 10:18:47 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 12 Jan 2023 11:15:07 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何使用 CSS 使 Div 居中</title>
+      <link>https://blog.axiaoxin.com/post/2023-01-12-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-css-%E4%BD%BF-div-%E5%B1%85%E4%B8%AD/</link>
+      <pubDate>Thu, 12 Jan 2023 11:15:07 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2023-01-12-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-css-%E4%BD%BF-div-%E5%B1%85%E4%B8%AD/</guid>
+      <description>在 Web 开发中，您将面临的一个常见问题是如何将元素放置在页面、容器的中心。这是一个无处不在的“我如何居中一个 div？”问题。 在本文中，我们将了解</description>
+    </item>
+    
     <item>
       <title>双斜杠“//”在 Python 中是什么意思？Python 中的运算符</title>
       <link>https://blog.axiaoxin.com/post/2023-01-12-double-slash-mean-in-python/</link>

@@ -8,7 +8,16 @@
     <language>zh-cmn-Hans</language>
     <managingEditor>admin@axiaoxin.com (axiaoxin)</managingEditor>
     <webMaster>admin@axiaoxin.com (axiaoxin)</webMaster>
-    <lastBuildDate>Wed, 11 Jan 2023 16:41:55 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 12 Jan 2023 10:18:47 +0800</lastBuildDate><atom:link href="https://blog.axiaoxin.com/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>双斜杠“//”在 Python 中是什么意思？Python 中的运算符</title>
+      <link>https://blog.axiaoxin.com/post/2023-01-12-double-slash-mean-in-python/</link>
+      <pubDate>Thu, 12 Jan 2023 10:18:47 +0800</pubDate>
+      <author>admin@axiaoxin.com (axiaoxin)</author>
+      <guid>https://blog.axiaoxin.com/post/2023-01-12-double-slash-mean-in-python/</guid>
+      <description>在 Python 中，您使用双斜杠 // 运算符来执行地板除法（floor division）。此 // 运算符将第一个数字除以第二个数字，并将结果向下取整。 在本文中，</description>
+    </item>
+    
     <item>
       <title>在 Python 中加载 JSON 文件——如何读取和解析 JSON</title>
       <link>https://blog.axiaoxin.com/post/2023-01-11-%E5%9C%A8-python-%E4%B8%AD%E5%8A%A0%E8%BD%BD-json-%E6%96%87%E4%BB%B6%E5%A6%82%E4%BD%95%E8%AF%BB%E5%8F%96%E5%92%8C%E8%A7%A3%E6%9E%90-json/</link>
